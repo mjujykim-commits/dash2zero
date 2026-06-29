@@ -1,0 +1,60 @@
+{
+  "cli": {
+    "version": ">= 12.0.0",
+    "appVersionSource": "remote"
+  },
+  "build": {
+    "development": {
+      "developmentClient": true,
+      "distribution": "internal",
+      "channel": "development",
+      "env": {
+        "APP_ENV": "dev",
+        "BUNDLE_ID": "com.dash2zero.dev"
+      },
+      "ios": {
+        "simulator": true
+      }
+    },
+    "preview": {
+      "distribution": "internal",
+      "channel": "staging",
+      "env": {
+        "APP_ENV": "staging",
+        "BUNDLE_ID": "com.dash2zero.staging"
+      },
+      "ios": {
+        "simulator": false
+      }
+    },
+    "production": {
+      "channel": "production",
+      "env": {
+        "APP_ENV": "prod",
+        "BUNDLE_ID": "com.dash2zero.app"
+      },
+      "autoIncrement": true
+    }
+  },
+  "submit": {
+    "production": {
+      "ios": {
+        "language": "en-US",
+        "appleId": "TBD-APPLE-ID-EMAIL",
+        "ascAppId": "TBD-APP-STORE-CONNECT-APP-ID",
+        "appleTeamId": "TBD-APPLE-TEAM-ID"
+      },
+      "android": {
+        "track": "internal"
+      }
+    }
+  },
+  "_comment": [
+    "CANONICAL: EAS CLI는 본 파일(앱 루트)을 읽는다. infra/eas/eas.json은 D-009 SSOT 사본 — 두 파일 동기 유지.",
+    "TestFlight 업로드 절차: (1) eas build --profile production --platform ios → (2) eas submit --profile production --platform ios.",
+    "production 프로파일은 store distribution(=TestFlight/App Store) 빌드. preview는 ad-hoc internal로 TestFlight 불가.",
+    "submit.ios의 TBD 3종(appleId/ascAppId/appleTeamId)은 Owner가 Apple Developer 계정 확정 후 치환 — 미설정 시 eas submit이 대화형으로 질의.",
+    "Apple Team ID / Google service account JSON은 EAS Secrets로 관리 (CC2-21).",
+    "Privacy Manifest (PrivacyInfo.xcprivacy) 자동 검증 (Q-OPS-NEW-005), Phased Rollout halt trigger (CC3-08)."
+  ]
+}

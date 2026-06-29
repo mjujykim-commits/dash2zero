@@ -1,0 +1,42 @@
+id: SRS-060
+description: weak=true 해제 임계 — 1회 정답으로 즉시 clear (현 backend 동작 봉인, learning + backend 합의)
+category: weak_clear_threshold
+input:
+  user_id: u-test-055
+  word_id: w-055
+  # 정책 결정 (2026-05-11, learning + backend 합의):
+  # - 현 _shared/srs.ts 동작: weak=true 단어가 정답 1회 시 weak=false 즉시 clear (SRS-012와 동일)
+  # - learning 초기 권고 (2회 연속 정답): false-positive 해제 방지에는 유리하나
+  #   사용자 체감(곧장 weak 라벨이 사라지는 보상감) + 구현 복잡도 trade-off
+  # - 결정: 현 동작 (1회 정답 = clear) 봉인. M4 baseline에서 weak_reflag_within_7d % 측정 후 재검토.
+  # 본 case는 그 결정을 명시적으로 봉인하는 regression guard.
+  current_state:
+    stage: 2
+    weak: true                                # weak 상태
+    correct_count: 1
+    incorrect_count: 2
+    last_attempt_at: 2026-05-04T17:00:00Z
+    last_attempt_correct: false
+    next_due_at: 2026-05-08T11:00:00Z
+    mastered_at: null
+  attempt:
+    correct: true                             # 1회 정답
+    occurred_at: 2026-05-08T17:00:00Z
+    timezone: America/Los_Angeles
+expected:
+  stage: 3                                    # 정답 stage up (2 → 3)
+  weak: false                                 # 1회 정답으로 즉시 clear (현 봉인 동작)
+  correct_count: 2
+  incorrect_count: 2
+  last_attempt_correct: true
+  mastered_at: null
+  next_due_at_after_days: 7
+notes:
+  - SRS-012와 결과 일치 — 본 case는 동일 동작을 명시적 weak_clear_threshold 카테고리로 봉인
+  - 만약 backend가 향후 "2회 연속 정답 후 clear"로 정책 변경 시 본 evaluator는 RED → 의도적 변경 신호
+  - 동일 cycle 내 정답인지 다른 cycle인지는 본 정책 무관 (1회 정답이면 clear)
+  - 측정 후속 작업 (M4):
+    - srs_weak_cleared event emit (clear 시점)
+    - 해당 단어가 7일 내 다시 weak=true 재발 시 srs_weak_reflagged event
+    - reflag rate > 20% 면 정책 재검토 trigger
+  - 결정 기록: docs/REVIEW_QA.md 학습설계 섹션 — 2026-05-11

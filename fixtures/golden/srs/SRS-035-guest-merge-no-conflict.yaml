@@ -1,0 +1,30 @@
+id: SRS-035
+description: guest_merge — guest 측에 server에 없는 word_id 신규 attempt 1건 (CC2-04)
+category: guest_merge
+input:
+  user_id: u-test-035-postsignin
+  word_id: w-035
+  # guest_merge 정책: merge-guest Edge Function이 server에 row 없으면 guest state를 그대로 insert
+  # 본 evaluator는 applySrs 동작 검증만 — guest_state를 current_state로 채워 적용 후 stage 변화 확인
+  # 전체 merge 흐름은 M3 W15 통합 test에서 검증
+  current_state:
+    stage: 2
+    weak: false
+    correct_count: 1
+    incorrect_count: 0
+    last_attempt_at: 2026-05-07T17:00:00Z
+    last_attempt_correct: true
+    next_due_at: 2026-05-10T11:00:00Z
+    mastered_at: null
+  attempt:
+    correct: true
+    occurred_at: 2026-05-08T17:00:00Z
+    timezone: America/Los_Angeles
+expected:
+  stage: 3
+  weak: false
+  correct_count: 2
+  incorrect_count: 0
+  last_attempt_correct: true
+  mastered_at: null
+  next_due_at_after_days: 7

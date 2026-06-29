@@ -1,0 +1,8 @@
+id: PRV-003
+description: ATT denied 상태에서 ad_id 요청 시 미수집 (CC3-04, IDFA-free 보장)
+category: idfa
+input:
+  att_status: denied
+  requested_ad_id: true
+expected:
+  ad_id_collected: false

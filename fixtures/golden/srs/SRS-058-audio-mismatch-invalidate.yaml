@@ -1,0 +1,58 @@
+id: SRS-058
+description: 오디오 신고(audio_mismatch)가 같은 attempt의 SRS stage 강하를 무효화 — 부당 회귀 방지
+category: report_invalidates_attempt
+input:
+  user_id: u-test-053
+  word_id: w-053
+  # 시나리오: 사용자가 Hear 단계에서 잘못된 오디오(예: 다른 단어 음성)를 듣고 오답 클릭.
+  # 직후 같은 attempt 화면에서 'audio_mismatch' 신고 제출.
+  # 정책: 신고가 24h 내 동일 word + 동일 attempt에 대해 제출되면 해당 attempt는 SRS 전이 무효.
+  # 단, 신고 자체는 content review queue에 진입 (CC2-15 5종 중 audio_mismatch).
+  current_state:
+    stage: 3
+    weak: false
+    correct_count: 5
+    incorrect_count: 1
+    last_attempt_at: 2026-05-04T17:00:00Z
+    last_attempt_correct: true
+    next_due_at: 2026-05-08T11:00:00Z
+    mastered_at: null
+  attempt:
+    client_attempt_id: 9f3c4b1e-053a-4c2e-9d6f-053abc000001
+    correct: false                            # 잘못된 오디오로 인한 오답
+    occurred_at: 2026-05-08T17:00:00Z
+    timezone: America/Los_Angeles
+  report:
+    submitted: true
+    category: audio_mismatch                  # CC2-15 5종 중 1
+    submitted_at: 2026-05-08T17:00:30Z       # attempt 30초 후
+    same_attempt_ref: true                    # client_attempt_id 동일
+expected:
+  # SRS state는 변화 없음 — 부당 회귀 방지
+  state_changed: false
+  stage: 3                                    # 보존 (오답 시 stage 2로 강하했어야 하나 신고로 무효)
+  weak: false                                 # 보존
+  correct_count: 5                            # 보존
+  incorrect_count: 1                          # 보존 (신고된 attempt는 카운트 X)
+  last_attempt_correct: true                  # 보존 (직전 정답 그대로)
+  mastered_at: null
+  next_due_at_after_days: 0                   # next_due_at 변화 없음
+  # 부수 효과:
+  attempt_record:
+    persisted: true                           # attempts table에는 기록됨
+    invalidated_flag: true                    # invalidated_by_report=true 마킹
+  content_review_queue:
+    enqueued: true
+    category: audio_mismatch
+  daily_usage_change:
+    reviews_completed_count_delta: 0          # 신고된 attempt는 일일 한도 카운트에서 제외
+notes:
+  - CC2-15 (신고 5종) + 학습 도메인 정책 — 콘텐츠 결함이 학습자 SRS 회귀 유발 금지
+  - 24h 내 동일 word를 동일 사용자가 신고 3회 초과 시 abuse audit (남용 방지)
+  - 신고가 false-positive 면 (검수 후 reject) 원래 attempt 결과를 다시 적용하지 않음 (이미 무효)
+  - learning + content 합의 정책 — 신고 카테고리별 무효화 여부는 다음 표 참조:
+    - audio_mismatch: invalidate (본 case)
+    - typo: invalidate (Meaning 단계 인지 실패)
+    - incorrect_meaning: invalidate
+    - inappropriate_example: NOT invalidate (예문은 attempt와 무관)
+    - other: NOT invalidate (audit only)

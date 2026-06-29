@@ -1,0 +1,7 @@
+id: CON-010
+description: "'typo' 신고 카테고리 허용 (CC2-15 5종)"
+category: report_5_categories
+input:
+  report_category: typo
+expected:
+  category_allowed: true

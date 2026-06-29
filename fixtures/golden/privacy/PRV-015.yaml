@@ -1,0 +1,25 @@
+id: PRV-015
+description: |
+  CCPA/CPRA opt-out (no sale / no share) — dash2zero는 정책상 개인정보 판매·공유 없음
+  (docs/16_privacy_policy.md §7 "We do not sell or share personal information").
+  사용자가 opt-out 요청 시 no-op confirm 응답 + 12개월 내 재요청 허용 (CCPA §1798.135(a)(4)).
+  CCPA §1798.135(a)(2)(A) 면제 조건: "판매·공유 없음" 명시 시 "Do Not Sell or Share My
+  Personal Information" 링크 의무 면제. 단 사용자 직접 요청은 거부할 수 없음.
+  정합성: docs/16_privacy_policy.md §7 + B-07 (Top 3 #3 CCPA 섹션 추가 후 unlock).
+category: ccpa_no_sale
+input:
+  user_jurisdiction: US-CA
+  opt_out_request_at: 2026-05-11T10:00:00Z
+  current_sale_status: false                   # 정책상 판매 없음
+  current_share_status: false
+expected:
+  opt_out_confirmed: true                      # no-op이지만 confirm 응답 의무
+  response_within_days: 15                     # CCPA §1798.135(c)(3) — 15 business days
+  status_after: no_sale_no_share
+  re_request_allowed_after_months: 12          # CCPA §1798.135(a)(4)(C)
+notes:
+  - 미국 출시 시점(M4 W?) 진입 전 docs/16 §"Your California Privacy Rights" 섹션 추가 필요.
+  - 'evaluator union 확장 필요: "ccpa_no_sale" 카테고리, 단언은 confirm + SLA만.'
+  - 향후 광고 SDK / 행태 추적 추가 시 본 케이스는 무효화되고 실제 opt-out 토글 케이스로 대체.
+  - CO/CT/VA/UT 등 다른 주 privacy law도 유사 구조이나 SLA/링크 의무 상이 — M4 미국 출시
+    스코프 결정 후 케이스 분리 검토.

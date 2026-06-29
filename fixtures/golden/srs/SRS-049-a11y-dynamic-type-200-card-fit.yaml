@@ -1,0 +1,45 @@
+id: SRS-049
+description: |
+  a11y — Dynamic Type(iOS)/Font Scale(Android) 200% 확대 시 학습 카드 콘텐츠가 fit.
+  단어/RR/예문 컨테이너가 잘리지 않고 4지선다 distractor도 readable해야.
+  evaluator는 attempt SRS state 단언 + a11y_layout_assertions 메타. 실제 layout은 M4 e2e (Maestro snapshot).
+  CC2-25 SLO (3분 lesson) 위배 위험: 200% 확대 시 1 lesson scroll 길이 증가 → SLO 영향 monitoring.
+category: a11y
+input:
+  user_id: u-test-049-a11y
+  word_id: w-049-long-distractor   # distractor 4개 중 가장 긴 ko 단어 (예: "환경친화적인")
+  current_state:
+    stage: 3
+    weak: false
+    correct_count: 2
+    incorrect_count: 0
+    last_attempt_at: 2026-05-01T17:00:00Z
+    last_attempt_correct: true
+    next_due_at: 2026-05-08T11:00:00Z
+    mastered_at: null
+  attempt:
+    correct: true
+    occurred_at: 2026-05-08T17:00:00Z
+    timezone: America/Los_Angeles
+expected:
+  stage: 4
+  weak: false
+  correct_count: 3
+  incorrect_count: 0
+  last_attempt_correct: true
+  mastered_at: null
+  next_due_at_after_days: 14
+a11y_assertions:
+  device_matrix:
+    - {device: iPhone SE 3rd, dynamic_type: AX5}    # 310% (largest accessibility size)
+    - {device: iPhone 15 Pro, dynamic_type: 200%}
+    - {device: Pixel 6a, font_scale: 2.0}
+    - {device: Galaxy S24, font_scale: 2.0}
+  layout_rules:
+    - distractor_button_no_clip
+    - distractor_button_min_tap_target_44pt        # WCAG 2.5.5 (iOS HIG / Material)
+    - card_text_no_horizontal_overflow
+    - cta_visible_without_scroll_on_iphone_se
+e2e_followup:
+  - M4 E2E-A11Y-003 (Maestro screenshot diff at AX5)
+  - M4 E2E-A11Y-004 (iPhone SE Dynamic Type XXL CTA non-blocked)

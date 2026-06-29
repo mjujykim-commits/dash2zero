@@ -1,0 +1,20 @@
+id: PRV-012
+description: |
+  Family Sharing disabled (RC family_share=false). 부 계정 A의 entitlement(active)가
+  가족 구성원 B의 RC SubscriberInfo에 inherit되지 않아야 한다.
+  회귀 catch: App Store Connect Family Sharing 토글이 잘못 켜진 회귀 / RC dashboard
+  family_share=true 설정 회귀 (Q-PL-NEW-005, 매출 누수 P0).
+  정합성: docs/13_payment_policy.md §2 "가족 공유: 비활성화" + §5 "Family sharing is not included".
+category: family_share
+input:
+  entitlement_holder_user_id: usr_A
+  requesting_user_id: usr_B
+  holder_status: active
+  family_share_enabled: false
+expected:
+  entitlement_inherited: false
+  requester_is_premium: false
+notes:
+  - 'evaluator union 확장 필요: scripts/eval/privacy.ts에 "family_share" 카테고리 추가.'
+  - 단언 로직: family_share_enabled=false AND holder_user_id != requesting_user_id → entitlement_inherited=false.
+  - 향후 family_share=true 변경 시 별도 케이스(PRV-012-pos)로 분리 (현 정책상 운영 안 함).

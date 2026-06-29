@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>dash2zero — Screen Flow Mockup</title>
+<link rel="stylesheet" href="assets/tokens.css">
+<style>
+  body { background: #F4F4F2; }
+  .flow-tree { background: white; border-radius: 16px; padding: 40px; box-shadow: 0 1px 3px rgba(0,0,0,0.04); }
+</style>
+</head>
+<body>
+<div class="flow-tree">
+  <h1>dash2zero — Screen Mockup</h1>
+  <p class="subtitle">M2 Thin Vertical Slice + M3 W15 boosting · 13 screens · 6 user flows · 375×812 viewport</p>
+
+  <div class="note">
+    <strong>⚠ Note</strong> · 본 mockup은 React Native 코드(apps/mobile/app/*.tsx)와 design-tokens를 기반으로 HTML로 재현한 것이며, 실 RN simulator 스크린샷이 아닙니다. macOS/Xcode/Android Studio 환경에서 <code>pnpm -F mobile start</code> 실행 시 실 화면을 볼 수 있습니다. 각 카드 클릭 시 단일 화면을 새 탭으로 열어 확대 보기 + 본인 스크린샷 캡처 가능합니다.
+    <br><br>
+    <strong>D-018 가격 봉인 (2026-05-13)</strong>: Premium $4.99/mo · $49.99/yr · paywall.tsx 코드 fallback 값($1.99/$14.99 + "Save 37%")은 frontend 후속 작업 큐에 추가 필요 (현 mockup은 새 가격 적용).
+  </div>
+
+  <!-- Flow 1: Onboarding -->
+  <div class="flow-group">
+    <h2>1. Onboarding Flow (첫 진입 → 학습 시작)</h2>
+    <p class="desc">USER_JOURNEYS J-001 · 사용자 첫 진입부터 home 도달까지 · 게스트 모드 (가입 강제 X, CC-04)</p>
+    <div class="flow-row">
+      <a class="flow-card" href="01-welcome.html" target="_blank">
+        <div class="flow-card-iframe-wrap"><iframe src="01-welcome.html"></iframe></div>
+        <div class="meta"><div class="name">01 · Welcome</div><div class="file">app/index.tsx</div></div>
+      </a>
+      <div class="flow-arrow">→</div>
+      <a class="flow-card" href="02-age-gate.html" target="_blank">
+        <div class="flow-card-iframe-wrap"><iframe src="02-age-gate.html"></iframe></div>
+        <div class="meta"><div class="name">02 · Age Gate</div><div class="file">app/age-gate.tsx</div></div>
+      </a>
+      <div class="flow-arrow">→</div>
+      <a class="flow-card" href="03-privacy-choices.html" target="_blank">
+        <div class="flow-card-iframe-wrap"><iframe src="03-privacy-choices.html"></iframe></div>
+        <div class="meta"><div class="name">03 · Privacy Choices</div><div class="file">app/privacy-choices.tsx</div></div>
+      </a>
+      <div class="flow-arrow">→</div>
+      <a class="flow-card" href="04-onboarding.html" target="_blank">
+        <div class="flow-card-iframe-wrap"><iframe src="04-onboarding.html"></iframe></div>
+        <div class="meta"><div class="name">04 · Onboarding</div><div class="file">app/onboarding.tsx</div></div>
+      </a>
+      <div class="flow-arrow">→</div>
+      <a class="flow-card" href="05-home.html" target="_blank">
+        <div class="flow-card-iframe-wrap"><iframe src="05-home.html"></iframe></div>
+        <div class="meta"><div class="name">05 · Home</div><div class="file">app/home.tsx</div></div>
+      </a>
+    </div>
+  </div>
+
+  <!-- Flow 2: Lesson -->
+  <div class="flow-group">
+    <h2>2. Lesson Flow (Home → 4단계 학습 × 3 카드 chain → Complete)</h2>
+    <p class="desc">PRD §4 · 4-stage loop (Notice → Hear → Meaning → Retrieve) · M3 W15 R-28 lesson chain (3~10 카드) · DESIGN_DIRECTION §4 SE 320pt 카드 레이아웃</p>
+    <div class="flow-row">
+      <a class="flow-card" href="05-home.html" target="_blank">
+        <div class="flow-card-iframe-wrap"><iframe src="05-home.html"></iframe></div>
+        <div class="meta"><div class="name">05 · Home (Start)</div><div class="file">app/home.tsx</div></div>
+      </a>
+      <div class="flow-arrow">→</div>
+      <a class="flow-card" href="06-lesson-notice.html" target="_blank">
+        <div class="flow-card-iframe-wrap"><iframe src="06-lesson-notice.html"></iframe></div>
+        <div class="meta"><div class="name">06 · Notice (1/4)</div><div class="file">lesson/[wordId] stage 1</div></div>
+      </a>
+      <div class="flow-arrow">→</div>
+      <a class="flow-card" href="07-lesson-meaning.html" target="_blank">
+        <div class="flow-card-iframe-wrap"><iframe src="07-lesson-meaning.html"></iframe></div>
+        <div class="meta"><div class="name">07 · Meaning (3/4)</div><div class="file">lesson/[wordId] stage 3</div></div>
+      </a>
+      <div class="flow-arrow">→</div>
+      <a class="flow-card" href="08-lesson-retrieve.html" target="_blank">
+        <div class="flow-card-iframe-wrap"><iframe src="08-lesson-retrieve.html"></iframe></div>
+        <div class="meta"><div class="name">08 · Retrieve (4/4)</div><div class="file">lesson/[wordId] stage 4</div></div>
+      </a>
+      <div class="flow-arrow">→</div>
+      <a class="flow-card" href="09-lesson-complete.html" target="_blank">
+        <div class="flow-card-iframe-wrap"><iframe src="09-lesson-complete.html"></iframe></div>
+        <div class="meta"><div class="name">09 · Complete</div><div class="file">lesson/complete.tsx</div></div>
+      </a>
+    </div>
+  </div>
+
+  <!-- Flow 3: Paywall -->
+  <div class="flow-group">
+    <h2>3. Paywall Flow (Free 한도 도달 → 구독)</h2>
+    <p class="desc">PRD §6 · CC-09 (무료 체험 X / Restore 필수 / 가족공유 비활성) · CC2-06 (게스트 → 구매 시 sign-in 강제) · D-018 가격 봉인</p>
+    <div class="flow-row">
+      <a class="flow-card" href="05-home.html" target="_blank">
+        <div class="flow-card-iframe-wrap"><iframe src="05-home.html"></iframe></div>
+        <div class="meta"><div class="name">05 · Home</div><div class="file">app/home.tsx</div></div>
+      </a>
+      <div class="flow-arrow">→</div>
+      <a class="flow-card" href="10-paywall.html" target="_blank">
+        <div class="flow-card-iframe-wrap"><iframe src="10-paywall.html"></iframe></div>
+        <div class="meta"><div class="name">10 · Paywall</div><div class="file">app/paywall.tsx</div></div>
+      </a>
+      <div class="flow-arrow">→</div>
+      <a class="flow-card" href="11-sign-in.html" target="_blank">
+        <div class="flow-card-iframe-wrap"><iframe src="11-sign-in.html"></iframe></div>
+        <div class="meta"><div class="name">11 · Sign In (paywall_signin_required)</div><div class="file">app/auth/sign-in.tsx</div></div>
+      </a>
+      <div class="flow-arrow">→</div>
+      <a class="flow-card" href="10-paywall.html" target="_blank">
+        <div class="flow-card-iframe-wrap"><iframe src="10-paywall.html"></iframe></div>
+        <div class="meta"><div class="name">10 · Paywall (Subscribe)</div><div class="file">→ Apple/Google IAP</div></div>
+      </a>
+    </div>
+  </div>
+
+  <!-- Flow 4: Settings -->
+  <div class="flow-group">
+    <h2>4. Settings Flow</h2>
+    <p class="desc">flat list · Account / Subscription / Privacy / About / Danger (delete account, C-11 DSR)</p>
+    <div class="flow-row">
+      <a class="flow-card" href="05-home.html" target="_blank">
+        <div class="flow-card-iframe-wrap"><iframe src="05-home.html"></iframe></div>
+        <div class="meta"><div class="name">05 · Home</div><div class="file">app/home.tsx</div></div>
+      </a>
+      <div class="flow-arrow">→</div>
+      <a class="flow-card" href="12-settings.html" target="_blank">
+        <div class="flow-card-iframe-wrap"><iframe src="12-settings.html"></iframe></div>
+        <div class="meta"><div class="name">12 · Settings</div><div class="file">app/settings.tsx</div></div>
+      </a>
+    </div>
+  </div>
+
+  <!-- Flow 5: Report -->
+  <div class="flow-group">
+    <h2>5. Content Report Flow</h2>
+    <p class="desc">USER_JOURNEYS J-006 · CC2-15 · 5 카테고리 (typo/translation/audio/level/other) · 시간당 5건 throttle</p>
+    <div class="flow-row">
+      <a class="flow-card" href="08-lesson-retrieve.html" target="_blank">
+        <div class="flow-card-iframe-wrap"><iframe src="08-lesson-retrieve.html"></iframe></div>
+        <div class="meta"><div class="name">08 · Lesson (Retrieve)</div><div class="file">lesson/[wordId]</div></div>
+      </a>
+      <div class="flow-arrow">→</div>
+      <a class="flow-card" href="13-report.html" target="_blank">
+        <div class="flow-card-iframe-wrap"><iframe src="13-report.html"></iframe></div>
+        <div class="meta"><div class="name">13 · Report</div><div class="file">app/report/[wordId].tsx</div></div>
+      </a>
+    </div>
+  </div>
+
+  <!-- Flow 6: All 13 -->
+  <div class="flow-group">
+    <h2>6. 전체 13개 화면 (단일 페이지 확인)</h2>
+    <p class="desc">모든 화면을 한눈에 — 베타 모집 / Apple Beta App Review / 마케팅 스크린샷 캡처 용도</p>
+    <div class="flow-row">
+      <a class="flow-card" href="01-welcome.html" target="_blank"><div class="flow-card-iframe-wrap"><iframe src="01-welcome.html"></iframe></div><div class="meta"><div class="name">01 · Welcome</div><div class="file">index.tsx</div></div></a>
+      <a class="flow-card" href="02-age-gate.html" target="_blank"><div class="flow-card-iframe-wrap"><iframe src="02-age-gate.html"></iframe></div><div class="meta"><div class="name">02 · Age Gate</div><div class="file">age-gate.tsx</div></div></a>
+      <a class="flow-card" href="03-privacy-choices.html" target="_blank"><div class="flow-card-iframe-wrap"><iframe src="03-privacy-choices.html"></iframe></div><div class="meta"><div class="name">03 · Privacy</div><div class="file">privacy-choices.tsx</div></div></a>
+      <a class="flow-card" href="04-onboarding.html" target="_blank"><div class="flow-card-iframe-wrap"><iframe src="04-onboarding.html"></iframe></div><div class="meta"><div class="name">04 · Onboarding</div><div class="file">onboarding.tsx</div></div></a>
+      <a class="flow-card" href="05-home.html" target="_blank"><div class="flow-card-iframe-wrap"><iframe src="05-home.html"></iframe></div><div class="meta"><div class="name">05 · Home</div><div class="file">home.tsx</div></div></a>
+      <a class="flow-card" href="06-lesson-notice.html" target="_blank"><div class="flow-card-iframe-wrap"><iframe src="06-lesson-notice.html"></iframe></div><div class="meta"><div class="name">06 · Lesson Notice</div><div class="file">lesson/[wordId]</div></div></a>
+      <a class="flow-card" href="07-lesson-meaning.html" target="_blank"><div class="flow-card-iframe-wrap"><iframe src="07-lesson-meaning.html"></iframe></div><div class="meta"><div class="name">07 · Lesson Meaning</div><div class="file">lesson/[wordId]</div></div></a>
+      <a class="flow-card" href="08-lesson-retrieve.html" target="_blank"><div class="flow-card-iframe-wrap"><iframe src="08-lesson-retrieve.html"></iframe></div><div class="meta"><div class="name">08 · Lesson Retrieve</div><div class="file">lesson/[wordId]</div></div></a>
+      <a class="flow-card" href="09-lesson-complete.html" target="_blank"><div class="flow-card-iframe-wrap"><iframe src="09-lesson-complete.html"></iframe></div><div class="meta"><div class="name">09 · Complete</div><div class="file">lesson/complete.tsx</div></div></a>
+      <a class="flow-card" href="10-paywall.html" target="_blank"><div class="flow-card-iframe-wrap"><iframe src="10-paywall.html"></iframe></div><div class="meta"><div class="name">10 · Paywall</div><div class="file">paywall.tsx</div></div></a>
+      <a class="flow-card" href="11-sign-in.html" target="_blank"><div class="flow-card-iframe-wrap"><iframe src="11-sign-in.html"></iframe></div><div class="meta"><div class="name">11 · Sign In</div><div class="file">auth/sign-in.tsx</div></div></a>
+      <a class="flow-card" href="12-settings.html" target="_blank"><div class="flow-card-iframe-wrap"><iframe src="12-settings.html"></iframe></div><div class="meta"><div class="name">12 · Settings</div><div class="file">settings.tsx</div></div></a>
+      <a class="flow-card" href="13-report.html" target="_blank"><div class="flow-card-iframe-wrap"><iframe src="13-report.html"></iframe></div><div class="meta"><div class="name">13 · Report</div><div class="file">report/[wordId].tsx</div></div></a>
+    </div>
+  </div>
+
+  <div class="note" style="background:#DBEAFE;border-color:#3B82F6;">
+    <strong>스크린샷 캡처 방법</strong>
+    <ul style="margin-top:8px;list-style:disc;padding-left:24px;">
+      <li><strong>Windows</strong>: 단일 화면 새 탭으로 열기 → Win+Shift+S 영역 캡처 또는 PrintScreen → 클립보드 → 클립보드 viewer 또는 paint 붙여넣기</li>
+      <li><strong>Chrome DevTools</strong>: F12 → Toolbar Cmd Menu (Ctrl+Shift+P) → "Capture full size screenshot" → PNG 다운로드</li>
+      <li><strong>일괄 캡처</strong>: 본 index.html를 브라우저에서 열고 위에서부터 스크롤하며 영역 캡처</li>
+    </ul>
+  </div>
+
+  <div style="text-align:center;color:var(--text-muted);font-size:13px;margin-top:48px;">
+    <p>Generated 2026-05-13 by orchestrator</p>
+    <p style="margin-top:4px;">SSOT: packages/design-tokens · apps/mobile/app · docs/design</p>
+  </div>
+</div>
+</body>
+</html>

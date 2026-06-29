@@ -1,0 +1,81 @@
+{
+  "expo": {
+    "name": "dash2zero",
+    "slug": "dash2zero",
+    "version": "0.1.0",
+    "orientation": "portrait",
+    "icon": "./assets/icon.png",
+    "scheme": "dash2zero",
+    "userInterfaceStyle": "light",
+    "splash": {
+      "image": "./assets/splash.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#FAFAF9"
+    },
+    "assetBundlePatterns": ["**/*"],
+    "ios": {
+      "supportsTablet": false,
+      "bundleIdentifier": "com.dash2zero.app",
+      "buildNumber": "1",
+      "infoPlist": {
+        "NSUserTrackingUsageDescription": "dash2zero never tracks you across other apps. We only collect anonymous usage if you opt in.",
+        "ITSAppUsesNonExemptEncryption": false,
+        "UIBackgroundModes": []
+      },
+      "config": {
+        "usesNonExemptEncryption": false
+      },
+      "privacyManifests": {
+        "NSPrivacyTracking": false,
+        "NSPrivacyTrackingDomains": [],
+        "NSPrivacyAccessedAPITypes": [
+          {
+            "NSPrivacyAccessedAPIType": "NSPrivacyAccessedAPICategoryUserDefaults",
+            "NSPrivacyAccessedAPITypeReasons": ["CA92.1"]
+          },
+          {
+            "NSPrivacyAccessedAPIType": "NSPrivacyAccessedAPICategoryFileTimestamp",
+            "NSPrivacyAccessedAPITypeReasons": ["C617.1"]
+          }
+        ],
+        "NSPrivacyCollectedDataTypes": []
+      }
+    },
+    "android": {
+      "package": "com.dash2zero.app",
+      "versionCode": 1,
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/adaptive-icon.png",
+        "backgroundColor": "#FAFAF9"
+      },
+      "permissions": ["android.permission.INTERNET", "android.permission.POST_NOTIFICATIONS", "android.permission.VIBRATE"]
+    },
+    "plugins": [
+      "expo-router",
+      [
+        "expo-build-properties",
+        {
+          "ios": { "deploymentTarget": "15.1" },
+          "android": { "minSdkVersion": 26, "compileSdkVersion": 34, "targetSdkVersion": 34 }
+        }
+      ]
+    ],
+    "experiments": {
+      "typedRoutes": true
+    },
+    "extra": {
+      "eas": {
+        "projectId": "TBD-EAS-PROJECT-ID"
+      },
+      "SUPABASE_URL": "https://majgmaoetjjajhdmdcgc.supabase.co",
+      "SUPABASE_ANON_KEY": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im1hamdtYW9ldGpqYWpoZG1kY2djIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODI3Mjc3MTUsImV4cCI6MjA5ODMwMzcxNX0.74187nVMPv8B3z2gJiXAAjCKlLeOttnQ4PCqnOaEjqU"
+    },
+    "_comment": [
+      "iOS minimum: 15.1 (StoreKit2 — CC2-09 / FE-002)",
+      "Android minSdk: 26 (Android 8.0 — FE-002)",
+      "Privacy Manifest 적용 (CC2-04 / Q-FE-NEW-001) — Required Reason API 2종 선언",
+      "ATT: NSUserTrackingUsageDescription 명시 (CC2-12 IDFA 미사용 + 정직한 고지)",
+      "Bundle ID: 환경별 분리 (D-009) — eas.json에서 dev/staging/prod overide"
+    ]
+  }
+}

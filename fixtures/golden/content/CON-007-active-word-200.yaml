@@ -1,0 +1,8 @@
+id: CON-007
+description: 정상 word (retired_at=null) fetch 시 200 OK
+category: retire_410
+input:
+  word_id: w-st-001
+  retired_at: null
+expected:
+  http_status: 200

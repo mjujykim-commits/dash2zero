@@ -1,0 +1,9 @@
+id: PAY-010
+description: 위조된 Authorization Bearer → 401 invalid_signature (PAY-ADV-004 / BOOTSTRAP_INFRA §3.3)
+category: signature
+input:
+  authorization: Bearer attacker_secret_xyz
+  expected_authorization: Bearer real_webhook_secret_abc
+expected:
+  outcome: invalid_signature
+  http_status: 401

@@ -1,0 +1,78 @@
+name: Eval Nightly (RLS / Adversarial)
+
+# ============================================================================
+# 활성화 정책 (M3 W15 readiness 기반 / orchestrator 결정)
+# ============================================================================
+#
+# 현재 상태: manual workflow_dispatch 만 활성. cron schedule 비활성 (주석 처리).
+#
+# Cron 활성화(주석 해제) 조건 — 6단계 체크리스트를 README에 명시. 모두 충족 후 PR 1건으로
+# 라인 31-32 cron 블록 주석 해제. reviewer는 security 1인.
+#   1. (security+backend) RLS evaluator (`scripts/eval/rls.ts`) 머지 + adversarial 9건 작성
+#   2. (devops) `pnpm eval:rls` 로컬 9/9 PASS, skip 0
+#   3. (devops) GitHub Actions에서 manual workflow_dispatch 1회 실행 → 0 fail / 0 skip
+#   4. (devops) 24시간 동안 추가 manual dispatch 1~2회 (동일 코드 / DB seed 변동 없음) → flake 0건
+#      - 평균 wall time + p95 기록 (런 ID + 시각)
+#      - flake 1건 발생 시: dispatch 5회 추가 → 0/5 시 통과, 1/5 이상 시 차단 + root-cause
+#   5. (devops) line 31-32 주석 해제 PR. KST 02:00 (UTC 17:00). reviewer=security
+#   6. (devops) cron 활성화 후 첫 3일 매일 09:00 결과 수동 확인. 2회 이상 fail = 즉시 재주석 + R-23 재오픈
+#
+# 라우팅 unskip 조건: 위 1~2 단계 충족 시 strict mode (`--strict`) 적용. 그 전에는 strict 없이
+# skip-tolerant (현 상태). RLS evaluator 코드 미머지 상태에서 cron만 켜는 것은 **금지** — 매일
+# 빨갛게 켜져 알람 피로 누적.
+#
+# 활성화 후 롤백 트리거:
+#   - 3일 내 2회 이상 fail (true positive 무관) → cron 즉시 재주석
+#   - p95 wall time 10분 초과 → cron 재주석 + 분리 (eval-rls.yml 분할 검토)
+#
+# Source: context/agents/devops/20260511-2200-chore-m3-w15-readiness.md §2
+#         context/agents/devops/20260511-2300-feat-m3-w15-baseline-seed-cron.md §2
+# ============================================================================
+
+on:
+  workflow_dispatch:
+  # schedule:
+  #   - cron: '0 17 * * *'   # 매일 KST 02:00 / UTC 17:00 — M3 W15 6단계 체크리스트 충족 후 활성화
+
+concurrency:
+  group: eval-nightly-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  eval-rls:
+    name: Eval — RLS (adversarial)
+    runs-on: ubuntu-latest
+    timeout-minutes: 15  # p95 wall time 안전판 (체크리스트 4단계 측정값 기반)
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v3
+        with:
+          version: 9
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'pnpm'
+      - run: pnpm install --frozen-lockfile
+
+      # ----------------------------------------------------------------------
+      # RLS evaluator 실행
+      # ----------------------------------------------------------------------
+      # 단계 1~2 충족 전: skip-tolerant (--strict 제거). RLS-ADV-001~009 중 evaluator
+      #   미구현 case 는 skip 으로 처리, fail 0이면 통과.
+      # 단계 1~2 충족 후: --strict 추가. skip = fail 처리. 아래 라인 주석 해제 + 윗줄 제거.
+      # ----------------------------------------------------------------------
+      - name: Run RLS evaluator (skip-tolerant — pre-W15)
+        run: pnpm eval:rls
+      # - name: Run RLS evaluator (strict — post-W15)
+      #   run: pnpm eval:rls -- --strict
+
+      # ----------------------------------------------------------------------
+      # Wall time 측정 — flake 윈도(체크리스트 4단계) 자동 기록
+      # ----------------------------------------------------------------------
+      - name: Record wall time (post-run)
+        if: always()
+        run: |
+          echo "run_id=${{ github.run_id }}"
+          echo "started_at=${{ github.event.repository.updated_at }}"
+          echo "ended_at=$(date -u +%FT%TZ)"
+          echo "outcome=${{ job.status }}"

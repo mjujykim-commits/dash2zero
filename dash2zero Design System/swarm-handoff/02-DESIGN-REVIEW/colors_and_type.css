@@ -1,0 +1,223 @@
+/* dash2zero Design System — colors_and_type.css
+ * Canonical CSS tokens for D-022 "K-pop Bold" (sealed 2026-05-18).
+ * Mirrors `packages/design-tokens/src/*.ts` from the dash2zero monorepo.
+ *
+ * Use these tokens for any web prototype, slide, or mock — do NOT reach for
+ * raw hex codes. The brand is dark-first; light surfaces are an exception,
+ * not the default.
+ */
+
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;900&family=Inter:wght@400;500;600;700;900&display=swap');
+
+:root {
+  /* ============================================================
+   * SURFACE — dark-first
+   * ============================================================ */
+  --bg:                #0F0F1A;   /* page background (deep indigo-black)        */
+  --bg-deep:           #0A0A0F;   /* one step darker — lesson screens, body     */
+  --surface-card:      #1A1B2E;   /* card on bg                                 */
+  --surface-elevated:  #252640;   /* elevated card / muted fill                 */
+  --surface-glass:     rgba(255,255,255,0.06);
+  --surface-glass-strong: rgba(255,255,255,0.1);
+
+  /* ============================================================
+   * TEXT
+   * ============================================================ */
+  --fg:                #FAFAF9;   /* primary text on dark                       */
+  --fg-secondary:      #B4B4C0;
+  --fg-muted:          #6B7280;
+  --fg-inverse:        #0F0F1A;   /* on neon / on light                         */
+
+  --korean-glyph:      #FFFFFF;   /* 한글 hero glyph                            */
+  --korean-glyph-soft: #F4F4F2;
+
+  /* ============================================================
+   * NEON ACCENTS — the K-pop signature
+   * Use sparingly on labels, CTAs, focus rings, and gradient stops.
+   * ============================================================ */
+  --neon-cyan:    #06B6D4;
+  --neon-pink:    #EC4899;
+  --neon-purple:  #9333EA;
+  --neon-orange:  #F97316;
+  --neon-lime:    #84CC16;
+  --neon-yellow:  #FACC15;
+
+  /* ============================================================
+   * BRAND / SEMANTIC
+   * ============================================================ */
+  --brand:                #EC4899;   /* electric pink primary CTA              */
+  --brand-pressed:        #DB2777;
+
+  --semantic-success:     #10B981;
+  --semantic-warning:     #FACC15;
+  --semantic-danger:      #F87171;
+  --semantic-info:        #06B6D4;
+
+  /* ============================================================
+   * BORDERS
+   * ============================================================ */
+  --border-subtle:  rgba(255,255,255,0.08);
+  --border-strong:  rgba(255,255,255,0.20);
+  --border-neon:    rgba(236,72,153,0.40);
+
+  /* ============================================================
+   * GRADIENTS — multi-stop, vivid
+   * ============================================================ */
+  --gradient-hero:    linear-gradient(135deg, #9333EA 0%, #EC4899 50%, #F97316 100%); /* purple→pink→orange — Korean hero text, stats values */
+  --gradient-cta:     linear-gradient(135deg, #06B6D4 0%, #EC4899 100%);              /* cyan→pink — every primary button */
+  --gradient-card:    linear-gradient(160deg, rgba(147,51,234,0.08), rgba(236,72,153,0.04));
+  --gradient-paywall: linear-gradient(135deg, #1E1B4B 0%, #4C1D95 50%, #831843 100%);  /* indigo→violet→burgundy — paywall bg */
+  --gradient-success: linear-gradient(135deg, #10B981 0%, #06B6D4 100%);
+  --gradient-dark:    linear-gradient(180deg, #0F0F1A 0%, #1A0B2E 50%, #2D1B47 100%);  /* default app screen bg */
+
+  /* ============================================================
+   * GLOW / SHADOW — neon dropped shadow + dark drops
+   * ============================================================ */
+  --glow-cyan:   0 0 24px rgba(6,182,212,0.50), 0 0 48px rgba(6,182,212,0.25);
+  --glow-pink:   0 0 24px rgba(236,72,153,0.55), 0 0 48px rgba(236,72,153,0.30);
+  --glow-purple: 0 0 32px rgba(147,51,234,0.50), 0 0 64px rgba(147,51,234,0.25);
+  --glow-lime:   0 0 24px rgba(132,204,22,0.50), 0 0 48px rgba(132,204,22,0.25);
+  --glow-success:0 0 24px rgba(16,185,129,0.50), 0 0 48px rgba(6,182,212,0.30);
+  --glow-soft:   0 12px 32px rgba(147,51,234,0.30);
+  --glow-card:   0 8px 24px rgba(0,0,0,0.40);
+
+  --shadow-s1:   0 1px 2px rgba(0,0,0,0.40);
+  --shadow-s2:   0 8px 24px rgba(0,0,0,0.50);
+
+  /* ============================================================
+   * RADIUS — gentle, not pill-y
+   * ============================================================ */
+  --radius-sm:  10px;   /* ghost button, chip                 */
+  --radius-md:  14px;   /* secondary button, choice card      */
+  --radius-lg:  16px;   /* card.base                          */
+  --radius-xl:  20px;   /* surface.card, sheet                */
+  --radius-2xl: 24px;   /* lesson card, hero block            */
+  --radius-pill: 9999px;
+
+  /* ============================================================
+   * SPACING — 8pt grid (UX-NEW-007)
+   * ============================================================ */
+  --space-0:  0;
+  --space-1:  4px;
+  --space-2:  8px;
+  --space-3:  12px;
+  --space-4:  16px;
+  --space-5:  20px;
+  --space-6:  24px;
+  --space-8:  32px;
+  --space-10: 40px;
+  --space-12: 48px;
+  --space-16: 64px;
+  --space-20: 80px;
+
+  /* ============================================================
+   * TYPE — font stacks
+   * ============================================================ */
+  --font-korean: "Noto Sans KR", "Apple SD Gothic Neo", "Malgun Gothic", system-ui, sans-serif;
+  --font-latin:  "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
+  --font-mono:   "JetBrains Mono", ui-monospace, "SF Mono", Menlo, monospace;
+
+  /* ============================================================
+   * MOTION — fast, ease-out, no bounce
+   * 정답/오답 피드백은 색만. Bounce / spring 금지.
+   * ============================================================ */
+  --duration-fast:    80ms;    /* card stage reveal                  */
+  --duration-base:    150ms;   /* button press, toggle               */
+  --duration-medium:  200ms;   /* sheet open, page push, card hover  */
+  --duration-slow:    300ms;   /* lesson complete check              */
+
+  --ease-out:    cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-in:     cubic-bezier(0.7, 0, 0.84, 0);
+  --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+
+  /* ============================================================
+   * DEVICE — frame for previews
+   * ============================================================ */
+  --device-w: 375px;
+  --device-h: 812px;
+}
+
+/* ============================================================
+ * SEMANTIC TYPE CLASSES — apply these directly to elements
+ * Korean glyph stays large; Latin sits at 0.92× by design (UX-NEW-002).
+ * ============================================================ */
+
+.t-hero-ko {
+  font-family: var(--font-korean);
+  font-size: 88px;
+  line-height: 0.95;
+  font-weight: 900;
+  letter-spacing: -0.04em;
+  background: var(--gradient-hero);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+.t-hero-ko-solid {
+  font-family: var(--font-korean);
+  font-size: 88px;
+  line-height: 0.95;
+  font-weight: 900;
+  letter-spacing: -0.04em;
+  color: var(--korean-glyph);
+}
+.t-word-ko {
+  font-family: var(--font-korean);
+  font-size: 64px;
+  line-height: 1;
+  font-weight: 900;
+  letter-spacing: -0.03em;
+  color: var(--korean-glyph);
+}
+
+.t-display {
+  font-family: var(--font-latin);
+  font-size: 36px;
+  line-height: 1.05;
+  font-weight: 900;
+  letter-spacing: -0.02em;
+  color: var(--fg);
+}
+.t-display-gradient { composes: t-display; }
+.t-display-gradient,
+.t-display.is-gradient {
+  background: var(--gradient-hero);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.t-heading-lg { font-family: var(--font-latin); font-size: 28px; line-height: 1.15; font-weight: 700; letter-spacing: -0.01em; color: var(--fg); }
+.t-heading-md { font-family: var(--font-latin); font-size: 22px; line-height: 1.20; font-weight: 700; color: var(--fg); }
+.t-heading-sm { font-family: var(--font-latin); font-size: 18px; line-height: 1.30; font-weight: 600; color: var(--fg); }
+
+.t-body         { font-family: var(--font-latin);  font-size: 16px; line-height: 1.5; color: var(--fg); }
+.t-body-ko      { font-family: var(--font-korean); font-size: 17px; line-height: 1.5; color: var(--fg); }
+.t-example      { font-family: var(--font-latin);  font-size: 16px; line-height: 1.5; font-style: italic; color: var(--fg-secondary); }
+.t-example-ko   { font-family: var(--font-korean); font-size: 18px; line-height: 1.5; color: var(--fg); }
+.t-romanization { font-family: var(--font-latin);  font-size: 14px; line-height: 1.4; color: var(--fg-muted); }
+.t-caption      { font-family: var(--font-latin);  font-size: 13px; line-height: 1.4; font-weight: 500; color: var(--fg-muted); }
+.t-button       { font-family: var(--font-latin);  font-size: 16px; line-height: 1.25; font-weight: 700; }
+
+/* Neon eyebrow label — uppercased 11px with 1px tracking and a neon tint */
+.t-label {
+  font-family: var(--font-latin);
+  font-size: 11px;
+  line-height: 1.4;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--fg-muted);
+}
+
+/* ============================================================
+ * Small text-color utilities (kept narrow on purpose)
+ * ============================================================ */
+.text-primary   { color: var(--fg); }
+.text-secondary { color: var(--fg-secondary); }
+.text-muted     { color: var(--fg-muted); }
+.text-cyan      { color: var(--neon-cyan); }
+.text-pink      { color: var(--neon-pink); }
+.text-lime      { color: var(--neon-lime); }
+.text-success   { color: var(--semantic-success); }
+.text-danger    { color: var(--semantic-danger); }

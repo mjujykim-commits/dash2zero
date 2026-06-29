@@ -1,0 +1,7 @@
+id: PRV-002
+description: 13세 정확히 → 통과 (CC-04 KOPPA 경계)
+category: age_gate
+input:
+  age: 13
+expected:
+  allowed: true

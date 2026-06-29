@@ -1,0 +1,21 @@
+# Backend review note (W15):
+#   user_word_states 는 SELECT/INSERT policy만 정의. UPDATE/DELETE policy 부재 → default-deny.
+#   클라이언트가 SRS stage 를 직접 조작(예: stage=5로 강제 승격)하는 시도를 차단.
+#   stage 변경은 Edge Function `record-attempts` 의 service_role 만 가능.
+id: RLS-ADV-012
+description: 인증 사용자가 자신의 user_word_states row를 직접 UPDATE 시도 (SRS state 자가 조작)
+threat_model: STRIDE/Tampering
+input:
+  attacker_role: authenticated
+  target:
+    table: user_word_states
+    user_id: 11111111-1111-1111-1111-111111111111
+    endpoint: PostgREST PATCH /user_word_states?user_id=eq.11111111-1111-1111-1111-111111111111&word_id=eq.w-st-001
+  payload:
+    sql: "UPDATE user_word_states SET stage = 5, mastered_at = NOW() WHERE user_id = '11111111-1111-1111-1111-111111111111' AND word_id = 'w-st-001'"
+    user_id: 11111111-1111-1111-1111-111111111111
+    stage: 5
+expected:
+  blocked: true
+  http_status: 403   # UPDATE policy 부재 → RLS default-deny
+  audit_logged: true

@@ -1,0 +1,24 @@
+# DEPRECATED — RENAMED TO SRS-064
+# M3 W15: ID 045~050 슬롯이 i18n/a11y 카테고리로 재배정됨.
+# 신규 active fixture: SRS-064-daily-limit-not-reached.yaml
+id: SRS-DEPRECATED-050
+description: deprecated — see SRS-064
+category: daily_limit
+deprecated: true
+replaced_by: SRS-064
+input:
+  user_id: deprecated
+  word_id: deprecated
+  current_state: null
+  daily_usage_before:
+    new_words_started_count: 0
+    reviews_completed_count: 0
+    local_day: 2026-05-08
+    timezone: UTC
+  entitlement:
+    is_premium: false
+  attempt:
+    correct: true
+    occurred_at: 2026-05-08T17:00:00Z
+    timezone: UTC
+expected: {}

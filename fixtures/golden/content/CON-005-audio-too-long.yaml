@@ -1,0 +1,7 @@
+id: CON-005
+description: 3.5초 오디오는 범위 초과 — QC 재생성 필요 (CC3-07)
+category: audio_length
+input:
+  audio_length_sec: 3.5
+expected:
+  audio_in_range: false

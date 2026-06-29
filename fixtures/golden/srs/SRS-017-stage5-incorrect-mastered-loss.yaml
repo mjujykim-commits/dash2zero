@@ -1,0 +1,27 @@
+id: SRS-017
+description: Mastered(stage 5) 단일 오답(다른 cycle) → stage 4 강하 + mastered_at 해제 (CC3-05 보호 정책)
+category: mastered_protection
+input:
+  user_id: u-test-017
+  word_id: w-017
+  current_state:
+    stage: 5
+    weak: false
+    correct_count: 6
+    incorrect_count: 1
+    last_attempt_at: 2026-04-08T17:00:00Z   # 30일 전 첫 mastered (다른 cycle)
+    last_attempt_correct: true
+    next_due_at: 2026-05-08T11:00:00Z
+    mastered_at: 2026-04-08T17:00:00Z
+  attempt:
+    correct: false
+    occurred_at: 2026-05-08T17:00:00Z
+    timezone: America/Los_Angeles
+expected:
+  stage: 4   # CC3-05 stage 5 보호: same-cycle 아니면 stage 4로 강하 (1로 가지 않음)
+  weak: false
+  correct_count: 6
+  incorrect_count: 2
+  last_attempt_correct: false
+  mastered_at: null   # nextStage(4) === 5 false → mastered_at = null
+  next_due_at_after_days: 14

@@ -1,0 +1,7 @@
+id: PRV-010
+description: 데이터 export SLA = 30일 (CC-11)
+category: dsr_export
+input:
+  export_request_at: 2026-05-11T10:00:00Z
+expected:
+  export_sla_days: 30

@@ -1,0 +1,27 @@
+id: SRS-014
+description: Mastered(5) 첫 오답이 다른 cycle인 경우 — stage 4 보호 (CC3-05)
+category: mastered_protection
+input:
+  user_id: u-test-014
+  word_id: w-014
+  current_state:
+    stage: 5
+    weak: false
+    correct_count: 4
+    incorrect_count: 0
+    last_attempt_at: 2026-04-08T17:00:00Z  # 30일 전 (다른 cycle)
+    last_attempt_correct: true
+    next_due_at: 2026-05-08T11:00:00Z
+    mastered_at: 2026-04-08T17:00:00Z
+  attempt:
+    correct: false
+    occurred_at: 2026-05-08T17:00:00Z
+    timezone: America/Los_Angeles
+expected:
+  stage: 4   # Mastered 보호: same-cycle 룰 미적용, stage 4로 강하
+  weak: false
+  correct_count: 4
+  incorrect_count: 1
+  last_attempt_correct: false
+  mastered_at: null
+  next_due_at_after_days: 14

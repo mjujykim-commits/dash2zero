@@ -1,0 +1,7 @@
+id: CON-001
+description: Starter Pack 60단어 전수 필수 필드 검증 (D-008)
+category: starter_meta
+input:
+  pack_path: fixtures/seeded/words/starter-pack-candidates.yaml
+expected:
+  all_words_valid: true

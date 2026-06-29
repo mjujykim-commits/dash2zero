@@ -1,0 +1,22 @@
+# Backend review note (W15):
+#   account_deletion_requests.deletion_owner_update 는
+#     USING (auth.uid() = user_id AND completed_at IS NULL).
+#   completed_at 이 set된 row는 USING 술어 false → SELECT/UPDATE 모두 차단.
+#   완료된 삭제 요청을 사용자가 reactivate / undo 하지 못하도록 보장.
+id: RLS-ADV-013
+description: 인증 사용자가 이미 완료(completed_at IS NOT NULL)된 account_deletion_requests row를 UPDATE 시도
+threat_model: STRIDE/Tampering (Account Recovery Bypass)
+input:
+  attacker_role: authenticated
+  target:
+    table: account_deletion_requests
+    user_id: 11111111-1111-1111-1111-111111111111
+    endpoint: PostgREST PATCH /account_deletion_requests?user_id=eq.11111111-1111-1111-1111-111111111111
+    completed_at: 2026-04-11T00:00:00Z   # 이미 완료된 row
+  payload:
+    user_id: 11111111-1111-1111-1111-111111111111
+    cancelled_at: 2026-05-11T00:00:00Z   # undo 시도
+expected:
+  blocked: true
+  http_status: 403   # USING 술어 (completed_at IS NULL) 위반 → row 매칭 실패
+  audit_logged: true

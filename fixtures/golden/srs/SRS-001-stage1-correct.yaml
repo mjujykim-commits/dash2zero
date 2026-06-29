@@ -1,0 +1,27 @@
+id: SRS-001
+description: stage 1 정답 → stage 2, due+3일 (CC-08)
+category: stage_correct
+input:
+  user_id: u-test-001
+  word_id: w-001
+  current_state:
+    stage: 1
+    weak: false
+    correct_count: 0
+    incorrect_count: 0
+    last_attempt_at: null
+    last_attempt_correct: null
+    next_due_at: 2026-05-08T11:00:00Z
+    mastered_at: null
+  attempt:
+    correct: true
+    occurred_at: 2026-05-08T17:00:00Z
+    timezone: America/Los_Angeles
+expected:
+  stage: 2
+  weak: false
+  correct_count: 1
+  incorrect_count: 0
+  last_attempt_correct: true
+  mastered_at: null
+  next_due_at_after_days: 3  # stage 2 → 3일 (STAGE_INTERVAL_DAYS[2])

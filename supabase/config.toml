@@ -1,0 +1,24 @@
+project_id = "majgmaoetjjajhdmdcgc"
+
+# === Edge Functions (sync-cli-layout.mjs 자동 생성) ===
+
+[functions.audio-signed-url]
+verify_jwt = false
+
+[functions.content-manifest]
+verify_jwt = false
+
+[functions.cron-hard-delete]
+verify_jwt = false
+
+[functions.delete-account]
+verify_jwt = true
+
+[functions.merge-guest]
+verify_jwt = true
+
+[functions.revenuecat-webhook]
+verify_jwt = false
+
+[functions.submit-attempt]
+verify_jwt = true

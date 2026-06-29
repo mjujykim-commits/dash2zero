@@ -1,0 +1,11 @@
+id: PRV-009
+description: 삭제 요청 31일 경과 후 cron-hard-delete 대상 (CC-11 30d SLA)
+category: soft_delete
+input:
+  delete_request_at: 2026-04-10T00:00:00Z
+  now: 2026-05-11T00:00:00Z  # 31일 경과
+expected:
+  soft_deleted_at: 2026-04-10T00:00:00Z
+  scheduled_hard_delete_at: 2026-05-10T00:00:00Z
+  hard_delete_eligible: true
+  immediate_signout: true

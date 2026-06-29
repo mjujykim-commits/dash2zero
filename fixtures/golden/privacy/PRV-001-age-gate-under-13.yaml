@@ -1,0 +1,7 @@
+id: PRV-001
+description: 12세 → age gate 차단 (CC-04 KOPPA / GDPR-K)
+category: age_gate
+input:
+  age: 12
+expected:
+  allowed: false

@@ -1,0 +1,27 @@
+id: SRS-061
+description: 무료 사용자 일일 신규 3 한도 도달 후 4번째 신규 단어 거부 (CC2-07)
+category: daily_limit
+input:
+  user_id: u-test-061-free
+  word_id: w-061  # 신규 단어 (existing user_word_state 없음)
+  current_state: null  # 신규 — initialUserWordState 호출되어야 함
+  daily_usage_before:
+    new_words_started_count: 3  # 이미 한도 도달
+    reviews_completed_count: 0
+    local_day: 2026-05-08
+    timezone: America/Los_Angeles
+  entitlement:
+    is_premium: false
+  attempt:
+    correct: true
+    occurred_at: 2026-05-08T17:00:00Z
+    timezone: America/Los_Angeles
+expected:
+  http_status: 429
+  error: daily_limit_reached
+  paywall_required: true
+  limit: new_word
+  state_changed: false
+  daily_usage_after:
+    new_words_started_count: 3  # 변경 없음
+renamed_from: "SRS-047 (M3 W15: ID 045~050이 i18n/a11y로 재배정되며 daily_limit 슬롯 이동)"

@@ -1,0 +1,7 @@
+id: CON-003
+description: distractors_candidate에 word 자체 미포함 + 중복 없음 (4지선다 무결성)
+category: distractors_unique
+input:
+  pack_path: fixtures/seeded/words/starter-pack-candidates.yaml
+expected:
+  distractors_clean: true

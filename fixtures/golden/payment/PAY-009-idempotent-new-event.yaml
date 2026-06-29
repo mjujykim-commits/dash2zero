@@ -1,0 +1,9 @@
+id: PAY-009
+description: 새 event_id (DB에 없음) → applied (정상 처리)
+category: idempotent
+input:
+  last_rc_event_id: evt_new_99999
+  db_last_rc_event_id: null
+expected:
+  outcome: applied
+  http_status: 200

@@ -1,0 +1,34 @@
+id: SRS-051
+description: 사용자가 lesson 도중 1단어만 답하고 lesson_abandoned. 30분 뒤 동일 단어 정답으로 resume. 두 attempt가 같은 04:00 cycle이라 same-cycle 룰 적용 가능. 첫 attempt가 정답이었다면 second는 정상 stage 2 → 3.
+category: stage_correct
+input:
+  user_id: u-test-051
+  word_id: w-051
+  current_state:
+    # interruption 시점: lesson에서 stage 1 → 2로 정답 처리됨
+    stage: 2
+    weak: false
+    correct_count: 1
+    incorrect_count: 0
+    last_attempt_at: 2026-05-08T17:00:00Z   # lesson 첫 attempt (정답)
+    last_attempt_correct: true
+    next_due_at: 2026-05-11T11:00:00Z
+    mastered_at: null
+  attempt:
+    # 30분 뒤 resume — 같은 cycle, 정답
+    correct: true
+    occurred_at: 2026-05-08T17:30:00Z
+    timezone: America/Los_Angeles
+expected:
+  # 같은 단어를 짧은 시간에 2회 정답하면 stage가 1→2→3으로 progression
+  # MVP 정책: 같은 cycle에 같은 단어 재시도 자체는 막지 않음 (lesson resume 허용)
+  # 분석 KPI 측면에서는 lesson_completed가 정상 트리거되어야 함 (analytics 책임)
+  stage: 3
+  weak: false
+  correct_count: 2
+  incorrect_count: 0
+  last_attempt_correct: true
+  mastered_at: null
+  next_due_at_after_days: 7
+# baseline 측정 의의: interruption resume rate (lesson_abandoned → resume → lesson_completed)
+# 본 case는 SRS 측면만 검증, 이벤트 funnel은 docs/12_event_taxonomy §5 lesson_completion에서 별도 측정

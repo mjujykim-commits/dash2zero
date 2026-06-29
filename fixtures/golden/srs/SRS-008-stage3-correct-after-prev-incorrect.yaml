@@ -1,0 +1,27 @@
+id: SRS-008
+description: stage 3 정답 → stage 4, 직전 cycle 오답 후 회복 path (weak 미진입)
+category: stage_correct
+input:
+  user_id: u-test-008
+  word_id: w-008
+  current_state:
+    stage: 3
+    weak: false
+    correct_count: 2
+    incorrect_count: 1
+    last_attempt_at: 2026-05-01T17:00:00Z   # 7일 전 cycle 오답
+    last_attempt_correct: false
+    next_due_at: 2026-05-08T11:00:00Z
+    mastered_at: null
+  attempt:
+    correct: true
+    occurred_at: 2026-05-08T17:00:00Z
+    timezone: America/Los_Angeles
+expected:
+  stage: 4
+  weak: false
+  correct_count: 3
+  incorrect_count: 1
+  last_attempt_correct: true
+  mastered_at: null
+  next_due_at_after_days: 14   # stage 4 → 14일

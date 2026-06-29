@@ -1,0 +1,17 @@
+# Security review note (W15): self-entitlement upsert = 결제 우회 = 매출 직접 손실. INSERT/UPDATE policy 부재 → service_role only. P0 즉시 page (단 1회도 production 발생 시 대응).
+id: RLS-ADV-003
+description: 인증 사용자가 자신의 subscription_entitlements row 직접 UPSERT 시도 (premium 자가 부여)
+threat_model: STRIDE/Tampering
+input:
+  attacker_role: authenticated
+  target:
+    table: subscription_entitlements
+    user_id: 11111111-1111-1111-1111-111111111111
+  payload:
+    user_id: 11111111-1111-1111-1111-111111111111
+    status: active
+    period_ends_at: 2099-12-31T00:00:00Z
+expected:
+  blocked: true
+  http_status: 403   # entitlements는 service_role만 INSERT/UPDATE 가능 (ADR-0004)
+  audit_logged: true

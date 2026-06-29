@@ -1,0 +1,7 @@
+id: CON-011
+description: "'spam' (5종 외) 신고 카테고리는 거부 (CC2-15 enum 고정)"
+category: report_5_categories
+input:
+  report_category: spam
+expected:
+  category_allowed: false

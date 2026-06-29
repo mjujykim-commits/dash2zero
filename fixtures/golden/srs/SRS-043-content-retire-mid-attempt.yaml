@@ -1,0 +1,31 @@
+id: SRS-043
+description: 사용자가 단어 카드 본 후 답하기 전에 server-side에서 retire (words.retired_at 설정). submit-attempt가 410 Gone 거부, state 미변경. applySrs는 호출되지 않는 path지만 evaluator는 입력 그대로 적용 시 stage 변화 시각화.
+category: content_retire
+input:
+  user_id: u-test-043
+  word_id: w-retired-mid
+  # 시나리오: 카드 노출(17:00) → 정답 제출(17:00:30) → 그 사이 17:00:15에 admin이 retire
+  # submit-attempt: words.retired_at != null && retired_at < attempt.occurred_at → 410 + state 미변경
+  # 본 evaluator는 applySrs 호출 시 정상 동작만 시각화 (stage 2 → 3)
+  current_state:
+    stage: 2
+    weak: false
+    correct_count: 1
+    incorrect_count: 0
+    last_attempt_at: 2026-05-05T17:00:00Z
+    last_attempt_correct: true
+    next_due_at: 2026-05-08T11:00:00Z
+    mastered_at: null
+  attempt:
+    correct: true
+    occurred_at: 2026-05-08T17:00:30Z
+    timezone: America/Los_Angeles
+expected:
+  stage: 3   # applySrs 단독 동작 (실제로는 410으로 차단되어 state 유지가 정답)
+  weak: false
+  correct_count: 2
+  incorrect_count: 0
+  last_attempt_correct: true
+  mastered_at: null
+  next_due_at_after_days: 7
+# 통합 검증: M3 W15 submit-attempt evaluator에서 410 차단 + state 불변 단언

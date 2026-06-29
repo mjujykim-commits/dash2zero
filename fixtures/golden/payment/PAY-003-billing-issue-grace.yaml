@@ -1,0 +1,8 @@
+id: PAY-003
+description: BILLING_ISSUE + grace_period_expiration_at_ms → grace_period (CC3-05)
+category: mapping
+input:
+  event_type: BILLING_ISSUE
+  grace_period_expiration_at_ms: 1748390400000  # 2026-05-28T00:00:00Z (16일 후)
+expected:
+  status: grace_period

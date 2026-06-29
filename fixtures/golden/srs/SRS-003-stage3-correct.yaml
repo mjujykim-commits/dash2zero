@@ -1,0 +1,27 @@
+id: SRS-003
+description: stage 3 정답 → stage 4, next_due +14
+category: stage_correct
+input:
+  user_id: u-test-003
+  word_id: w-003
+  current_state:
+    stage: 3
+    weak: false
+    correct_count: 2
+    incorrect_count: 0
+    last_attempt_at: 2026-05-01T17:00:00Z
+    last_attempt_correct: true
+    next_due_at: 2026-05-08T11:00:00Z
+    mastered_at: null
+  attempt:
+    correct: true
+    occurred_at: 2026-05-08T17:00:00Z
+    timezone: America/Los_Angeles
+expected:
+  stage: 4
+  weak: false
+  correct_count: 3
+  incorrect_count: 0
+  last_attempt_correct: true
+  mastered_at: null
+  next_due_at_after_days: 14

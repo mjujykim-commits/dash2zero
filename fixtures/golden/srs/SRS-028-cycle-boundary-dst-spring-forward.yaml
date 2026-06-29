@@ -1,0 +1,29 @@
+id: SRS-028
+description: 04:00 경계 — America/Los_Angeles DST spring forward (2026-03-08 02:00→03:00). 직전 attempt가 DST 전환 직전, 신규 attempt가 직후라도 local_day 키가 같으면 same-cycle.
+category: cycle_boundary
+input:
+  user_id: u-test-028
+  word_id: w-028
+  current_state:
+    stage: 3
+    weak: false
+    correct_count: 2
+    incorrect_count: 0
+    last_attempt_at: 2026-03-08T09:00:00Z   # PST 01:00 (DST 전, 03/07 cycle)
+    last_attempt_correct: false
+    next_due_at: 2026-03-08T11:00:00Z
+    mastered_at: null
+  attempt:
+    correct: false
+    occurred_at: 2026-03-08T10:30:00Z   # PDT 03:30 (DST 후, 04:00 이전이라 여전히 03/07 cycle)
+    timezone: America/Los_Angeles
+expected:
+  stage: 1   # DST 전환을 가로질러도 04:00 reset 이전이라 same-cycle 2연속 오답
+  weak: true
+  correct_count: 2
+  incorrect_count: 1
+  last_attempt_correct: false
+  mastered_at: null
+  next_due_at_after_days: 1
+# DST 전환 시점에 localDay04 함수가 양쪽 attempt 모두 동일 day_key("2026-03-07")로 분류해야 함.
+# Intl.DateTimeFormat은 IANA tz DST 규칙을 따르므로 정상 동작 기대.

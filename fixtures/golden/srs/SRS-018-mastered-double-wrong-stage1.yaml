@@ -1,0 +1,27 @@
+id: SRS-018
+description: Mastered → 같은 cycle 2연속 오답 → stage 1 + weak (CC3-05 same-cycle 우선 적용)
+category: same_cycle_double_wrong
+input:
+  user_id: u-test-018
+  word_id: w-018
+  current_state:
+    stage: 5
+    weak: false
+    correct_count: 4
+    incorrect_count: 0
+    last_attempt_at: 2026-05-08T15:00:00Z  # 같은 cycle 직전 오답
+    last_attempt_correct: false
+    next_due_at: 2026-05-08T11:00:00Z
+    mastered_at: 2026-04-08T17:00:00Z
+  attempt:
+    correct: false
+    occurred_at: 2026-05-08T17:00:00Z
+    timezone: America/Los_Angeles
+expected:
+  stage: 1  # CC3-05 same-cycle 룰이 Mastered 보호보다 우선
+  weak: true
+  correct_count: 4
+  incorrect_count: 1
+  last_attempt_correct: false
+  mastered_at: null  # 해제
+  next_due_at_after_days: 1

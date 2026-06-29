@@ -1,0 +1,36 @@
+id: SRS-045
+description: |
+  i18n — 시스템 언어 ko ↔ en switch 시 SRS state 보존.
+  사용자가 ko에서 stage 2 정답 직후 시스템 언어를 en으로 변경하고 다음 attempt를
+  stage 3 정답으로 진행해도 stage 전이/카운트는 locale에 의존하지 말 것.
+  Sentinel — evaluator는 stage 전이만 단언. UI 측 string locale 단언은 M4 e2e (E2E-LOCALE-001).
+category: i18n
+input:
+  user_id: u-test-045-i18n
+  word_id: w-045
+  current_state:
+    stage: 2
+    weak: false
+    correct_count: 1
+    incorrect_count: 0
+    last_attempt_at: 2026-05-08T17:00:00Z   # ko locale 시 attempt
+    last_attempt_correct: true
+    next_due_at: 2026-05-11T11:00:00Z
+    mastered_at: null
+  attempt:
+    correct: true
+    occurred_at: 2026-05-12T17:00:00Z       # en locale로 전환 후 attempt (다른 cycle)
+    timezone: America/Los_Angeles
+expected:
+  stage: 3
+  weak: false
+  correct_count: 2
+  incorrect_count: 0
+  last_attempt_correct: true
+  mastered_at: null
+  next_due_at_after_days: 7
+i18n_assertions:
+  - locale_change_does_not_reset_stage
+  - locale_change_does_not_alter_correct_count
+  - srs_state_locale_independent
+e2e_followup: M4 E2E-LOCALE-001 — UI string ko/en 시각 회귀

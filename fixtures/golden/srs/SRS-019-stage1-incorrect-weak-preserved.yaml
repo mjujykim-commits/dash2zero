@@ -1,0 +1,27 @@
+id: SRS-019
+description: stage 1 오답 (weak=true 상태) → stage 1 floor + weak 유지 (오답 분기는 weak clearing 안 함)
+category: stage_incorrect
+input:
+  user_id: u-test-019
+  word_id: w-019
+  current_state:
+    stage: 1
+    weak: true   # 이미 weak 상태
+    correct_count: 1
+    incorrect_count: 3
+    last_attempt_at: 2026-05-05T17:00:00Z   # 3일 전 cycle 정답 (다른 cycle, last_correct=true)
+    last_attempt_correct: true
+    next_due_at: 2026-05-08T11:00:00Z
+    mastered_at: null
+  attempt:
+    correct: false
+    occurred_at: 2026-05-08T17:00:00Z
+    timezone: America/Los_Angeles
+expected:
+  stage: 1   # max(1, 1-1) = 1
+  weak: true   # same-cycle 아니므로 weak = state.weak 유지
+  correct_count: 1
+  incorrect_count: 4
+  last_attempt_correct: false
+  mastered_at: null
+  next_due_at_after_days: 1

@@ -1,0 +1,27 @@
+id: SRS-013
+description: stage 1 오답 → stage 1 유지 (max(1, stage-1)) (CC2-10)
+category: stage_incorrect
+input:
+  user_id: u-test-013
+  word_id: w-013
+  current_state:
+    stage: 1
+    weak: false
+    correct_count: 0
+    incorrect_count: 0
+    last_attempt_at: null
+    last_attempt_correct: null
+    next_due_at: 2026-05-08T11:00:00Z
+    mastered_at: null
+  attempt:
+    correct: false
+    occurred_at: 2026-05-08T17:00:00Z
+    timezone: America/Los_Angeles
+expected:
+  stage: 1  # max(1, 1-1) = 1
+  weak: false
+  correct_count: 0
+  incorrect_count: 1
+  last_attempt_correct: false
+  mastered_at: null
+  next_due_at_after_days: 1  # stage 1 → 1일

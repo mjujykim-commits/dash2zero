@@ -1,0 +1,27 @@
+id: SRS-012
+description: weak=true 상태에서 정답 시 weak=false 해제 (applySrs correct 분기)
+category: stage_correct
+input:
+  user_id: u-test-012
+  word_id: w-012
+  current_state:
+    stage: 2
+    weak: true
+    correct_count: 1
+    incorrect_count: 2
+    last_attempt_at: 2026-05-04T17:00:00Z
+    last_attempt_correct: false
+    next_due_at: 2026-05-08T11:00:00Z
+    mastered_at: null
+  attempt:
+    correct: true
+    occurred_at: 2026-05-08T17:00:00Z
+    timezone: America/Los_Angeles
+expected:
+  stage: 3
+  weak: false  # 정답이 weak 해제
+  correct_count: 2
+  incorrect_count: 2
+  last_attempt_correct: true
+  mastered_at: null
+  next_due_at_after_days: 7

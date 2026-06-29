@@ -1,0 +1,42 @@
+{
+  "name": "@dash2zero/srs-core",
+  "version": "0.1.0-m3w15",
+  "private": true,
+  "description": "dash2zero Leitner 5-Stage SRS — single SoT for mobile (RN/Hermes) and Edge Functions (Deno). ADR-0006. R-12 resolution.",
+  "type": "module",
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js",
+      "require": "./dist/index.cjs"
+    }
+  },
+  "files": [
+    "dist",
+    "src"
+  ],
+  "scripts": {
+    "build": "tsup",
+    "dev": "tsup --watch",
+    "lint": "eslint src --ext .ts",
+    "type-check": "tsc --noEmit",
+    "test": "vitest run",
+    "clean": "rimraf dist"
+  },
+  "devDependencies": {
+    "tsup": "^8.0.0",
+    "typescript": "^5.3.0",
+    "vitest": "^1.6.0",
+    "@types/node": "^20.0.0",
+    "rimraf": "^5.0.0"
+  },
+  "publishConfig": {
+    "access": "restricted"
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}

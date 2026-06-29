@@ -1,0 +1,30 @@
+id: SRS-037
+description: device B의 시계가 30초 빠름 — server-side last_attempt_at 비교 시 race 가능. applySrs 자체는 입력 occurred_at만 보므로 일반 stage_correct path. stale 거부 통합 검증은 submit-attempt evaluator 영역.
+category: multi_device
+input:
+  user_id: u-test-037
+  word_id: w-037
+  current_state:
+    stage: 2
+    weak: false
+    correct_count: 1
+    incorrect_count: 0
+    last_attempt_at: 2026-05-08T17:00:30Z   # device A: 17:00:30 (정확)
+    last_attempt_correct: true
+    next_due_at: 2026-05-11T11:00:00Z
+    mastered_at: null
+  attempt:
+    correct: true
+    occurred_at: 2026-05-08T17:00:00Z   # device B (시계 30초 늦음): 실제 17:00:30이지만 17:00:00로 신고
+    timezone: America/Los_Angeles
+expected:
+  # applySrs 결과: same-cycle 정답 → stage 3
+  # 통합 정책(submit-attempt)에서는 last_attempt_at(17:00:30) > attempt.occurred_at(17:00:00) → stale로 409 거부 권고
+  # 본 evaluator는 applySrs만 검증
+  stage: 3
+  weak: false
+  correct_count: 2
+  incorrect_count: 0
+  last_attempt_correct: true
+  mastered_at: null
+  next_due_at_after_days: 7

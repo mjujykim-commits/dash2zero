@@ -1,0 +1,27 @@
+id: SRS-021
+description: stage 4 → 같은 cycle 1번째 오답, 직후 2번째 오답 → stage 1 + weak (CC3-05)
+category: same_cycle_double_wrong
+input:
+  user_id: u-test-021
+  word_id: w-021
+  current_state:
+    stage: 4
+    weak: false
+    correct_count: 3
+    incorrect_count: 0
+    last_attempt_at: 2026-05-08T14:00:00Z  # 같은 cycle 직전 오답
+    last_attempt_correct: false
+    next_due_at: 2026-05-08T11:00:00Z
+    mastered_at: null
+  attempt:
+    correct: false
+    occurred_at: 2026-05-08T17:00:00Z
+    timezone: America/Los_Angeles
+expected:
+  stage: 1
+  weak: true
+  correct_count: 3
+  incorrect_count: 1
+  last_attempt_correct: false
+  mastered_at: null
+  next_due_at_after_days: 1

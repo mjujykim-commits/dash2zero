@@ -1,0 +1,27 @@
+id: SRS-006
+description: stage 1 신규 단어 첫 정답 (last_attempt_at=null) → stage 2
+category: stage_correct
+input:
+  user_id: u-test-006
+  word_id: w-006
+  current_state:
+    stage: 1
+    weak: false
+    correct_count: 0
+    incorrect_count: 0
+    last_attempt_at: null
+    last_attempt_correct: null
+    next_due_at: 2026-05-08T11:00:00Z
+    mastered_at: null
+  attempt:
+    correct: true
+    occurred_at: 2026-05-08T17:00:00Z
+    timezone: America/Los_Angeles
+expected:
+  stage: 2
+  weak: false
+  correct_count: 1
+  incorrect_count: 0
+  last_attempt_correct: true
+  mastered_at: null
+  next_due_at_after_days: 3

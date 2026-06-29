@@ -1,0 +1,27 @@
+id: SRS-029
+description: 04:00 경계 직전 미완료 단어 — same-cycle 판정 false (CC-17, CC3-08)
+category: cycle_boundary
+input:
+  user_id: u-test-029
+  word_id: w-029
+  current_state:
+    stage: 3
+    weak: false
+    correct_count: 2
+    incorrect_count: 0
+    last_attempt_at: 2026-05-08T10:00:00Z  # PT 03:00 (전 cycle, 04:00 이전)
+    last_attempt_correct: false
+    next_due_at: 2026-05-08T11:00:00Z
+    mastered_at: null
+  attempt:
+    correct: false
+    occurred_at: 2026-05-08T15:00:00Z  # PT 08:00 (당일 cycle, 04:00 이후)
+    timezone: America/Los_Angeles
+expected:
+  stage: 2  # 일반 오답 (same-cycle 아님 — 04:00 경계 넘음)
+  weak: false
+  correct_count: 2
+  incorrect_count: 1
+  last_attempt_correct: false
+  mastered_at: null
+  next_due_at_after_days: 3  # stage 2 → 3일

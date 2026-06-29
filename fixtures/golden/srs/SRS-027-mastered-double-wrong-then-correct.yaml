@@ -1,0 +1,27 @@
+id: SRS-027
+description: Mastered 1회 오답 후 stage 4에서 정답 → stage 5 재진입, mastered_at 새로 기록
+category: mastered_reached
+input:
+  user_id: u-test-027
+  word_id: w-027
+  current_state:
+    stage: 4
+    weak: false
+    correct_count: 4
+    incorrect_count: 1
+    last_attempt_at: 2026-04-25T17:00:00Z
+    last_attempt_correct: false  # 이전 cycle 오답 (Mastered → 4 강하)
+    next_due_at: 2026-05-08T11:00:00Z
+    mastered_at: null  # 강하 시 해제됨
+  attempt:
+    correct: true
+    occurred_at: 2026-05-08T17:00:00Z
+    timezone: America/Los_Angeles
+expected:
+  stage: 5
+  weak: false
+  correct_count: 5
+  incorrect_count: 1
+  last_attempt_correct: true
+  mastered_at: 2026-05-08T17:00:00Z  # 새로 기록 (재진입)
+  next_due_at_after_days: 30

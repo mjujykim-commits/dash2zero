@@ -1,0 +1,147 @@
+# ============================================================================
+# security-alert-stub.yml — paper mode (M3 W15)
+# ============================================================================
+# 목적:
+#   - W15 시점 실 webhook URL 없음 (M5 이연 결정 — orchestrator)
+#   - 본 workflow는 manual dispatch only — alert 채널 활성화 dry-run 테스트
+#   - M5에서 SLACK_SECURITY_WEBHOOK secret 등록 + scheduled trigger 활성화 시 운영 모드 전환
+#
+# 운영 모드 전환 절차 (M5):
+#   1. GitHub repo Settings → Secrets → Actions → New: SLACK_SECURITY_WEBHOOK
+#   2. Supabase Vault에 동일 URL 등록:
+#        SELECT vault.create_secret('SLACK_SECURITY_WEBHOOK', 'https://hooks.slack.com/...');
+#   3. 본 파일의 'on:' 섹션에 schedule 추가 (예: nightly 09:00 KST = 00:00 UTC)
+#   4. paper-mode 가드 분기 제거
+#
+# 책임 agent: security + devops (M5)
+# Runbook: docs/security/AUDIT_ALERT_RUNBOOK.md
+# ============================================================================
+
+name: security-alert-stub
+
+on:
+  workflow_dispatch:
+    inputs:
+      mode:
+        description: "실행 모드 (paper = dry-run만, live = 실제 webhook POST)"
+        required: true
+        default: "paper"
+        type: choice
+        options:
+          - paper
+          - live
+      severity:
+        description: "테스트할 severity (P0 / P1)"
+        required: true
+        default: "P0"
+        type: choice
+        options:
+          - P0
+          - P1
+
+jobs:
+  alert-channel-check:
+    name: Alert channel readiness check (paper / live)
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Print mode
+        run: |
+          echo "Mode: ${{ inputs.mode }}"
+          echo "Severity: ${{ inputs.severity }}"
+          echo "Date (UTC): $(date -u)"
+
+      - name: Verify runbook present
+        run: |
+          test -f docs/security/AUDIT_ALERT_RUNBOOK.md
+          echo "Runbook OK"
+
+      - name: Verify migration present
+        run: |
+          test -f infra/supabase/migrations/0004_audit_triggers.sql
+          echo "Migration 0004 OK"
+
+      - name: Check secret presence (live only)
+        if: ${{ inputs.mode == 'live' }}
+        env:
+          SLACK_SECURITY_WEBHOOK: ${{ secrets.SLACK_SECURITY_WEBHOOK }}
+        run: |
+          if [ -z "$SLACK_SECURITY_WEBHOOK" ]; then
+            echo "::error::SLACK_SECURITY_WEBHOOK secret not registered. Cannot run in live mode."
+            echo "::error::Register secret first (Settings → Secrets → Actions) and ensure URL matches Vault."
+            exit 1
+          fi
+          echo "Secret present (length checked, value masked)"
+
+      - name: Build test payload (PII-free)
+        id: payload
+        run: |
+          ACTOR_HASH="usr_test1234"
+          TS_UTC=$(date -u +"%Y-%m-%dT%H:%M:%SZ")
+          TS_KST=$(TZ=Asia/Seoul date +"%Y-%m-%d %H:%M")
+          cat > payload.json <<EOF
+          {
+            "severity": "${{ inputs.severity }}",
+            "pattern_id": "STUB-TEST",
+            "actor": "$ACTOR_HASH",
+            "table": "audit_log",
+            "attempted_action": "stub_dispatch_test",
+            "blocked_by": "n/a (test)",
+            "timestamp_utc": "$TS_UTC",
+            "timestamp_kst": "$TS_KST",
+            "runbook_url": "https://github.com/${{ github.repository }}/blob/main/docs/security/AUDIT_ALERT_RUNBOOK.md#${{ inputs.severity }}",
+            "note": "STUB DISPATCH — workflow_dispatch by ${{ github.actor }}"
+          }
+          EOF
+          cat payload.json
+
+      - name: Paper mode — print only (no POST)
+        if: ${{ inputs.mode == 'paper' }}
+        run: |
+          echo "PAPER MODE — payload printed above, no HTTP POST executed."
+          echo "To go live: register SLACK_SECURITY_WEBHOOK secret + Vault secret + change inputs.mode to 'live'."
+
+      - name: Live mode — POST to Slack webhook
+        if: ${{ inputs.mode == 'live' }}
+        env:
+          SLACK_SECURITY_WEBHOOK: ${{ secrets.SLACK_SECURITY_WEBHOOK }}
+        run: |
+          # Slack incoming webhook format wrapping
+          jq -n --slurpfile p payload.json '{
+            text: ("[\($p[0].severity)] dash2zero security alert (stub test)"),
+            blocks: [
+              {
+                type: "section",
+                text: { type: "mrkdwn", text: ("*[\($p[0].severity)] dash2zero security alert*\nPattern: `\($p[0].pattern_id)`\nActor: `\($p[0].actor)`\nTable: `\($p[0].table)`\nAction: `\($p[0].attempted_action)`\nBlocked by: `\($p[0].blocked_by)`\nUTC: \($p[0].timestamp_utc) / KST: \($p[0].timestamp_kst)\n<\($p[0].runbook_url)|Runbook>\n\n_\($p[0].note)_") }
+              }
+            ]
+          }' > slack_payload.json
+
+          HTTP_CODE=$(curl -s -o response.txt -w "%{http_code}" \
+            -X POST -H "Content-Type: application/json" \
+            --data @slack_payload.json \
+            "$SLACK_SECURITY_WEBHOOK")
+
+          echo "HTTP $HTTP_CODE"
+          cat response.txt
+          if [ "$HTTP_CODE" != "200" ]; then
+            echo "::error::Webhook POST failed (HTTP $HTTP_CODE)"
+            exit 1
+          fi
+          echo "Live alert dispatched."
+
+      - name: Summary
+        if: always()
+        run: |
+          echo "## Security alert stub run summary" >> $GITHUB_STEP_SUMMARY
+          echo "- Mode: ${{ inputs.mode }}" >> $GITHUB_STEP_SUMMARY
+          echo "- Severity: ${{ inputs.severity }}" >> $GITHUB_STEP_SUMMARY
+          echo "- Triggered by: ${{ github.actor }}" >> $GITHUB_STEP_SUMMARY
+          echo "- Migration: infra/supabase/migrations/0004_audit_triggers.sql" >> $GITHUB_STEP_SUMMARY
+          echo "- Runbook: docs/security/AUDIT_ALERT_RUNBOOK.md" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "M5 활성화 시: schedule trigger + paper-mode 가드 제거 + SLACK_SECURITY_WEBHOOK secret 등록." >> $GITHUB_STEP_SUMMARY

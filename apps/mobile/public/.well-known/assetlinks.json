@@ -1,0 +1,26 @@
+[
+  {
+    "relation": ["delegate_permission/common.handle_all_urls"],
+    "target": {
+      "namespace": "android_app",
+      "package_name": "com.dash2zero.app",
+      "sha256_cert_fingerprints": ["TBD-RELEASE-SHA256"]
+    }
+  },
+  {
+    "relation": ["delegate_permission/common.handle_all_urls"],
+    "target": {
+      "namespace": "android_app",
+      "package_name": "com.dash2zero.staging",
+      "sha256_cert_fingerprints": ["TBD-STAGING-SHA256"]
+    }
+  },
+  {
+    "relation": ["delegate_permission/common.handle_all_urls"],
+    "target": {
+      "namespace": "android_app",
+      "package_name": "com.dash2zero.dev",
+      "sha256_cert_fingerprints": ["TBD-DEV-SHA256"]
+    }
+  }
+]

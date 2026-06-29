@@ -1,0 +1,127 @@
+name: Weekly Baseline (check-thresholds + PR comment)
+
+# ============================================================================
+# 활성화 정책 (ADR-0007 Accepted 2026-05-21, architect 권고 4 evidence)
+# ============================================================================
+#
+# 현재 상태: manual workflow_dispatch만 활성. cron schedule 비활성 (주석 처리).
+#
+# Cron 활성화 조건 (M3 W16 D-7 / 2026-05-25 게이트 통과 후):
+#   1. (devops) metrics/daily/ 14일 누적 확인 (3-source 모두 ≥7일)
+#   2. (devops) `pnpm test:seed` 로컬 PASS — synthetic 결정성 검증 (ADR-0007 §3)
+#   3. (devops) `pnpm baseline:check` 로컬 실행 → exit code 0 또는 1 (red면 본 PR 차단 — Q-ADR-0007-3)
+#   4. (devops) 주석 해제 PR + reviewer = orchestrator
+#
+# 활성화 후 cron: 매주 월요일 KST 09:00 (UTC 일요일 00:00) — weekly summary 생성
+# Reversal Trigger:
+#   - cron 활성 첫 3주 내 weekly PR 2회 이상 red (KPI Minimum 미달 정합) → cron 재주석 + 즉시 검토
+#   - synthetic 결정성 (test:seed) 1회 fail → R1 trigger, cron 재주석
+#   - synthetic 분포 R4 drift (KPI target과 50%+ 괴리) → seed 재조정 (분기 경계 변경 정책)
+#
+# Source: docs/adr/ADR-0007-baseline-storage.md §5 (architect 권고 4)
+# ============================================================================
+
+on:
+  workflow_dispatch:
+    inputs:
+      week_offset:
+        description: "주차 offset (0=금주, 1=지난주, ...). default 0"
+        required: false
+        default: "0"
+  # schedule:
+  #   - cron: "0 0 * * 0"   # 매주 일요일 UTC 00:00 (KST 월요일 09:00) — 4단계 체크리스트 충족 후 활성화
+
+concurrency:
+  group: weekly-baseline-${{ github.ref }}
+  cancel-in-progress: false
+
+permissions:
+  contents: write       # metrics/weekly/*.md commit
+  pull-requests: write  # gh pr comment (architect 권고 4)
+
+jobs:
+  baseline-weekly:
+    name: check-thresholds → PR comment
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0   # weekly diff용
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v3
+        with:
+          version: 9.0.0
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: "pnpm"
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      # ADR-0007 §3 권고 3 — synthetic seed 결정성 사전 검증 (fail 시 baseline 진행 차단)
+      - name: Verify synthetic seed determinism
+        run: pnpm test:seed
+
+      # ADR-0007 §5 권고 4 — check-thresholds 호출 + weekly markdown 생성
+      - name: Run check-thresholds (weekly)
+        id: check
+        run: |
+          set +e
+          OUTPUT_FILE="metrics/weekly/$(date -u +%Y-%m-%d)-weekly.md"
+          mkdir -p metrics/weekly
+          pnpm baseline:check --weekly --output "$OUTPUT_FILE"
+          EXIT_CODE=$?
+          echo "exit_code=$EXIT_CODE" >> "$GITHUB_OUTPUT"
+          echo "output_file=$OUTPUT_FILE" >> "$GITHUB_OUTPUT"
+          # Q-ADR-0007-3 정합: red만 fail (exit 2), yellow는 warn (exit 1)
+          if [ "$EXIT_CODE" -eq 2 ]; then
+            echo "::error::Weekly baseline RED — PRD §8.2 Minimum 미달 항목 존재 (PR 차단)"
+          elif [ "$EXIT_CODE" -eq 1 ]; then
+            echo "::warning::Weekly baseline YELLOW — 관찰 필요 항목 존재 (PR pass)"
+          else
+            echo "Weekly baseline GREEN — all KPI within Target"
+          fi
+          # red만 step fail
+          exit $([ "$EXIT_CODE" -eq 2 ] && echo 2 || echo 0)
+
+      # weekly summary를 metrics/weekly/ 에 commit (auto-merge 정책 Q-ADR-0007-2)
+      - name: Commit weekly summary
+        if: success() || steps.check.outputs.exit_code == '1'
+        run: |
+          git config user.name "dash2zero-baseline-bot"
+          git config user.email "noreply@dash2zero.local"
+          git add metrics/weekly/
+          if git diff --staged --quiet; then
+            echo "No new weekly summary to commit"
+          else
+            git commit -m "chore(baseline): weekly summary $(date -u +%Y-%m-%d)"
+            git push origin HEAD:refs/heads/baseline/weekly-$(date -u +%Y-%m-%d)
+          fi
+
+      # 활성 PR이 있으면 weekly summary를 코멘트로 embed (architect 권고 4 본체)
+      - name: Comment on active PR
+        if: github.event_name == 'workflow_dispatch' && github.event.pull_request.number
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gh pr comment ${{ github.event.pull_request.number }} \
+            --body-file "${{ steps.check.outputs.output_file }}"
+
+      # red일 경우 GitHub Issue 자동 생성 (P0 alert, R1 reversal trigger 사전 알림)
+      - name: Create issue on red
+        if: failure() && steps.check.outputs.exit_code == '2'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          DATE=$(date -u +%Y-%m-%d)
+          gh issue create \
+            --title "[baseline RED] Weekly check-thresholds 실패 ($DATE)" \
+            --label "baseline,P0" \
+            --body "Weekly baseline check-thresholds가 PRD §8.2 Minimum band 미달.\n\n출력 파일: \`${{ steps.check.outputs.output_file }}\`\n\nADR-0007 §6 R1 reversal trigger 검토 권고 — staging connectivity / synthetic 결정성 / dogfood 신호 점검."

@@ -1,0 +1,11 @@
+id: PRV-005
+description: analytics=false 선택 시 analytics 이벤트 전송 차단 (CC2-11)
+category: privacy_choices
+input:
+  choice:
+    analytics: false
+    personalization: true
+    marketing: false
+  requested_event_send: analytics
+expected:
+  event_sent: false

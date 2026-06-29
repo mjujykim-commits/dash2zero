@@ -1,0 +1,27 @@
+id: SRS-026
+description: Mastered(stage 5) 1회 오답 → stage 4 (Mastered 보호 — CC3-05)
+category: mastered_protection
+input:
+  user_id: u-test-026
+  word_id: w-026
+  current_state:
+    stage: 5
+    weak: false
+    correct_count: 4
+    incorrect_count: 0
+    last_attempt_at: 2026-04-08T17:00:00Z
+    last_attempt_correct: true
+    next_due_at: 2026-05-08T11:00:00Z
+    mastered_at: 2026-04-08T17:00:00Z  # 이전에 Mastered 도달
+  attempt:
+    correct: false
+    occurred_at: 2026-05-08T17:00:00Z
+    timezone: America/Los_Angeles
+expected:
+  stage: 4  # CC3-05: Mastered 1회 오답 → stage 4 (강하 보호)
+  weak: false
+  correct_count: 4
+  incorrect_count: 1
+  last_attempt_correct: false
+  mastered_at: null  # Mastered 해제
+  next_due_at_after_days: 14  # stage 4 → 14일

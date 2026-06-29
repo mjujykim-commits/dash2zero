@@ -1,0 +1,31 @@
+id: SRS-053
+description: Mastered → 다른 cycle 단일 오답으로 stage 4 강하 → 같은 cycle 즉시 정답 시 stage 5 재진입 + mastered_at 신규. 보호 정책의 회복 path.
+category: mastered_protection
+input:
+  user_id: u-test-053
+  word_id: w-053
+  current_state:
+    # 위 SRS-017 시나리오의 직후 — stage 4로 강하된 상태에서 같은 cycle 즉시 재시도 정답
+    stage: 4
+    weak: false
+    correct_count: 6
+    incorrect_count: 2
+    last_attempt_at: 2026-05-08T17:00:00Z   # 같은 cycle 직전 오답 (Mastered → 4 강하 시점)
+    last_attempt_correct: false
+    next_due_at: 2026-05-22T11:00:00Z
+    mastered_at: null   # Mastered 강하 시 해제됨
+  attempt:
+    correct: true
+    occurred_at: 2026-05-08T17:30:00Z   # 30분 뒤 같은 cycle 정답
+    timezone: America/Los_Angeles
+expected:
+  stage: 5
+  weak: false
+  correct_count: 7
+  incorrect_count: 2
+  last_attempt_correct: true
+  mastered_at: 2026-05-08T17:30:00Z   # 새로 기록 (state.stage(4) < 5 && nextStage(5) === 5)
+  next_due_at_after_days: 30
+# srs_mastered_reached emit 단언 (재진입):
+#   triggered_by="review" / stage_before=4 / stage_after=5 / weak_before=false / weak_after=false
+#   same_cycle=true (지표상 즉각 회복) / reason 속성은 mastered_reached에는 없음

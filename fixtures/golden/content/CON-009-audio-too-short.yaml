@@ -1,0 +1,7 @@
+id: CON-009
+description: 0.3초 오디오 — 범위 미달 (잘림 가능성)
+category: audio_length
+input:
+  audio_length_sec: 0.3
+expected:
+  audio_in_range: false

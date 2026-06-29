@@ -1,0 +1,7 @@
+id: PAY-002
+description: RENEWAL → active (CC2-08)
+category: mapping
+input:
+  event_type: RENEWAL
+expected:
+  status: active

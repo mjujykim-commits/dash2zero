@@ -1,0 +1,22 @@
+# Backend review note (W15):
+#   negative-of-negative — service_role(BYPASSRLS)이 정상 동작해야 함을 단언.
+#   RC webhook handler / Edge Function 의 service_role 호출이 RLS에 의해
+#   잘못 차단되면 결제 적용 실패 → 매출/사용자 신뢰 손실.
+#   evaluator는 service_role 분기에서 blocked=false 확정 (실제 Postgres 동작과 일치).
+id: RLS-ADV-010
+description: service_role 이 subscription_entitlements UPSERT 정상 수행 (RC webhook 정상 흐름)
+threat_model: STRIDE/Denial-of-Service (positive control — RLS over-block)
+input:
+  attacker_role: service_role
+  target:
+    table: subscription_entitlements
+    user_id: 11111111-1111-1111-1111-111111111111
+    endpoint: PostgREST POST /subscription_entitlements
+  payload:
+    user_id: 11111111-1111-1111-1111-111111111111
+    status: active
+    period_ends_at: 2026-06-11T00:00:00Z
+expected:
+  blocked: false        # service_role BYPASSRLS — 정책 무관 통과
+  http_status: 200
+  audit_logged: true    # webhook 처리 자체가 audit_log INSERT 트리거

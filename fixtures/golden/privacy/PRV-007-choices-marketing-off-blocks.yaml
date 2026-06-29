@@ -1,0 +1,11 @@
+id: PRV-007
+description: marketing=false 선택 → marketing 이벤트 차단 (CC2-11)
+category: privacy_choices
+input:
+  choice:
+    analytics: true
+    personalization: true
+    marketing: false
+  requested_event_send: marketing
+expected:
+  event_sent: false

@@ -1,0 +1,28 @@
+id: SRS-011
+description: stage 5(Mastered) 정답 시 stage 5 유지 (Math.min(5, 5+1)=5), mastered_at 보존
+category: stage_correct
+input:
+  user_id: u-test-011
+  word_id: w-011
+  current_state:
+    stage: 5
+    weak: false
+    correct_count: 4
+    incorrect_count: 0
+    last_attempt_at: 2026-04-08T17:00:00Z   # 30일 전 첫 mastered 도달
+    last_attempt_correct: true
+    next_due_at: 2026-05-08T11:00:00Z
+    mastered_at: 2026-04-08T17:00:00Z
+  attempt:
+    correct: true
+    occurred_at: 2026-05-08T17:00:00Z
+    timezone: America/Los_Angeles
+expected:
+  stage: 5
+  weak: false
+  correct_count: 5
+  incorrect_count: 0
+  last_attempt_correct: true
+  # mastered_at 보존: state.stage(5) < 5 == false → state.mastered_at 유지 (apply branch)
+  mastered_at: 2026-04-08T17:00:00Z
+  next_due_at_after_days: 30

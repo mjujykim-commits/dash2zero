@@ -1,0 +1,124 @@
+# Core Pack — K-drama 60단어 (Premium tier, D-019 봉인 2026-05-13)
+#
+# 책임 agent: learning (lead) · orchestrator (D-019 quality gate 통합 승인)
+# Quality policy: docs/learning/CONTENT_QUALITY_POLICY.md (D-019)
+#
+# 카테고리 분포 (60단어):
+#   가족·인간관계           12 (엄마, 아빠, 가족, 형, 동생, 부모님, 부부, 결혼, 연인, 남자친구, 여자친구, 약속)
+#   감정·대사               12 (사랑해, 미안해, 괜찮아, 잘 지내, 보고 싶었어, 행복해, 슬퍼, 화났어, 무서워, 놀랐어, 기다렸어, 잊지 못해)
+#   직업·사회               10 (의사, 변호사, 회장, 대표, 사장, 비서, 형사, 검사, 기자, 학생)
+#   음식·일상               8 (라면, 김치, 떡볶이, 치킨, 소주, 회식, 배달, 식사)
+#   장소·시설               8 (회사, 학교, 병원, 카페, 집, 방, 거실, 사무실)
+#   드라마 표현             10 (재벌, 운명, 비밀, 진실, 거짓말, 후회, 용서, 만남, 헤어짐, 다시)
+
+pack_id: "core-kdrama-001"
+pack_name: "Core — K-drama 60"
+tier: core
+target_audience: "영어권 K-drama 동기 A1-A2 학습자 (starter 60 완료 후)"
+target_count: 60
+cefr_band: "A1-A2"
+topik_band: "TOPIK I"
+prerequisite_pack: "starter-001"
+content_version: 1
+license: "tts-google-neural2"
+
+words:
+  # === 가족·인간관계 (12) ===
+  - { word_id: "w-kd-001", korean: "엄마",     romanization: "eom-ma",         gloss: "mom",                example_ko: "엄마 어디 있어요?",        example_en: "Where's mom?",                  distractors_candidate: ["아빠","누나","언니"] }
+  - { word_id: "w-kd-002", korean: "아빠",     romanization: "a-ppa",          gloss: "dad",                example_ko: "아빠가 와요.",             example_en: "Dad is coming.",                distractors_candidate: ["엄마","오빠","할아버지"] }
+  - { word_id: "w-kd-003", korean: "가족",     romanization: "ga-jok",         gloss: "family",             example_ko: "우리 가족이에요.",         example_en: "This is my family.",            distractors_candidate: ["친구","친척","팀"] }
+  - { word_id: "w-kd-004", korean: "형",       romanization: "hyeong",         gloss: "older brother (to male)", example_ko: "형, 어디 가?",        example_en: "Bro, where are you going?",     distractors_candidate: ["오빠","동생","삼촌"] }
+  - { word_id: "w-kd-005", korean: "동생",     romanization: "dong-saeng",     gloss: "younger sibling",    example_ko: "동생이 있어요.",           example_en: "I have a younger sibling.",     distractors_candidate: ["형","누나","아기"] }
+  - { word_id: "w-kd-006", korean: "부모님",   romanization: "bu-mo-nim",      gloss: "parents",            example_ko: "부모님 만나요.",           example_en: "I'm meeting my parents.",       distractors_candidate: ["가족","엄마","아빠"] }
+  - { word_id: "w-kd-007", korean: "부부",     romanization: "bu-bu",          gloss: "married couple",     example_ko: "행복한 부부예요.",          example_en: "They're a happy couple.",        distractors_candidate: ["연인","가족","친구"] }
+  - { word_id: "w-kd-008", korean: "결혼",     romanization: "gyeo-ron",       gloss: "marriage",           example_ko: "결혼해요.",                example_en: "We're getting married.",        distractors_candidate: ["약혼","사랑","연애"] }
+  - { word_id: "w-kd-009", korean: "연인",     romanization: "yeo-nin",        gloss: "lover / partner",    example_ko: "연인 사이예요.",            example_en: "They're dating.",                distractors_candidate: ["친구","부부","애인"] }
+  - { word_id: "w-kd-010", korean: "남자친구", romanization: "nam-ja-chin-gu", gloss: "boyfriend",          example_ko: "남자친구 있어요.",         example_en: "I have a boyfriend.",            distractors_candidate: ["여자친구","친구","오빠"] }
+  - { word_id: "w-kd-011", korean: "여자친구", romanization: "yeo-ja-chin-gu", gloss: "girlfriend",         example_ko: "여자친구 만나요.",         example_en: "I'm meeting my girlfriend.",    distractors_candidate: ["남자친구","친구","누나"] }
+  - { word_id: "w-kd-012", korean: "약속",     romanization: "yak-sok",        gloss: "promise / plan",     example_ko: "약속 있어요.",             example_en: "I have plans.",                  distractors_candidate: ["만남","계획","일정"] }
+
+  # === 감정·대사 (12) ===
+  - { word_id: "w-kd-013", korean: "사랑해",       romanization: "sa-rang-hae",       gloss: "I love you (casual)",     example_ko: "사랑해.",                 example_en: "I love you.",                  distractors_candidate: ["좋아해","미안해","고마워"] }
+  - { word_id: "w-kd-014", korean: "미안해",       romanization: "mi-an-hae",         gloss: "I'm sorry (casual)",      example_ko: "정말 미안해.",            example_en: "I'm really sorry.",            distractors_candidate: ["고마워","사랑해","괜찮아"] }
+  - { word_id: "w-kd-015", korean: "괜찮아",       romanization: "gwaen-cha-na",      gloss: "it's okay (casual)",      example_ko: "괜찮아.",                 example_en: "It's okay.",                   distractors_candidate: ["미안해","고마워","좋아"] }
+  - { word_id: "w-kd-016", korean: "잘 지내",       romanization: "jal-ji-nae",        gloss: "are you well",           example_ko: "잘 지내?",                example_en: "How are you?",                 distractors_candidate: ["안녕","어디 가","뭐 해"] }
+  - { word_id: "w-kd-017", korean: "보고 싶었어", romanization: "bo-go-si-peo-sseo", gloss: "I missed you (casual)",  example_ko: "정말 보고 싶었어.",       example_en: "I really missed you.",         distractors_candidate: ["기다렸어","사랑해","잊었어"] }
+  - { word_id: "w-kd-018", korean: "행복해",       romanization: "haeng-bo-kae",      gloss: "I'm happy (casual)",      example_ko: "지금 행복해.",            example_en: "I'm happy now.",               distractors_candidate: ["슬퍼","좋아","기뻐"] }
+  - { word_id: "w-kd-019", korean: "슬퍼",         romanization: "seul-peo",          gloss: "I'm sad (casual)",        example_ko: "너무 슬퍼.",              example_en: "I'm so sad.",                  distractors_candidate: ["행복해","외로워","우울해"] }
+  - { word_id: "w-kd-020", korean: "화났어",       romanization: "hwa-na-sseo",       gloss: "I'm angry (casual)",      example_ko: "왜 화났어?",              example_en: "Why are you angry?",           distractors_candidate: ["슬퍼","짜증나","무서워"] }
+  - { word_id: "w-kd-021", korean: "무서워",       romanization: "mu-seo-wo",         gloss: "I'm scared (casual)",     example_ko: "너무 무서워.",            example_en: "I'm so scared.",               distractors_candidate: ["슬퍼","놀랐어","걱정돼"] }
+  - { word_id: "w-kd-022", korean: "놀랐어",       romanization: "nol-la-sseo",       gloss: "I was surprised",         example_ko: "정말 놀랐어.",            example_en: "I was really surprised.",      distractors_candidate: ["무서워","기뻐","당황했어"] }
+  - { word_id: "w-kd-023", korean: "기다렸어",     romanization: "gi-da-ryeo-sseo",   gloss: "I waited",                example_ko: "오래 기다렸어.",          example_en: "I waited a long time.",        distractors_candidate: ["보고 싶었어","찾았어","만났어"] }
+  - { word_id: "w-kd-024", korean: "잊지 못해", romanization: "it-ji-mo-tae",      gloss: "I can't forget",          example_ko: "너를 잊지 못해.",         example_en: "I can't forget you.",          distractors_candidate: ["기억해","보고 싶어","사랑해"] }
+
+  # === 직업·사회 (10) ===
+  - { word_id: "w-kd-025", korean: "의사",     romanization: "ui-sa",         gloss: "doctor",          example_ko: "의사예요.",             example_en: "I'm a doctor.",             distractors_candidate: ["간호사","약사","치과의사"] }
+  - { word_id: "w-kd-026", korean: "변호사",   romanization: "byeon-ho-sa",   gloss: "lawyer",          example_ko: "변호사 만나요.",         example_en: "I'm meeting a lawyer.",     distractors_candidate: ["검사","판사","법조인"] }
+  - { word_id: "w-kd-027", korean: "회장",     romanization: "hoe-jang",      gloss: "chairman",        example_ko: "회장님이 와요.",         example_en: "The chairman is coming.",   distractors_candidate: ["사장","대표","회사원"] }
+  - { word_id: "w-kd-028", korean: "대표",     romanization: "dae-pyo",       gloss: "CEO / representative", example_ko: "대표님이세요.",      example_en: "You're the CEO.",            distractors_candidate: ["회장","사장","임원"] }
+  - { word_id: "w-kd-029", korean: "사장",     romanization: "sa-jang",       gloss: "boss / president", example_ko: "사장님 어디 계세요?",    example_en: "Where is the boss?",        distractors_candidate: ["회장","대표","상사"] }
+  - { word_id: "w-kd-030", korean: "비서",     romanization: "bi-seo",        gloss: "secretary",       example_ko: "비서 있어요.",          example_en: "I have a secretary.",       distractors_candidate: ["직원","대리","팀장"] }
+  - { word_id: "w-kd-031", korean: "형사",     romanization: "hyeong-sa",     gloss: "detective",       example_ko: "형사예요.",             example_en: "I'm a detective.",          distractors_candidate: ["경찰","수사관","검사"] }
+  - { word_id: "w-kd-032", korean: "검사",     romanization: "geom-sa",       gloss: "prosecutor",      example_ko: "검사 만나요.",          example_en: "I'm meeting a prosecutor.", distractors_candidate: ["변호사","판사","형사"] }
+  - { word_id: "w-kd-033", korean: "기자",     romanization: "gi-ja",         gloss: "reporter",        example_ko: "기자가 왔어요.",        example_en: "A reporter came.",          distractors_candidate: ["피디","작가","아나운서"] }
+  - { word_id: "w-kd-034", korean: "학생",     romanization: "hak-saeng",     gloss: "student",         example_ko: "저는 학생이에요.",      example_en: "I'm a student.",            distractors_candidate: ["선생님","교수","학교"] }
+
+  # === 음식·일상 (8) ===
+  - { word_id: "w-kd-035", korean: "라면",     romanization: "ra-myeon",      gloss: "ramen",           example_ko: "라면 먹을래요?",        example_en: "Want some ramen?",          distractors_candidate: ["국수","우동","파스타"] }
+  - { word_id: "w-kd-036", korean: "김치",     romanization: "gim-chi",       gloss: "kimchi",          example_ko: "김치 좋아해요.",        example_en: "I like kimchi.",            distractors_candidate: ["반찬","나물","장아찌"] }
+  - { word_id: "w-kd-037", korean: "떡볶이",   romanization: "tteok-bo-kki",  gloss: "tteokbokki",      example_ko: "떡볶이 시켜요.",        example_en: "Let's order tteokbokki.",   distractors_candidate: ["김밥","순대","어묵"] }
+  - { word_id: "w-kd-038", korean: "치킨",     romanization: "chi-kin",       gloss: "fried chicken",   example_ko: "치킨 먹을까요?",        example_en: "Shall we have chicken?",    distractors_candidate: ["피자","햄버거","족발"] }
+  - { word_id: "w-kd-039", korean: "소주",     romanization: "so-ju",         gloss: "soju",            example_ko: "소주 한 잔 해요.",      example_en: "Let's have a soju.",        distractors_candidate: ["맥주","막걸리","와인"] }
+  - { word_id: "w-kd-040", korean: "회식",     romanization: "hoe-sik",       gloss: "company dinner",  example_ko: "오늘 회식이에요.",      example_en: "We have a company dinner.", distractors_candidate: ["회의","파티","식사"] }
+  - { word_id: "w-kd-041", korean: "배달",     romanization: "bae-dal",       gloss: "delivery",        example_ko: "배달 시켜요.",          example_en: "Let's order delivery.",     distractors_candidate: ["주문","포장","택배"] }
+  - { word_id: "w-kd-042", korean: "식사",     romanization: "sik-sa",        gloss: "meal",            example_ko: "식사하셨어요?",         example_en: "Have you eaten?",           distractors_candidate: ["밥","점심","저녁"] }
+
+  # === 장소·시설 (8) ===
+  - { word_id: "w-kd-043", korean: "회사",     romanization: "hoe-sa",        gloss: "company",         example_ko: "회사 가요.",            example_en: "I'm going to work.",        distractors_candidate: ["사무실","직장","빌딩"] }
+  - { word_id: "w-kd-044", korean: "학교",     romanization: "hak-gyo",       gloss: "school",          example_ko: "학교 끝났어요.",        example_en: "School is over.",           distractors_candidate: ["학원","대학","유치원"] }
+  - { word_id: "w-kd-045", korean: "병원",     romanization: "byeong-won",    gloss: "hospital",        example_ko: "병원 가요.",            example_en: "I'm going to the hospital.", distractors_candidate: ["약국","의원","치과"] }
+  - { word_id: "w-kd-046", korean: "카페",     romanization: "ka-pe",         gloss: "café",            example_ko: "카페에서 만나요.",      example_en: "Let's meet at a café.",     distractors_candidate: ["식당","술집","빵집"] }
+  - { word_id: "w-kd-047", korean: "집",       romanization: "jip",           gloss: "home / house",    example_ko: "집에 가요.",            example_en: "I'm going home.",           distractors_candidate: ["회사","학교","호텔"] }
+  - { word_id: "w-kd-048", korean: "방",       romanization: "bang",          gloss: "room",            example_ko: "제 방이에요.",          example_en: "It's my room.",             distractors_candidate: ["집","거실","사무실"] }
+  - { word_id: "w-kd-049", korean: "거실",     romanization: "geo-sil",       gloss: "living room",     example_ko: "거실에 있어요.",        example_en: "I'm in the living room.",   distractors_candidate: ["방","주방","현관"] }
+  - { word_id: "w-kd-050", korean: "사무실",   romanization: "sa-mu-sil",     gloss: "office",          example_ko: "사무실로 와 주세요.",    example_en: "Please come to the office.", distractors_candidate: ["회사","회의실","방"] }
+
+  # === 드라마 표현 (10) ===
+  - { word_id: "w-kd-051", korean: "재벌",     romanization: "jae-beol",      gloss: "chaebol / conglomerate heir", example_ko: "재벌 3세예요.",   example_en: "He's a 3rd-gen chaebol.",   distractors_candidate: ["회장","사장","CEO"] }
+  - { word_id: "w-kd-052", korean: "운명",     romanization: "un-myeong",     gloss: "destiny",         example_ko: "이건 운명이에요.",       example_en: "This is destiny.",          distractors_candidate: ["인연","사랑","기적"] }
+  - { word_id: "w-kd-053", korean: "비밀",     romanization: "bi-mil",        gloss: "secret",          example_ko: "비밀이에요.",            example_en: "It's a secret.",            distractors_candidate: ["진실","거짓말","속마음"] }
+  - { word_id: "w-kd-054", korean: "진실",     romanization: "jin-sil",       gloss: "truth",           example_ko: "진실을 말해 주세요.",     example_en: "Please tell the truth.",    distractors_candidate: ["비밀","거짓말","사실"] }
+  - { word_id: "w-kd-055", korean: "거짓말",   romanization: "geo-jin-mal",   gloss: "lie",             example_ko: "거짓말하지 마.",         example_en: "Don't lie.",                distractors_candidate: ["진실","비밀","속임수"] }
+  - { word_id: "w-kd-056", korean: "후회",     romanization: "hu-hoe",        gloss: "regret",          example_ko: "후회해요.",             example_en: "I regret it.",              distractors_candidate: ["미안해","아쉬워","슬퍼"] }
+  - { word_id: "w-kd-057", korean: "용서",     romanization: "yong-seo",      gloss: "forgiveness",     example_ko: "용서해 주세요.",        example_en: "Please forgive me.",        distractors_candidate: ["미안해","사랑","화해"] }
+  - { word_id: "w-kd-058", korean: "만남",     romanization: "man-nam",       gloss: "meeting / encounter", example_ko: "운명의 만남이에요.", example_en: "It's a fated meeting.",     distractors_candidate: ["약속","인연","연애"] }
+  - { word_id: "w-kd-059", korean: "헤어짐",   romanization: "he-eo-jim",     gloss: "parting / breakup", example_ko: "헤어짐이 슬퍼요.",   example_en: "The breakup is sad.",       distractors_candidate: ["이별","만남","후회"] }
+  - { word_id: "w-kd-060", korean: "다시",     romanization: "da-si",         gloss: "again",           example_ko: "다시 만나요.",          example_en: "Let's meet again.",         distractors_candidate: ["또","계속","처음"] }
+
+review_workflow_status:
+  candidate_list_drafted: true                     # ✅ 2026-05-13 D-019 봉인 후 작성
+  ai_assisted_review_pending: true
+  external_korean_reviewer_pending: true           # R-01 모집 진행 중
+  external_english_reviewer_pending: true
+  tts_generation_pending: true                     # M4 W17 TTS batch
+  audio_qc_pending: true
+  storage_upload_pending: true
+  manifest_publish_pending: true
+
+quality_gates_applied:
+  - G-01 필수 필드: 60/60 통과
+  - G-02 NFC normalize: 60/60 통과
+  - G-03 RR 발음 기준: 60/60 적용 (받침 변화 단어 audio_qc 필수)
+  - G-04 gloss 1-5 단어 + slash: 60/60 통과
+  - G-05 example_ko i+1: starter 60 + 본 pack 내 학습 어휘만 사용
+  - G-06 example_en 자연: 영어권 학습자 readability 1차 review 통과 권고
+  - G-07 distractor 거리: 직관적 분류 (CTN-009 fixture M4 W17 정량 검증)
+  - G-08 audio: pending (M4 W17 TTS batch)
+  - G-09 금지/민감: 정치/종교/성/폭력/혐오 0건 (1차 검증)
+  - G-10 빈도: 한국어 빈도 상위 1500 + K-drama 동기 고빈도 60단어 선정
+
+risks_local:
+  - "casual form (사랑해/미안해/괜찮아) — formal form (사랑해요/미안해요/괜찮아요)과 의도적 분리. 드라마/일상 대화체 강조"
+  - "직업 어휘 (회장/대표/사장)는 한국 기업 위계 정합 — drama 트로프 정합도 함께 표시"
+  - "재벌 3세는 한국 drama 핵심 트로프 — 문화 컨텍스트 caption 별도 권고 (M4 콘텐츠 ops)"
+  - "받침 변화 단어 ~8개 (좋아해/잊지 못해/잘 지내 등) TTS audio QA 필수"

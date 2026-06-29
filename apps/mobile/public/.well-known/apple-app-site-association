@@ -1,0 +1,23 @@
+{
+  "applinks": {
+    "apps": [],
+    "details": [
+      {
+        "appIDs": ["TEAMID.com.dash2zero.app", "TEAMID.com.dash2zero.staging", "TEAMID.com.dash2zero.dev"],
+        "components": [
+          {
+            "/": "/auth/callback",
+            "comment": "Magic link / OAuth callback (FE-DOC-006)"
+          },
+          {
+            "/": "/lesson/*",
+            "comment": "Direct link to a word lesson"
+          }
+        ]
+      }
+    ]
+  },
+  "webcredentials": {
+    "apps": ["TEAMID.com.dash2zero.app"]
+  }
+}

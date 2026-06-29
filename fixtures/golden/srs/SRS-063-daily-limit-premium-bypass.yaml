@@ -1,0 +1,36 @@
+id: SRS-063
+description: Premium 사용자는 일일 한도 무시 — 31번째 review도 정상 처리 (CC2-07)
+category: daily_limit
+input:
+  user_id: u-test-063-premium
+  word_id: w-063
+  current_state:
+    stage: 3
+    weak: false
+    correct_count: 2
+    incorrect_count: 0
+    last_attempt_at: 2026-05-01T17:00:00Z
+    last_attempt_correct: true
+    next_due_at: 2026-05-08T11:00:00Z
+    mastered_at: null
+  daily_usage_before:
+    new_words_started_count: 50
+    reviews_completed_count: 200
+    local_day: 2026-05-08
+    timezone: America/Los_Angeles
+  entitlement:
+    is_premium: true   # Premium은 한도 우회
+  attempt:
+    correct: true
+    occurred_at: 2026-05-08T17:00:00Z
+    timezone: America/Los_Angeles
+expected:
+  # Premium은 daily_limit branch를 skip, 일반 SRS 평가 진입 → stage 3 정답 → stage 4
+  stage: 4
+  weak: false
+  correct_count: 3
+  incorrect_count: 0
+  last_attempt_correct: true
+  mastered_at: null
+  next_due_at_after_days: 14
+renamed_from: "SRS-049 (M3 W15: ID 045~050이 i18n/a11y로 재배정)"

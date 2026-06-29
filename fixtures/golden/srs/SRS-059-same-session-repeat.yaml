@@ -1,0 +1,59 @@
+id: SRS-059
+description: 단일 lesson 세션 내 동일 word 중복 노출 시 SRS state 1회만 갱신 (active recall은 OK)
+category: same_session_repeat
+input:
+  user_id: u-test-054
+  word_id: w-054
+  session_id: sess-054-001
+  # 시나리오: 단일 lesson 세션에서 동일 word_id가 New 큐 + Review 큐 양쪽에 진입한 edge case.
+  # (예: 신규 단어가 Notice/Hear/Meaning/Retrieve 4단계 중 일부 + 이전 review 큐 cohort에도 잔류)
+  # 첫 attempt 정답 후 같은 세션 내 두 번째 attempt 발생.
+  # 정책: SRS stage 전이는 첫 attempt에만 적용, 두 번째는 active recall 효과만 보장 (state 갱신 X).
+  current_state:
+    stage: 2
+    weak: false
+    correct_count: 1
+    incorrect_count: 0
+    last_attempt_at: 2026-05-04T17:00:00Z
+    last_attempt_correct: true
+    next_due_at: 2026-05-08T11:00:00Z
+    mastered_at: null
+  attempts:
+    - sequence: 1
+      client_attempt_id: 9f3c4b1e-054a-4c2e-9d6f-054abc000001
+      correct: true
+      occurred_at: 2026-05-08T17:00:00Z
+      timezone: America/Los_Angeles
+      cohort: review
+    - sequence: 2
+      client_attempt_id: 9f3c4b1e-054a-4c2e-9d6f-054abc000002
+      correct: true
+      occurred_at: 2026-05-08T17:01:30Z       # 90초 후, 같은 세션 같은 cycle
+      timezone: America/Los_Angeles
+      cohort: review_again_same_session
+expected:
+  # 첫 attempt만 SRS 전이, 두 번째는 무효 (state 변화 없음)
+  state_after_attempt_1:
+    stage: 3                                  # 2 → 3 (정답 stage up)
+    weak: false
+    correct_count: 2
+    incorrect_count: 0
+    last_attempt_correct: true
+    next_due_at_after_days: 7
+  state_after_attempt_2:
+    stage: 3                                  # 변화 없음 (세션 내 재노출은 state 갱신 X)
+    weak: false
+    correct_count: 2                          # 변화 없음
+    incorrect_count: 0
+    last_attempt_correct: true
+    next_due_at_after_days: 7                 # 변화 없음 (재계산 X)
+  # 부수 효과
+  attempt_records_persisted: 2                # attempts table에는 둘 다 기록 (분석용)
+  attempt_2_flag: same_session_repeat_no_srs  # SRS 미적용 마킹
+  daily_usage_change:
+    reviews_completed_count_delta: 1          # review 카운트는 1회만 (한도 보호)
+notes:
+  - desirable difficulty 원칙 — 같은 세션 내 재노출은 active recall 보강이지만 stage 전이 가속은 false signal
+  - 두 번째 attempt가 오답이어도 stage 강하 X (first-attempt-wins 정책)
+  - 단, weak flag는 첫 attempt 결과로만 결정 (재노출 정답으로 weak clear 시도는 차단 — SRS-055 참조)
+  - 큐 dedup은 클라이언트 책임이지만, 서버측 last-line defense로 본 정책 단언

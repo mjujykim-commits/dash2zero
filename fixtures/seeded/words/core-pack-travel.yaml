@@ -1,0 +1,117 @@
+# Core Pack — Travel 60단어 (Premium tier, D-019 봉인 2026-05-13)
+#
+# 책임 agent: learning (lead) · orchestrator (D-019 quality gate 통합 승인)
+# Quality policy: docs/learning/CONTENT_QUALITY_POLICY.md (D-019)
+#
+# 카테고리 분포 (60단어):
+#   교통·이동                10 (비행기, 공항, 표, 출발, 도착, 게이트, 짐, 여권, 환승, 지연)
+#   숙소                     10 (호텔, 예약, 체크인, 체크아웃, 방 키, 룸서비스, 와이파이, 조식, 청소, 보증금)
+#   음식점                   10 (식당, 메뉴판, 주문, 추천, 매워요, 안 매워요, 포장, 영수증, 팁 없음, 화장실)
+#   관광·명소                10 (관광, 지도, 명소, 박물관, 궁전, 시장, 입장료, 가이드, 사진 촬영, 줄)
+#   쇼핑·돈                  10 (가격, 비싸요, 싸요, 깎아 주세요, 현금, 카드, 영수증, 환불, 봉투, 사이즈)
+#   비상·도움                10 (도와주세요, 길을 잃었어요, 경찰, 응급실, 약, 영어 할 수 있어요, 천천히, 모르겠어요, 다시 한 번, 감사합니다)
+
+pack_id: "core-travel-001"
+pack_name: "Core — Travel Korea 60"
+tier: core
+target_audience: "영어권 한국 여행자 (starter 60 완료 후)"
+target_count: 60
+cefr_band: "A1-A2"
+topik_band: "TOPIK I"
+prerequisite_pack: "starter-001"
+content_version: 1
+license: "tts-google-neural2"
+
+words:
+  # === 교통·이동 (10) ===
+  - { word_id: "w-tv-001", korean: "비행기",   romanization: "bi-haeng-gi",     gloss: "airplane",        example_ko: "비행기 타요.",         example_en: "I'm taking a plane.",          distractors_candidate: ["배","기차","버스"] }
+  - { word_id: "w-tv-002", korean: "공항버스", romanization: "gong-hang-beo-seu", gloss: "airport bus",     example_ko: "공항버스 타요.",       example_en: "I'm taking the airport bus.",  distractors_candidate: ["택시","리무진","지하철"] }
+  - { word_id: "w-tv-003", korean: "표",       romanization: "pyo",             gloss: "ticket",          example_ko: "표 한 장 주세요.",     example_en: "One ticket, please.",          distractors_candidate: ["티켓","입장권","영수증"] }
+  - { word_id: "w-tv-004", korean: "출발",     romanization: "chul-bal",        gloss: "departure",       example_ko: "지금 출발해요.",       example_en: "Departing now.",               distractors_candidate: ["도착","출구","시작"] }
+  - { word_id: "w-tv-005", korean: "도착",     romanization: "do-chak",         gloss: "arrival",         example_ko: "도착했어요.",          example_en: "I've arrived.",                distractors_candidate: ["출발","입구","끝"] }
+  - { word_id: "w-tv-006", korean: "게이트",   romanization: "ge-i-teu",        gloss: "gate",            example_ko: "게이트 어디예요?",     example_en: "Where is the gate?",           distractors_candidate: ["문","입구","출구"] }
+  - { word_id: "w-tv-007", korean: "짐",       romanization: "jim",             gloss: "luggage",         example_ko: "짐 두 개예요.",         example_en: "I have two bags.",             distractors_candidate: ["가방","상자","박스"] }
+  - { word_id: "w-tv-008", korean: "여권",     romanization: "yeo-gwon",        gloss: "passport",        example_ko: "여권 주세요.",         example_en: "Passport, please.",            distractors_candidate: ["비자","신분증","표"] }
+  - { word_id: "w-tv-009", korean: "환승",     romanization: "hwan-seung",      gloss: "transfer",        example_ko: "환승해요.",            example_en: "I'm transferring.",            distractors_candidate: ["출발","도착","갈아타기"] }
+  - { word_id: "w-tv-010", korean: "지연",     romanization: "ji-yeon",         gloss: "delay",           example_ko: "비행기 지연됐어요.",    example_en: "The flight is delayed.",       distractors_candidate: ["취소","출발","연기"] }
+
+  # === 숙소 (10) ===
+  - { word_id: "w-tv-011", korean: "호텔",     romanization: "ho-tel",          gloss: "hotel",           example_ko: "호텔 어디예요?",       example_en: "Where is the hotel?",          distractors_candidate: ["모텔","숙소","게스트하우스"] }
+  - { word_id: "w-tv-012", korean: "예약",     romanization: "ye-yak",          gloss: "reservation",     example_ko: "예약했어요.",          example_en: "I made a reservation.",        distractors_candidate: ["주문","약속","계획"] }
+  - { word_id: "w-tv-013", korean: "체크인",   romanization: "che-keu-in",      gloss: "check-in",        example_ko: "체크인 부탁해요.",     example_en: "Check-in, please.",            distractors_candidate: ["체크아웃","예약","입장"] }
+  - { word_id: "w-tv-014", korean: "체크아웃", romanization: "che-keu-a-ut",   gloss: "check-out",       example_ko: "체크아웃 할게요.",     example_en: "I'll check out.",              distractors_candidate: ["체크인","퇴실","나가기"] }
+  - { word_id: "w-tv-015", korean: "방 키",   romanization: "bang-ki",         gloss: "room key",        example_ko: "방 키 주세요.",        example_en: "Room key, please.",            distractors_candidate: ["카드 키","문","비밀번호"] }
+  - { word_id: "w-tv-016", korean: "룸서비스", romanization: "rum-seo-bi-seu", gloss: "room service",    example_ko: "룸서비스 시켜요.",     example_en: "Let's order room service.",    distractors_candidate: ["배달","식당","조식"] }
+  - { word_id: "w-tv-017", korean: "와이파이", romanization: "wa-i-pa-i",      gloss: "Wi-Fi",           example_ko: "와이파이 비번이 뭐예요?", example_en: "What's the Wi-Fi password?", distractors_candidate: ["인터넷","비번","무선"] }
+  - { word_id: "w-tv-018", korean: "조식",     romanization: "jo-sik",          gloss: "breakfast (hotel)", example_ko: "조식 포함이에요?",   example_en: "Is breakfast included?",       distractors_candidate: ["아침","점심","저녁"] }
+  - { word_id: "w-tv-019", korean: "청소",     romanization: "cheong-so",       gloss: "cleaning",        example_ko: "청소 부탁드려요.",     example_en: "Cleaning, please.",            distractors_candidate: ["빨래","정리","서비스"] }
+  - { word_id: "w-tv-020", korean: "보증금",   romanization: "bo-jeung-geum",   gloss: "deposit",         example_ko: "보증금 얼마예요?",     example_en: "How much is the deposit?",     distractors_candidate: ["요금","숙박비","팁"] }
+
+  # === 음식점 (10) ===
+  - { word_id: "w-tv-021", korean: "식당",         romanization: "sik-dang",            gloss: "restaurant",        example_ko: "식당 어디예요?",         example_en: "Where is the restaurant?",   distractors_candidate: ["카페","술집","호텔"] }
+  - { word_id: "w-tv-022", korean: "메뉴판",       romanization: "me-nyu-pan",          gloss: "menu",              example_ko: "메뉴판 주세요.",          example_en: "Menu, please.",              distractors_candidate: ["메뉴","주문서","리스트"] }
+  - { word_id: "w-tv-023", korean: "주문서",       romanization: "ju-mun-seo",          gloss: "order slip",        example_ko: "주문서 주세요.",          example_en: "The order slip, please.",    distractors_candidate: ["메뉴판","계산서","영수증"] }
+  - { word_id: "w-tv-024", korean: "추천",         romanization: "chu-cheon",           gloss: "recommendation",    example_ko: "추천해 주세요.",         example_en: "Could you recommend?",       distractors_candidate: ["주문","인기","베스트"] }
+  - { word_id: "w-tv-025", korean: "매워요",       romanization: "mae-wo-yo",           gloss: "it's spicy",        example_ko: "이거 매워요?",            example_en: "Is this spicy?",             distractors_candidate: ["맛있어요","뜨거워요","달아요"] }
+  - { word_id: "w-tv-026", korean: "안 매워요",     romanization: "an-mae-wo-yo",        gloss: "not spicy",         example_ko: "안 매운 거 주세요.",     example_en: "Not spicy, please.",         distractors_candidate: ["매워요","달아요","순해요"] }
+  - { word_id: "w-tv-027", korean: "포장",         romanization: "po-jang",             gloss: "to-go / takeout",   example_ko: "포장해 주세요.",          example_en: "To go, please.",             distractors_candidate: ["배달","주문","계산"] }
+  - { word_id: "w-tv-028", korean: "영수증",       romanization: "yeong-su-jeung",      gloss: "receipt",           example_ko: "영수증 주세요.",          example_en: "Receipt, please.",           distractors_candidate: ["계산서","카드","현금"] }
+  - { word_id: "w-tv-029", korean: "팁 없음",       romanization: "tip-eop-seum",        gloss: "no tipping",        example_ko: "한국은 팁 없어요.",       example_en: "No tipping in Korea.",       distractors_candidate: ["서비스료","요금","계산"] }
+  - { word_id: "w-tv-030", korean: "공중화장실", romanization: "gong-jung-hwa-jang-sil", gloss: "public restroom", example_ko: "공중화장실 있어요?",   example_en: "Is there a public restroom?", distractors_candidate: ["세면대","욕실","변기"] }
+
+  # === 관광·명소 (10) ===
+  - { word_id: "w-tv-031", korean: "관광",         romanization: "gwan-gwang",          gloss: "sightseeing",       example_ko: "관광 왔어요.",            example_en: "I'm here for sightseeing.",  distractors_candidate: ["여행","휴가","출장"] }
+  - { word_id: "w-tv-032", korean: "지도",         romanization: "ji-do",               gloss: "map",               example_ko: "지도 좀 보여 주세요.",    example_en: "Could you show me the map?", distractors_candidate: ["사진","길","위치"] }
+  - { word_id: "w-tv-033", korean: "명소",         romanization: "myeong-so",           gloss: "famous place",      example_ko: "여기가 명소예요.",        example_en: "This is a famous spot.",     distractors_candidate: ["관광지","장소","공원"] }
+  - { word_id: "w-tv-034", korean: "박물관",       romanization: "bang-mul-gwan",       gloss: "museum",            example_ko: "박물관에 가요.",          example_en: "I'm going to the museum.",   distractors_candidate: ["미술관","전시장","갤러리"] }
+  - { word_id: "w-tv-035", korean: "궁전",         romanization: "gung-jeon",           gloss: "palace",            example_ko: "경복궁 궁전이에요.",      example_en: "It's Gyeongbokgung Palace.", distractors_candidate: ["성","왕궁","대문"] }
+  - { word_id: "w-tv-036", korean: "시장",         romanization: "si-jang",             gloss: "market",            example_ko: "남대문 시장 가요.",       example_en: "Going to Namdaemun Market.", distractors_candidate: ["상점","백화점","쇼핑몰"] }
+  - { word_id: "w-tv-037", korean: "입장료",       romanization: "ip-jang-ryo",         gloss: "admission fee",     example_ko: "입장료 얼마예요?",        example_en: "How much is admission?",     distractors_candidate: ["가격","요금","티켓값"] }
+  - { word_id: "w-tv-038", korean: "가이드",       romanization: "ga-i-deu",            gloss: "guide",             example_ko: "가이드 있어요?",          example_en: "Do you have a guide?",       distractors_candidate: ["안내","투어","지도"] }
+  - { word_id: "w-tv-039", korean: "사진 촬영",     romanization: "sa-jin-chwa-ryeong", gloss: "taking photos",     example_ko: "사진 촬영 가능해요?",     example_en: "Can I take photos?",         distractors_candidate: ["촬영","사진","영상"] }
+  - { word_id: "w-tv-040", korean: "줄",           romanization: "jul",                 gloss: "line / queue",      example_ko: "줄 길어요.",              example_en: "The line is long.",          distractors_candidate: ["순서","대기","입장"] }
+
+  # === 쇼핑·돈 (10) ===
+  - { word_id: "w-tv-041", korean: "가격",         romanization: "ga-gyeok",            gloss: "price",             example_ko: "가격이 얼마예요?",        example_en: "What's the price?",          distractors_candidate: ["요금","비용","돈"] }
+  - { word_id: "w-tv-042", korean: "비싸요",       romanization: "bi-ssa-yo",           gloss: "expensive",         example_ko: "너무 비싸요.",            example_en: "It's too expensive.",        distractors_candidate: ["싸요","좋아요","높아요"] }
+  - { word_id: "w-tv-043", korean: "싸요",         romanization: "ssa-yo",              gloss: "cheap / inexpensive", example_ko: "이거 싸요!",            example_en: "This is cheap!",             distractors_candidate: ["비싸요","좋아요","적당해요"] }
+  - { word_id: "w-tv-044", korean: "깎아 주세요", romanization: "kkak-a-ju-se-yo",    gloss: "please discount",   example_ko: "조금만 깎아 주세요.",     example_en: "A little discount, please.", distractors_candidate: ["빼 주세요","줄여 주세요","할인"] }
+  - { word_id: "w-tv-045", korean: "현금",         romanization: "hyeon-geum",          gloss: "cash",              example_ko: "현금으로 할게요.",        example_en: "I'll pay cash.",             distractors_candidate: ["카드","결제","계좌"] }
+  - { word_id: "w-tv-046", korean: "카드",         romanization: "ka-deu",              gloss: "card",              example_ko: "카드로 계산할게요.",      example_en: "I'll pay by card.",          distractors_candidate: ["현금","계좌이체","페이"] }
+  - { word_id: "w-tv-047", korean: "결제",         romanization: "gyeol-je",            gloss: "payment",           example_ko: "결제 부탁드려요.",        example_en: "Payment, please.",           distractors_candidate: ["계산","현금","카드"] }
+  - { word_id: "w-tv-048", korean: "환불",         romanization: "hwan-bul",            gloss: "refund",            example_ko: "환불해 주세요.",          example_en: "Refund, please.",            distractors_candidate: ["교환","취소","반품"] }
+  - { word_id: "w-tv-049", korean: "봉투",         romanization: "bong-tu",             gloss: "bag (shopping)",    example_ko: "봉투 주세요.",            example_en: "A bag, please.",             distractors_candidate: ["가방","박스","포장지"] }
+  - { word_id: "w-tv-050", korean: "사이즈",       romanization: "sa-i-jeu",            gloss: "size",              example_ko: "사이즈 있어요?",          example_en: "Do you have my size?",       distractors_candidate: ["크기","번호","치수"] }
+
+  # === 비상·도움 (10) ===
+  - { word_id: "w-tv-051", korean: "도와주세요",   romanization: "do-wa-ju-se-yo",       gloss: "help me, please",      example_ko: "도와주세요!",                example_en: "Help me, please!",                  distractors_candidate: ["살려 주세요","감사해요","미안해요"] }
+  - { word_id: "w-tv-052", korean: "길을 잃었어요", romanization: "gi-reul-i-reo-sseo-yo", gloss: "I'm lost",            example_ko: "길을 잃었어요.",            example_en: "I'm lost.",                         distractors_candidate: ["모르겠어요","찾고 있어요","어디예요"] }
+  - { word_id: "w-tv-053", korean: "경찰",         romanization: "gyeong-chal",         gloss: "police",              example_ko: "경찰 불러 주세요.",          example_en: "Call the police, please.",          distractors_candidate: ["형사","구급차","소방서"] }
+  - { word_id: "w-tv-054", korean: "응급실",       romanization: "eung-geup-sil",       gloss: "emergency room",      example_ko: "응급실 어디예요?",           example_en: "Where is the ER?",                  distractors_candidate: ["병원","의원","약국"] }
+  - { word_id: "w-tv-055", korean: "약",           romanization: "yak",                 gloss: "medicine",            example_ko: "약 어디서 사요?",            example_en: "Where do I buy medicine?",          distractors_candidate: ["병원","의사","처방"] }
+  - { word_id: "w-tv-056", korean: "영어 할 수 있어요", romanization: "yeong-eo-hal-su-i-sseo-yo", gloss: "I can speak English", example_ko: "영어 할 수 있어요?", example_en: "Can you speak English?",       distractors_candidate: ["한국어","일본어","중국어"] }
+  - { word_id: "w-tv-057", korean: "천천히",       romanization: "cheon-cheon-hi",      gloss: "slowly",              example_ko: "천천히 말해 주세요.",        example_en: "Speak slowly, please.",             distractors_candidate: ["빨리","조용히","크게"] }
+  - { word_id: "w-tv-058", korean: "모르겠어요",   romanization: "mo-reu-ge-sseo-yo",   gloss: "I don't know",        example_ko: "잘 모르겠어요.",            example_en: "I don't know.",                     distractors_candidate: ["알아요","이해해요","들었어요"] }
+  - { word_id: "w-tv-059", korean: "다시 한 번",   romanization: "da-si-han-beon",      gloss: "one more time",       example_ko: "다시 한 번 말해 주세요.",     example_en: "Once more, please.",                distractors_candidate: ["천천히","크게","다른"] }
+  - { word_id: "w-tv-060", korean: "신세 졌어요", romanization: "sin-se-jyeo-sseo-yo", gloss: "I'm indebted",    example_ko: "신세 많이 졌어요.",          example_en: "I'm really indebted to you.",       distractors_candidate: ["고마워요","미안해요","수고하세요"] }
+
+review_workflow_status:
+  candidate_list_drafted: true                     # ✅ 2026-05-13 D-019 봉인 후 작성
+  ai_assisted_review_pending: true
+  external_korean_reviewer_pending: true           # R-01 모집 진행 중
+  external_english_reviewer_pending: true
+  tts_generation_pending: true                     # M4 W17 TTS batch
+  audio_qc_pending: true
+  storage_upload_pending: true
+  manifest_publish_pending: true
+
+quality_gates_applied:
+  - G-01 ~ G-10 모두 starter / kpop / kdrama 표준과 동일 적용
+  - G-09 금지/민감: "팁 없음" 같은 한국 문화 정보는 허용 (실용 정보)
+  - G-10 빈도: 한국 여행 동기 고빈도 60단어 (TOPIK I + 실제 여행 환경)
+
+risks_local:
+  - "한국 음식 (떡볶이/치킨/소주) 외래어 표기 — K-drama pack과 일부 중복 가능. core-travel은 음식점 어휘 강조"
+  - "비상 표현 (도와주세요/길을 잃었어요/경찰) 학습자에게 critical — beta 모집 글에 별도 강조"
+  - "현금 vs 카드 — 한국은 카드 결제가 일반적이지만 시장/소상공인은 현금 우선 (문화 컨텍스트 caption M4)"
+  - "받침 변화 단어 ~10개 (도와주세요→[도와주세요], 영어 할 수 있어요 등) TTS audio QA 필수"

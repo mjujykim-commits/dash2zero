@@ -1,0 +1,7 @@
+id: PAY-005
+description: EXPIRATION → expired (free 강등)
+category: mapping
+input:
+  event_type: EXPIRATION
+expected:
+  status: expired

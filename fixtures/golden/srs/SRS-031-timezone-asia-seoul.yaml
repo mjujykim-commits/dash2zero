@@ -1,0 +1,27 @@
+id: SRS-031
+description: Asia/Seoul 타임존에서 stage 1 정답 → stage 2, next_due +3 (timezone agnostic)
+category: timezone
+input:
+  user_id: u-test-031
+  word_id: w-031
+  current_state:
+    stage: 1
+    weak: false
+    correct_count: 0
+    incorrect_count: 0
+    last_attempt_at: null
+    last_attempt_correct: null
+    next_due_at: 2026-05-08T19:00:00Z  # KST 04:00
+    mastered_at: null
+  attempt:
+    correct: true
+    occurred_at: 2026-05-08T05:00:00Z  # KST 14:00
+    timezone: Asia/Seoul
+expected:
+  stage: 2
+  weak: false
+  correct_count: 1
+  incorrect_count: 0
+  last_attempt_correct: true
+  mastered_at: null
+  next_due_at_after_days: 3

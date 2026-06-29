@@ -1,0 +1,17 @@
+# Security review note (W15): audit chain 위변조 = Repudiation, 사후 추적 불가 + GDPR 72h 통지 산정 근거 소실. P0 즉시 page + 시도 자체를 별도 chain에 기록 (audit-of-audit).
+id: RLS-ADV-004
+description: 인증 사용자가 audit_log에 직접 INSERT/UPDATE/DELETE 시도
+threat_model: STRIDE/Repudiation
+input:
+  attacker_role: authenticated
+  target:
+    table: audit_log
+    user_id: 11111111-1111-1111-1111-111111111111
+  payload:
+    actor: service_role
+    action: webhook_revenuecat
+    after_jsonb: { status: active }
+expected:
+  blocked: true
+  http_status: 403   # audit_log는 service_role write only (ADR-0004), 사용자는 자기 row SELECT만
+  audit_logged: true # 시도 자체를 별도 audit chain에 기록 (M3 W15 추가)

@@ -1,0 +1,208 @@
+# dash2zero — Codex / Agent Harness 설정
+# 발효일: 2026-05-07
+# 상위 헌장: ../AGENTS.md
+
+[project]
+name = "dash2zero"
+version = "0.3.0-handoff"
+description = "Korean vocabulary learning app for English-speaking beginners. 3-minute daily loop, Leitner SRS, MVP 300 words."
+ssot_priority = [
+  "docs/architecture/STACK_DECISION.md",
+  "docs/DECISION_LOG.md",
+  "docs/SERVICE_REVIEW_QA.md",
+  "docs/REVIEW_QA.md",
+  "docs/00_development_handoff.md",
+]
+release_languages = ["en-US"]
+launch_territories = ["US", "CA", "UK", "AU", "NZ"]
+
+[team]
+# Core 9 — 모든 마일스톤 활동
+core_agents = [
+  "orchestrator",
+  "planner",
+  "pm",
+  "designer",
+  "architect",
+  "frontend",
+  "backend",
+  "security",
+  "qa",
+]
+# Specialist 4 — 사전 채용 (2026-05-07), 마일스톤 도달 시 활성화
+specialist_agents = [
+  "learning",
+  "analytics",
+  "legal",
+  "devops",
+]
+agents = [
+  "orchestrator",
+  "planner",
+  "pm",
+  "designer",
+  "architect",
+  "frontend",
+  "backend",
+  "security",
+  "qa",
+  "learning",
+  "analytics",
+  "legal",
+  "devops",
+]
+orchestrator = "orchestrator"
+
+[team.activation_triggers]
+# Specialist 정식 활성화 조건 (Orchestrator 결정 시점)
+learning = "M1 도메인 자문 / M2 SRS 검증 / M5 콘텐츠 검수"
+analytics = "M3 이벤트 택소노미 / 하네스 evaluation 정의"
+legal = "C-13 사업자 확정 후 D-42 약관/결제 정책 검토"
+devops = "M2 CI/CD bootstrap / M5 ASO/배포 게이트"
+
+[paths]
+agents_dir = ".claude/agents"
+skills_dir = ".agents/skills"
+vendor_skills_dir = ".vendor/agent-skills"
+context_dir = "context"
+rollups_dir = "context/rollups"
+docs_dir = "docs"
+adr_dir = "docs/adr"
+runbooks_dir = "docs/runbooks"
+fixtures_dir = "fixtures"
+
+[skills.required]
+# 모든 agent가 사용 가능해야 하는 핵심 skill
+core = [
+  "humanizer",
+  "theme-factory",
+  "frontend-design",
+  "webapp-testing",
+  "canvas-design",
+  "taste-skill",
+]
+additional_min = 10
+
+[skills.role_required]
+# 매 작업마다 반드시 사용
+planner = ["humanizer", "theme-factory", "frontend-design", "taste-skill"]
+pm = ["humanizer", "theme-factory", "frontend-design", "taste-skill"]
+frontend = ["humanizer", "theme-factory", "frontend-design", "taste-skill"]
+designer = ["theme-factory", "frontend-design", "canvas-design"]
+qa = ["webapp-testing"]
+architect = ["software-architecture", "prompt-engineering", "mcp-builder"]
+backend = ["test-driven-development", "root-cause-tracing", "prompt-engineering"]
+# Specialist 4
+learning = ["content-research-writer", "prompt-engineering"]
+analytics = ["prompt-engineering", "root-cause-tracing"]
+legal = ["content-research-writer", "humanizer"]
+devops = ["changelog-generator", "file-organizer"]
+
+[skills.installation]
+# 보안 심사 후 .agents/skills/로 복사
+sources = [
+  "https://github.com/anthropics/skills",
+  "https://github.com/ComposioHQ/awesome-claude-skills",
+  "https://github.com/Leonxlnx/taste-skill",
+]
+review_required = true
+inventory = "docs/skills/SKILLS_INVENTORY.md"
+
+[harness]
+# 도구 선택은 M3에서 확정
+candidates = ["langfuse", "phoenix"]
+required_capabilities = [
+  "trace_collection",
+  "evaluation_logging",
+  "regression_observation",
+  "structured_output_validation",
+  "baseline_metrics",
+  "execution_history",
+]
+maturity_roadmap = "docs/harness/HARNESS_MATURITY_ROADMAP.md"
+execution_board = "docs/harness/HARNESS_EXECUTION_BOARD.md"
+layered_architecture = "docs/architecture/HARNESS_LAYERED_ARCHITECTURE.md"
+compliance_audit = "docs/harness/HARNESS_COMPLIANCE_AUDIT.md"
+
+[git]
+main_branch = "main"
+direct_commit_to_main = false
+require_orchestrator_approval = true
+worktree_root = "worktrees"
+branch_conventions = [
+  "chore/{slug}",
+  "feat/{slug}",
+  "fix/{slug}",
+  "test/{slug}",
+  "docs/{slug}",
+]
+
+[context_records]
+# 모든 agent는 작업 후 context/agents/{role}/YYYYMMDD-HHMM-{branch}-{shortsha}.md 작성
+filename_pattern = "{date}-{time}-{branch}-{shortsha}.md"
+required_fields = [
+  "agent",
+  "commit_sha",
+  "branch_worktree",
+  "objective",
+  "rationale",
+  "changed_files",
+  "commands_run",
+  "test_results",
+  "skills_used",
+  "decisions",
+  "risks_followups",
+  "dependencies_blockers",
+  "next_recommended_action",
+]
+
+[milestones]
+# 각 마일스톤은 Orchestrator 서명 필수 (docs/HANDOFF.md)
+m0 = { name = "Bootstrap", state = "in_progress" }
+m1 = { name = "Product+Architecture+Stack", state = "pending" }
+m2 = { name = "Thin Vertical Slice", state = "pending" }
+m3 = { name = "Harness Hardening", state = "pending" }
+m4 = { name = "Security+QA", state = "pending" }
+m5 = { name = "Beta Handoff", state = "pending" }
+
+[gates.outstanding]
+# v0.3 봉인에서 이월된 미해결 게이트
+c13_business_entity = "deadline: D-42 before beta"
+legal_tax_review = "before store submission"
+privacy_manifest = "before iOS submission"
+rls_policy_tests = "before any DB-touching merge"
+payment_sandbox_matrix = "before paid release"
+
+[security.boundaries]
+# 교체 가능성 큰 경계면 — 추상화 강제
+abstracted = [
+  "auth",
+  "storage",
+  "queue",
+  "model_provider",
+  "observability",
+  "billing",
+  "search",
+  "vector_store",
+  "notification",
+]
+
+[security.forbidden]
+auth_bypass = true
+opaque_telemetry = true
+unnecessary_permissions = true
+unauthorized_network_calls = true
+dangerous_scripts = true
+humanizer_for_ai_concealment = true
+
+[dod]
+# Definition of Done — 7개 모두 충족 시 완료
+required = [
+  "code_or_artifact",
+  "tests",
+  "documentation",
+  "context_record",
+  "harness_tracing_if_applicable",
+  "security_review",
+  "orchestrator_approval_or_explicit_hold",
+]

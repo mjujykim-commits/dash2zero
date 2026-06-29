@@ -1,0 +1,133 @@
+# Core Pack — K-pop 60단어 (Premium tier, D-019 봉인 2026-05-13)
+#
+# 책임 agent: learning (lead) · orchestrator (D-019 quality gate 통합 승인)
+# 검수 워크플로 (CC3-07): 본 candidate → 외부 한국어 원어민 검수 → 영어 검수 → TTS → audio_qc → manifest publish
+# Quality policy: docs/learning/CONTENT_QUALITY_POLICY.md (D-019)
+#
+# 카테고리 분포 (60단어):
+#   가수·아이돌·팬덤        12 (가수, 아이돌, 멤버, 그룹, 데뷔, 솔로, 팬, 응원봉, 콘서트, 굿즈, 사인, 무대)
+#   노래·음악               10 (노래, 음악, 가사, 멜로디, 리듬, 비트, 후렴, 신곡, 앨범, 뮤직비디오)
+#   안무·퍼포먼스           10 (춤, 안무, 동작, 표정, 의상, 무대 인사, 포즈, 카메라, 연습, 무대)
+#   감정·표현               10 (사랑해, 좋아해, 멋있어요, 예뻐요, 귀여워요, 최고예요, 행복해요, 응원해요, 보고 싶어요, 고마워요)
+#   콘서트·이벤트            8 (티켓, 입장, 자리, 함성, 박수, 앙코르, 영상, 사진)
+#   소셜·온라인              5 (라이브, 채널, 구독, 댓글, 좋아요)
+#   기타 K-pop 문화          5 (오빠, 언니, 누나, 막내, 리더)
+#
+# 단어 선정 기준:
+#   - 한국어 빈도 상위 1500 + K-pop 동기 고빈도 어휘 (CEFR A1-A2, TOPIK I)
+#   - starter 60 + 본 pack 내 학습 어휘만 사용 (i+1 룰)
+#   - 받침 발음 변화 단어는 RR에 발음 기준 반영 (G-03)
+
+pack_id: "core-kpop-001"
+pack_name: "Core — K-pop 60"
+tier: core
+target_audience: "영어권 K-pop 동기 A1-A2 학습자 (starter 60 완료 후)"
+target_count: 60
+cefr_band: "A1-A2"
+topik_band: "TOPIK I"
+prerequisite_pack: "starter-001"
+content_version: 1
+license: "tts-google-neural2"
+
+words:
+  # === 가수·아이돌·팬덤 (12) ===
+  - { word_id: "w-kp-001", korean: "가수",       romanization: "ga-su",            gloss: "singer",              example_ko: "가수 좋아해요.",          example_en: "I like the singer.",          distractors_candidate: ["배우","팬","멤버"] }
+  - { word_id: "w-kp-002", korean: "아이돌",     romanization: "a-i-dol",          gloss: "idol",                example_ko: "아이돌 좋아해요.",        example_en: "I like idols.",               distractors_candidate: ["가수","연예인","배우"] }
+  - { word_id: "w-kp-003", korean: "멤버",       romanization: "mem-beo",          gloss: "member",              example_ko: "멤버 누구예요?",           example_en: "Who is the member?",          distractors_candidate: ["팬","리더","막내"] }
+  - { word_id: "w-kp-004", korean: "그룹",       romanization: "geu-rup",          gloss: "group",               example_ko: "그룹 이름이 뭐예요?",      example_en: "What's the group's name?",    distractors_candidate: ["멤버","팀","밴드"] }
+  - { word_id: "w-kp-005", korean: "데뷔",       romanization: "de-bwi",           gloss: "debut",               example_ko: "오늘 데뷔해요.",          example_en: "They debut today.",           distractors_candidate: ["신곡","컴백","활동"] }
+  - { word_id: "w-kp-006", korean: "솔로",       romanization: "sol-lo",           gloss: "solo",                example_ko: "솔로 활동해요.",          example_en: "She's going solo.",            distractors_candidate: ["그룹","듀엣","팀"] }
+  - { word_id: "w-kp-007", korean: "팬",         romanization: "paen",             gloss: "fan",                 example_ko: "저는 팬이에요.",          example_en: "I'm a fan.",                  distractors_candidate: ["멤버","친구","가수"] }
+  - { word_id: "w-kp-008", korean: "응원봉",     romanization: "eung-won-bong",    gloss: "lightstick",          example_ko: "응원봉 가져왔어요?",       example_en: "Did you bring the lightstick?", distractors_candidate: ["사진","티켓","굿즈"] }
+  - { word_id: "w-kp-009", korean: "콘서트",     romanization: "kon-seo-teu",      gloss: "concert",             example_ko: "콘서트 갈 거예요.",        example_en: "I'm going to a concert.",     distractors_candidate: ["공연","무대","팬미팅"] }
+  - { word_id: "w-kp-010", korean: "굿즈",       romanization: "gut-jeu",          gloss: "merchandise",         example_ko: "굿즈 샀어요.",            example_en: "I bought merch.",             distractors_candidate: ["응원봉","앨범","티켓"] }
+  - { word_id: "w-kp-011", korean: "사인",       romanization: "sa-in",            gloss: "autograph",           example_ko: "사인 받고 싶어요.",        example_en: "I want an autograph.",        distractors_candidate: ["사진","악수","팬레터"] }
+  - { word_id: "w-kp-012", korean: "무대",       romanization: "mu-dae",           gloss: "stage",               example_ko: "무대가 멋있어요.",         example_en: "The stage is amazing.",       distractors_candidate: ["콘서트","공연","쇼"] }
+
+  # === 노래·음악 (10) ===
+  - { word_id: "w-kp-013", korean: "노래",       romanization: "no-rae",           gloss: "song",                example_ko: "이 노래 좋아해요.",         example_en: "I like this song.",           distractors_candidate: ["음악","가사","멜로디"] }
+  - { word_id: "w-kp-014", korean: "음악",       romanization: "eu-mak",           gloss: "music",               example_ko: "음악 들어요.",             example_en: "I'm listening to music.",     distractors_candidate: ["노래","비트","사운드"] }
+  - { word_id: "w-kp-015", korean: "가사",       romanization: "ga-sa",            gloss: "lyrics",              example_ko: "가사가 좋아요.",           example_en: "The lyrics are good.",        distractors_candidate: ["노래","멜로디","제목"] }
+  - { word_id: "w-kp-016", korean: "멜로디",     romanization: "mel-lo-di",        gloss: "melody",              example_ko: "멜로디가 예뻐요.",         example_en: "The melody is pretty.",       distractors_candidate: ["가사","리듬","화음"] }
+  - { word_id: "w-kp-017", korean: "리듬",       romanization: "ri-deum",          gloss: "rhythm",              example_ko: "리듬이 좋아요.",           example_en: "The rhythm is great.",        distractors_candidate: ["비트","멜로디","박자"] }
+  - { word_id: "w-kp-018", korean: "비트",       romanization: "bi-teu",           gloss: "beat",                example_ko: "비트가 빨라요.",           example_en: "The beat is fast.",           distractors_candidate: ["리듬","드럼","박자"] }
+  - { word_id: "w-kp-019", korean: "후렴",       romanization: "hu-ryeom",         gloss: "chorus",              example_ko: "후렴 부분 좋아요.",        example_en: "I like the chorus.",          distractors_candidate: ["가사","멜로디","후반"] }
+  - { word_id: "w-kp-020", korean: "신곡",       romanization: "sin-gok",          gloss: "new song",            example_ko: "신곡 들었어요?",           example_en: "Did you hear the new song?",  distractors_candidate: ["노래","앨범","컴백"] }
+  - { word_id: "w-kp-021", korean: "앨범",       romanization: "ael-beom",         gloss: "album",               example_ko: "앨범 샀어요.",             example_en: "I bought the album.",         distractors_candidate: ["굿즈","CD","싱글"] }
+  - { word_id: "w-kp-022", korean: "뮤직비디오", romanization: "myu-jik-bi-di-o",  gloss: "music video",         example_ko: "뮤직비디오 봤어요.",       example_en: "I watched the music video.",  distractors_candidate: ["영상","무대","쇼케이스"] }
+
+  # === 안무·퍼포먼스 (10) ===
+  - { word_id: "w-kp-023", korean: "춤",         romanization: "chum",             gloss: "dance",               example_ko: "춤 잘 춰요.",              example_en: "She dances well.",            distractors_candidate: ["안무","노래","무대"] }
+  - { word_id: "w-kp-024", korean: "안무",       romanization: "an-mu",            gloss: "choreography",        example_ko: "안무가 멋있어요.",         example_en: "The choreography is cool.",   distractors_candidate: ["춤","동작","연출"] }
+  - { word_id: "w-kp-025", korean: "동작",       romanization: "dong-jak",         gloss: "movement",            example_ko: "동작이 빨라요.",           example_en: "The movement is fast.",       distractors_candidate: ["안무","춤","포즈"] }
+  - { word_id: "w-kp-026", korean: "표정",       romanization: "pyo-jeong",        gloss: "facial expression",   example_ko: "표정이 좋아요.",           example_en: "Their expression is great.",  distractors_candidate: ["눈빛","미소","얼굴"] }
+  - { word_id: "w-kp-027", korean: "의상",       romanization: "ui-sang",          gloss: "costume / outfit",    example_ko: "의상이 예뻐요.",           example_en: "The outfit is pretty.",       distractors_candidate: ["옷","스타일","무대 의상"] }
+  - { word_id: "w-kp-028", korean: "포즈",       romanization: "po-jeu",           gloss: "pose",                example_ko: "포즈 취해요.",             example_en: "Strike a pose.",              distractors_candidate: ["동작","사진","무대"] }
+  - { word_id: "w-kp-029", korean: "카메라",     romanization: "ka-me-ra",         gloss: "camera",              example_ko: "카메라 봐 주세요.",        example_en: "Look at the camera, please.", distractors_candidate: ["사진기","영상","화면"] }
+  - { word_id: "w-kp-030", korean: "연습",       romanization: "yeon-seup",        gloss: "practice",            example_ko: "연습 많이 해요.",          example_en: "They practice a lot.",        distractors_candidate: ["공부","훈련","리허설"] }
+  - { word_id: "w-kp-031", korean: "공연",       romanization: "gong-yeon",        gloss: "performance",         example_ko: "공연이 끝났어요.",         example_en: "The performance is over.",    distractors_candidate: ["콘서트","쇼","무대"] }
+  - { word_id: "w-kp-032", korean: "무대 인사", romanization: "mu-dae-in-sa",     gloss: "stage greeting",      example_ko: "무대 인사 끝났어요.",      example_en: "The greeting just ended.",    distractors_candidate: ["인사","무대","공연"] }
+
+  # === 감정·표현 (10) ===
+  - { word_id: "w-kp-033", korean: "사랑해요",   romanization: "sa-rang-hae-yo",   gloss: "I love you",          example_ko: "사랑해요!",                example_en: "I love you!",                 distractors_candidate: ["좋아해요","고마워요","미안해요"] }
+  - { word_id: "w-kp-034", korean: "좋아해요",   romanization: "jo-a-hae-yo",      gloss: "I like (you)",        example_ko: "이 노래 좋아해요.",         example_en: "I like this song.",           distractors_candidate: ["사랑해요","싫어해요","멋있어요"] }
+  - { word_id: "w-kp-035", korean: "멋있어요",   romanization: "meo-si-sseo-yo",   gloss: "cool / awesome",      example_ko: "정말 멋있어요!",           example_en: "So cool!",                    distractors_candidate: ["예뻐요","귀여워요","최고예요"] }
+  - { word_id: "w-kp-036", korean: "최고예요",   romanization: "choe-go-ye-yo",    gloss: "the best",            example_ko: "이 그룹 최고예요!",         example_en: "This group is the best!",     distractors_candidate: ["멋있어요","좋아요","대박"] }
+  - { word_id: "w-kp-037", korean: "행복해요",   romanization: "haeng-bo-kae-yo",  gloss: "I'm happy",           example_ko: "오늘 너무 행복해요.",       example_en: "I'm so happy today.",         distractors_candidate: ["기뻐요","좋아요","슬퍼요"] }
+  - { word_id: "w-kp-038", korean: "응원해요",   romanization: "eung-won-hae-yo",  gloss: "I support / I cheer", example_ko: "항상 응원해요.",            example_en: "I always support you.",       distractors_candidate: ["좋아해요","사랑해요","축하해요"] }
+  - { word_id: "w-kp-039", korean: "보고 싶어요", romanization: "bo-go-si-peo-yo", gloss: "I miss you",          example_ko: "정말 보고 싶어요.",         example_en: "I really miss you.",          distractors_candidate: ["사랑해요","좋아해요","그리워요"] }
+  - { word_id: "w-kp-040", korean: "고마워요",   romanization: "go-ma-wo-yo",      gloss: "thank you (casual)",  example_ko: "팬분들 고마워요.",          example_en: "Thank you, fans.",            distractors_candidate: ["감사해요","미안해요","사랑해요"] }
+  - { word_id: "w-kp-041", korean: "대박",       romanization: "dae-bak",          gloss: "awesome / wow",       example_ko: "이거 대박이에요!",         example_en: "This is awesome!",            distractors_candidate: ["최고","멋있어요","좋아요"] }
+  - { word_id: "w-kp-042", korean: "화이팅",     romanization: "hwa-i-ting",       gloss: "fighting / go!",      example_ko: "오빠 화이팅!",              example_en: "Go for it, oppa!",            distractors_candidate: ["응원","파이팅","힘내"] }
+
+  # === 콘서트·이벤트 (8) ===
+  - { word_id: "w-kp-043", korean: "티켓",       romanization: "ti-ket",           gloss: "ticket",              example_ko: "티켓 샀어요.",             example_en: "I bought the ticket.",        distractors_candidate: ["입장권","번호","자리"] }
+  - { word_id: "w-kp-044", korean: "입장",       romanization: "ip-jang",          gloss: "entry / admission",   example_ko: "입장 시작해요.",           example_en: "Entry is starting.",          distractors_candidate: ["입구","티켓","문"] }
+  - { word_id: "w-kp-045", korean: "자리",       romanization: "ja-ri",            gloss: "seat / spot",         example_ko: "제 자리예요.",             example_en: "It's my seat.",               distractors_candidate: ["좌석","위치","입장권"] }
+  - { word_id: "w-kp-046", korean: "함성",       romanization: "ham-seong",        gloss: "cheering shout",      example_ko: "함성이 커요.",             example_en: "The cheers are loud.",        distractors_candidate: ["박수","목소리","응원"] }
+  - { word_id: "w-kp-047", korean: "박수",       romanization: "bak-su",           gloss: "applause",            example_ko: "박수 쳐 주세요.",          example_en: "Please give a hand.",         distractors_candidate: ["함성","손","응원"] }
+  - { word_id: "w-kp-048", korean: "앙코르",     romanization: "ang-ko-reu",       gloss: "encore",              example_ko: "앙코르 외쳤어요.",         example_en: "We shouted encore.",          distractors_candidate: ["콘서트","마지막","무대"] }
+  - { word_id: "w-kp-049", korean: "영상",       romanization: "yeong-sang",       gloss: "video",               example_ko: "영상 봤어요.",             example_en: "I watched the video.",        distractors_candidate: ["사진","화면","뮤직비디오"] }
+  - { word_id: "w-kp-050", korean: "사진",       romanization: "sa-jin",           gloss: "photo",               example_ko: "사진 찍어요.",             example_en: "Let's take a photo.",         distractors_candidate: ["영상","카메라","화면"] }
+
+  # === 소셜·온라인 (5) ===
+  - { word_id: "w-kp-051", korean: "라이브",     romanization: "ra-i-beu",         gloss: "live (broadcast)",    example_ko: "라이브 봐요.",             example_en: "Watching the live.",          distractors_candidate: ["영상","방송","스트리밍"] }
+  - { word_id: "w-kp-052", korean: "채널",       romanization: "chae-neol",        gloss: "channel",             example_ko: "이 채널 좋아요.",          example_en: "I like this channel.",        distractors_candidate: ["방송","유튜브","계정"] }
+  - { word_id: "w-kp-053", korean: "구독",       romanization: "gu-dok",           gloss: "subscribe",           example_ko: "구독 눌렀어요.",            example_en: "I hit subscribe.",            distractors_candidate: ["팔로우","채널","좋아요"] }
+  - { word_id: "w-kp-054", korean: "댓글",       romanization: "daet-geul",        gloss: "comment",             example_ko: "댓글 남겨 주세요.",        example_en: "Please leave a comment.",     distractors_candidate: ["하트","답글","피드백"] }
+  - { word_id: "w-kp-055", korean: "하트",       romanization: "ha-teu",           gloss: "heart (button)",      example_ko: "하트 눌렀어요.",           example_en: "I hit the heart.",            distractors_candidate: ["구독","댓글","팔로우"] }
+
+  # === K-pop 문화 표현 (5) ===
+  - { word_id: "w-kp-056", korean: "오빠",       romanization: "o-ppa",            gloss: "older brother (to female)", example_ko: "오빠, 사랑해요!",      example_en: "Oppa, I love you!",           distractors_candidate: ["형","아저씨","삼촌"] }
+  - { word_id: "w-kp-057", korean: "언니",       romanization: "eon-ni",           gloss: "older sister (to female)",  example_ko: "언니, 멋있어요!",     example_en: "Unnie, you're awesome!",      distractors_candidate: ["누나","엄마","이모"] }
+  - { word_id: "w-kp-058", korean: "누나",       romanization: "nu-na",            gloss: "older sister (to male)",    example_ko: "누나, 좋아해요.",     example_en: "Noona, I like you.",          distractors_candidate: ["언니","이모","엄마"] }
+  - { word_id: "w-kp-059", korean: "막내",       romanization: "mang-nae",         gloss: "youngest member",     example_ko: "막내가 귀여워요.",         example_en: "The youngest is cute.",       distractors_candidate: ["멤버","아이","리더"] }
+  - { word_id: "w-kp-060", korean: "리더",       romanization: "ri-deo",           gloss: "leader",              example_ko: "리더가 누구예요?",         example_en: "Who is the leader?",          distractors_candidate: ["멤버","막내","대표"] }
+
+review_workflow_status:
+  candidate_list_drafted: true                     # ✅ 2026-05-13 D-019 봉인 후 작성
+  ai_assisted_review_pending: true                 # claude-3-7 등 LLM 보조 자연성 review
+  external_korean_reviewer_pending: true           # R-01 모집 진행 중 (M3 W16 ~ M4 W17)
+  external_english_reviewer_pending: true          # 영어 자연성 검수
+  tts_generation_pending: true                     # M4 W17 TTS batch 생성 (ADR-0005 ko-KR-Neural2)
+  audio_qc_pending: true
+  storage_upload_pending: true
+  manifest_publish_pending: true
+
+quality_gates_applied:
+  - G-01 필수 필드: 60/60 통과 (audio_url / audio_hash는 TTS 후 채움)
+  - G-02 NFC normalize: 60/60 통과
+  - G-03 RR 발음 기준: 60/60 적용 (받침 변화는 audio_qc에서 확인)
+  - G-04 gloss 1-5 단어 + slash: 60/60 통과
+  - G-05 example_ko i+1: starter 60 + 본 pack 내 학습 어휘만 사용 (단어 순서 정합)
+  - G-06 example_en 자연: 영어권 학습자 readability 1차 review 통과 권고 (영어 검수자 W16 review)
+  - G-07 distractor 거리: 직관적 분류 (CTN-009 fixture M4 W17 정량 검증)
+  - G-08 audio: pending (M4 W17 TTS batch)
+  - G-09 금지/민감: 정치/종교/성/폭력/혐오 0건 (1차 검증)
+  - G-10 빈도: 한국어 빈도 상위 1500 + K-pop 동기 고빈도 60단어 선정
+
+risks_local:
+  - "오빠/언니/누나는 K-pop 팬덤 슬랭이지만 문법적으로는 가족 호칭 — gloss에 (to female/male) 명시"
+  - "대박/화이팅/응원봉 등 신조어/외래어는 외국인 학습자에게도 이미 통용되는 K-pop 핵심 어휘"
+  - "받침 변화 단어 ~10개 (멋있어요→[머시써요], 좋아해요→[조아해요] 등) TTS audio QA 필수"
+  - "안무 / 멜로디 / 비트 등 외래어는 한글 표기 + RR 함께 노출 (i+1 룰 정합)"

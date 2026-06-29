@@ -1,0 +1,9 @@
+id: PAY-008
+description: 동일 event_id 재전송 → idempotent_skip (CC2-08 / PAY-ADV-001)
+category: idempotent
+input:
+  last_rc_event_id: evt_dup_12345
+  db_last_rc_event_id: evt_dup_12345  # DB에 이미 존재
+expected:
+  outcome: idempotent_skip
+  http_status: 200

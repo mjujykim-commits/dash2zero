@@ -1,0 +1,36 @@
+id: SRS-046
+description: |
+  i18n — RR(Revised Romanization) 표기가 ko/en/ja 시스템 언어 모두에서 동일 문자열로 표시.
+  RR은 ASCII 라틴 문자 기반이므로 system locale에 따라 변형되지 말 것.
+  evaluator는 SRS attempt 자체에 영향 없음을 단언 (stage 1 → 2 정상 전이).
+  UI 측 RR 표기 일관성은 M4 e2e + content evaluator schema에서 추가 단언.
+category: i18n
+input:
+  user_id: u-test-046-i18n
+  word_id: w-046-rr           # romanization="annyeong" (예시)
+  current_state:
+    stage: 1
+    weak: false
+    correct_count: 0
+    incorrect_count: 0
+    last_attempt_at: null
+    last_attempt_correct: null
+    next_due_at: 2026-05-08T11:00:00Z
+    mastered_at: null
+  attempt:
+    correct: true
+    occurred_at: 2026-05-08T17:00:00Z
+    timezone: Asia/Seoul
+expected:
+  stage: 2
+  weak: false
+  correct_count: 1
+  incorrect_count: 0
+  last_attempt_correct: true
+  mastered_at: null
+  next_due_at_after_days: 3
+i18n_assertions:
+  - rr_string_identical_across_locales: ["ko-KR", "en-US", "ja-JP"]
+  - rr_uses_only_ascii_latin
+  - rr_no_locale_dependent_diacritics
+e2e_followup: M4 E2E-LOCALE-002 — RR 문자열 시각 회귀 (3 locale)

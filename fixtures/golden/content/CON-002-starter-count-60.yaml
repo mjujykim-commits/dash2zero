@@ -1,0 +1,7 @@
+id: CON-002
+description: Starter Pack 합계는 정확히 60단어 (D-008 target_count)
+category: starter_count
+input:
+  pack_path: fixtures/seeded/words/starter-pack-candidates.yaml
+expected:
+  word_count: 60

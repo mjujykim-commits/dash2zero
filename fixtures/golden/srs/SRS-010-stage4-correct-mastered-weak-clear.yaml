@@ -1,0 +1,27 @@
+id: SRS-010
+description: stage 4 정답 → Mastered(stage 5) 진입과 동시에 weak=true 해제 (CC2-09 + applySrs correct branch)
+category: mastered_reached
+input:
+  user_id: u-test-010
+  word_id: w-010
+  current_state:
+    stage: 4
+    weak: true   # 과거 강하 후 weak였던 단어
+    correct_count: 5
+    incorrect_count: 2
+    last_attempt_at: 2026-04-24T17:00:00Z
+    last_attempt_correct: true
+    next_due_at: 2026-05-08T11:00:00Z
+    mastered_at: null
+  attempt:
+    correct: true
+    occurred_at: 2026-05-08T17:00:00Z
+    timezone: America/Los_Angeles
+expected:
+  stage: 5
+  weak: false   # 정답이 weak 해제 + Mastered 진입
+  correct_count: 6
+  incorrect_count: 2
+  last_attempt_correct: true
+  mastered_at: 2026-05-08T17:00:00Z   # 신규 기록
+  next_due_at_after_days: 30

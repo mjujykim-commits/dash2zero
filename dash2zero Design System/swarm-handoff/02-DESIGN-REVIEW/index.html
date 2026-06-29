@@ -1,0 +1,721 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>dash2zero · Senior Design Review</title>
+<link rel="stylesheet" href="review.css">
+</head>
+<body>
+
+<!-- Background orbs -->
+<div class="orb" style="top:-120px;left:-120px;width:520px;height:520px;background:var(--neon-purple);"></div>
+<div class="orb" style="top:30vh;right:-160px;width:480px;height:480px;background:var(--neon-pink);opacity:0.28;"></div>
+<div class="orb" style="bottom:-100px;left:30%;width:420px;height:420px;background:var(--neon-cyan);opacity:0.22;"></div>
+
+<div class="page">
+
+<div class="toc-shell">
+
+<!-- ─── TOC ─── -->
+<nav class="toc">
+  <div class="eyebrow" style="margin-bottom:12px;color:var(--fg-muted);">목차</div>
+  <a href="#verdict">총평</a>
+  <a href="#strengths">강점</a>
+  <a href="#gaps">치명적 약점</a>
+  <a href="#lab">⚡ 애니메이션 랩</a>
+  <a href="#feedback">  · 피드백 & 리액션</a>
+  <a href="#transition">  · 화면 전환</a>
+  <a href="#loading">  · 로딩 & 진행</a>
+  <a href="#state">  · 상태 & 알림</a>
+  <a href="#micro">  · 마이크로 인터랙션</a>
+  <a href="#tokens">모션 토큰 처방</a>
+  <a href="#roadmap">우선순위 로드맵</a>
+</nav>
+
+<div>
+
+<!-- ─── Hero ─── -->
+<section id="hero">
+  <div class="eyebrow">Senior Design Review · 2026-05-26</div>
+  <h1 class="h1">한글이 주인공인 무대.<br>지금은 무대가 너무 정적이다.</h1>
+  <p class="lede">
+    dash2zero는 <strong>D-022 K-pop Bold</strong> 결정 이후 시각적 정체성을 확고히 다졌다.
+    다크 캔버스, 네온 그라데이션, 64–88px 한글 hero — 톤은 분명히 살아 있다.
+    그러나 사용자가 실제로 손을 대는 순간, 즉 <strong>인터랙션의 표면</strong>에서는
+    아직 "정적인 mockup"의 흔적이 남아 있다.
+    오늘 리뷰의 결론은 한 줄이다 — <strong style="color:var(--neon-pink);">시각은 A, 모션은 C.</strong>
+    그리고 그 간극을 메우는 작업은 모두 0.15–0.4초 안에 끝낼 수 있다.
+  </p>
+</section>
+
+<!-- ─── Scoreboard ─── -->
+<section id="verdict">
+  <div class="section-head">
+    <div>
+      <div class="eyebrow">01 · 총평</div>
+      <h2 class="h2">현재 상태 채점표</h2>
+    </div>
+    <div class="meta">scope: mobile app · D-022 baseline</div>
+  </div>
+
+  <div class="scoreboard">
+    <div class="score">
+      <div class="label">Visual Foundation</div>
+      <div class="grade a">A</div>
+      <div class="note">컬러·타이포·스페이싱 토큰 정합성 우수. 한글 hero 처리는 동급 최고 수준.</div>
+    </div>
+    <div class="score">
+      <div class="label">Component Polish</div>
+      <div class="grade b">B+</div>
+      <div class="note">버튼·카드·뱃지 시각은 좋음. 단, 상태 전환(pressed, focus, loading)의 모션이 빈약.</div>
+    </div>
+    <div class="score">
+      <div class="label">Motion System</div>
+      <div class="grade c">C</div>
+      <div class="note">토큰은 정의돼 있으나 실제 적용은 페이지 push 200ms · 토글 150ms 수준에 머무름. 시그니처 모션 부재.</div>
+    </div>
+    <div class="score">
+      <div class="label">Microinteractions</div>
+      <div class="grade d">D+</div>
+      <div class="note">Ripple, 정답 reveal stagger, streak pop, pull-to-refresh — 모두 미구현. 사용자가 "짜릿한 순간"을 만날 곳이 없다.</div>
+    </div>
+  </div>
+
+  <div class="verdict">
+    <div class="callout win">
+      <div class="sigil">✓</div>
+      <div class="body">
+        <h4>가장 잘한 결정 <span class="pill">SIGNATURE</span></h4>
+        <p>D-022로 dark-first를 못 박은 것. 한글 88px Black 900 + hero gradient text-clip은 K-pop Bold라는 톤을 한 화면에서 즉시 전달한다. 경쟁 학습 앱(Duolingo · Memrise · Drops) 어느 곳도 이 방향을 못 잡고 있다.</p>
+      </div>
+    </div>
+    <div class="callout crit">
+      <div class="sigil">!</div>
+      <div class="body">
+        <h4>가장 시급한 부채 <span class="pill">P0</span></h4>
+        <p><strong>4단계 학습 루프</strong>(Notice → Hear → Meaning → Retrieve)에서 단계 간 전환이 단순 setState 교체로 처리됨. 4단계 × 평균 3카드 = 12번의 "전환 순간"이 매일 사용자에게 노출되는데, 그 순간이 모두 무미하다. <strong>여기 하나만 잡으면 체감 품질이 한 단계 올라간다.</strong></p>
+      </div>
+    </div>
+    <div class="callout warn">
+      <div class="sigil">~</div>
+      <div class="body">
+        <h4>혼란스러운 톤 분기 <span class="pill">M1</span></h4>
+        <p>D-022는 <em>"Master Korean faster."</em>를 hero로 허용하지만, <code>docs/11_ux_writing_guide.md</code>는 같은 표현을 금지어로 명시. <strong>마케팅 모먼트(Welcome · Paywall H1 · Complete)는 Bold, 운영 모먼트(Error · Disclosure · Settings)는 Quiet</strong>으로 명문화 필요. 지금은 디자이너가 매번 판단해야 함.</p>
+      </div>
+    </div>
+    <div class="callout info">
+      <div class="sigil">i</div>
+      <div class="body">
+        <h4>잠재력 — 다음 한 분기 <span class="pill">M4</span></h4>
+        <p>모션 시스템에 ~2주 투자하면 GA 직전 사용자 1차 반응에서 <strong>"이 앱은 만든 사람이 신경 썼다"</strong>는 신호를 만들 수 있다. 이 신호 하나가 ASO 리뷰 별점에서 0.3~0.5점 차이를 만든다.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── Strengths ─── -->
+<section id="strengths">
+  <div class="section-head">
+    <div>
+      <div class="eyebrow">02 · 강점</div>
+      <h2 class="h2">유지해야 할 것</h2>
+    </div>
+  </div>
+
+  <div class="lab-grid">
+    <div class="demo">
+      <div class="demo-label"><span class="name">한글 위계</span><span class="timing">tier-1</span></div>
+      <div class="stage">
+        <div style="font-family:var(--font-korean);font-size:88px;font-weight:900;letter-spacing:-0.04em;background:var(--gradient-hero);-webkit-background-clip:text;-webkit-text-fill-color:transparent;line-height:0.95;">안녕</div>
+      </div>
+      <div class="hint">한글이 hero인 학습 앱은 dash2zero가 유일하다. <strong style="color:var(--fg);">절대 약화시키지 말 것.</strong></div>
+    </div>
+    <div class="demo">
+      <div class="demo-label"><span class="name">단일 컬럼 · 단일 CTA</span><span class="timing">SE-safe</span></div>
+      <div class="stage" style="align-items:stretch;padding:0 18px;justify-content:flex-end;">
+        <div style="text-align:center;color:var(--fg-secondary);font-size:13px;line-height:1.6;">
+          한 화면 · 한 결정 · 한 버튼.<br>iPhone SE에서도 무너지지 않는 골격.
+        </div>
+        <button class="btn btn-primary" data-ripple>Start session →</button>
+      </div>
+      <div class="hint">3분 안에 끝나야 한다는 제약을 시각 위계가 그대로 반영함.</div>
+    </div>
+    <div class="demo">
+      <div class="demo-label"><span class="name">정직한 disclosure</span><span class="timing">trust</span></div>
+      <div class="stage" style="align-items:stretch;">
+        <div style="background:rgba(255,255,255,0.04);border:1px solid var(--border-subtle);border-radius:12px;padding:14px;font-size:12px;line-height:1.7;color:var(--fg-secondary);">
+          · No free trial.<br>
+          · Family Sharing is not supported.<br>
+          · Auto-renews until canceled in App Store or Google Play.
+        </div>
+      </div>
+      <div class="hint">paywall에서 숨기지 않고 정면에 두는 결정. App Store §3.1.2(a) 호환 + 사용자 신뢰 자산.</div>
+    </div>
+    <div class="demo">
+      <div class="demo-label"><span class="name">04:00 local reset</span><span class="timing">design intent</span></div>
+      <div class="stage">
+        <div style="display:flex;align-items:baseline;gap:8px;">
+          <span style="font-family:var(--font-latin);font-size:48px;font-weight:900;color:var(--neon-cyan);text-shadow:0 0 16px rgba(6,182,212,0.5);">04:00</span>
+          <span style="font-size:14px;color:var(--fg-muted);">AM local</span>
+        </div>
+      </div>
+      <div class="hint">자정이 아닌 새벽 4시. 야간 학습 사용자가 streak를 잃지 않도록 한 작은 결정이지만, 제품 철학을 보여줌.</div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── Gaps ─── -->
+<section id="gaps">
+  <div class="section-head">
+    <div>
+      <div class="eyebrow">03 · 치명적 약점</div>
+      <h2 class="h2">지금 손대지 않으면 GA에 발목 잡힐 다섯 가지</h2>
+    </div>
+  </div>
+
+  <div class="verdict">
+    <div class="callout crit">
+      <div class="sigil">1</div>
+      <div class="body">
+        <h4>학습 단계 전환이 즉시 교체된다 <span class="pill">P0</span></h4>
+        <p>
+          <code>apps/mobile/app/lesson/[wordId].tsx</code>의 stage 전환은 <code>setStage()</code> 호출 하나로 끝난다.
+          Notice → Hear → Meaning → Retrieve는 <strong>학습 루프의 본체</strong>이고 사용자는 하루에 12번 그 전환을 본다.
+          그런데 지금은 모든 단계가 같은 위치에 펑 하고 나타난다. fade도 없고, 슬라이드도 없고, hero glyph의 위치 변화조차 없다.
+        </p>
+        <p>
+          → 처방: <strong>한글 글자는 좌상단으로 축소하면서 RR + gloss가 fade-up</strong>으로 들어오는 단일 시그니처 모션. 240ms ease-out, stagger 60ms.
+        </p>
+      </div>
+    </div>
+
+    <div class="callout crit">
+      <div class="sigil">2</div>
+      <div class="body">
+        <h4>정답·오답 피드백에 "리액션"이 없다 <span class="pill">P0</span></h4>
+        <p>
+          현재 코드는 정답이면 success 보더, 오답이면 danger 보더로 색만 변경한다. <code>docs/brand/DESIGN_DIRECTION.md §9.1</code>의 "<em>정답/오답 피드백은 색만 (모션 없음)</em>"이라는 Quiet 시절 규칙이 D-022로 톤이 바뀐 뒤에도 그대로 살아 있는 것.
+        </p>
+        <p>
+          → 처방: 정답은 <strong>success glow가 부드럽게 펄스 + ✓ icon이 0.4→1로 spring scale</strong>. 오답은 <strong>360ms shake</strong> + danger border. <em>학습 흐름을 끊지 않는 한도 안에서</em> 리액션을 부활시키는 게 D-022 정신에 더 맞다. 아래 랩 §02에서 직접 눌러보고 판단하길.
+        </p>
+      </div>
+    </div>
+
+    <div class="callout warn">
+      <div class="sigil">3</div>
+      <div class="body">
+        <h4>버튼에 ripple도, hover lift도, focus ring도 없다 <span class="pill">P1</span></h4>
+        <p>
+          <code>NeonButton.tsx</code>는 press에서 <code>scale(0.96)</code>만 적용. 웹 prototype CSS에는 hover translateY조차 없다. 키보드 사용자는 focus indicator 자체가 없는 상황(접근성 부채).
+        </p>
+        <p>
+          → 처방: <strong>Press = 물결(ripple) + scale(0.96), Hover = translateY(-2px) + glow 강화, Focus = 2px 외곽 neon ring</strong>. 모두 200ms 이하. 아래 §1.1 라이브 데모 참고.
+        </p>
+      </div>
+    </div>
+
+    <div class="callout warn">
+      <div class="sigil">4</div>
+      <div class="body">
+        <h4>로딩 상태가 ActivityIndicator 회색 스피너 하나 <span class="pill">P1</span></h4>
+        <p>
+          <code>home.tsx</code> 로딩 중 모습은 <code>&lt;ActivityIndicator color={lightColors["neon.cyan"]} size="large" /&gt;</code>. 시스템 기본 UIActivityIndicatorView가 cyan으로 칠해진 것에 불과. <strong>D-022 톤과 무관한 외형</strong>이고, 사용자에게 "이 앱이 무엇을 로딩 중인지" 단서를 주지 않음.
+        </p>
+        <p>
+          → 처방 둘 중 택일: <strong>(a) gradient conic spinner</strong> + neon glow, <strong>(b) skeleton</strong> — 카드 형태를 그대로 둔 채 shimmer 1.4s ease-in-out. State pattern 문서가 이미 skeleton을 권장하고 있으니 (b)가 정답.
+        </p>
+      </div>
+    </div>
+
+    <div class="callout warn">
+      <div class="sigil">5</div>
+      <div class="body">
+        <h4>streak·mastered 같은 "성취 표시"가 정적이다 <span class="pill">P2</span></h4>
+        <p>
+          Lesson Complete에서 <code>+3</code>이 표시되는데 그냥 그 자리에 있다.
+          하루에 한 번 보는 화면이라면 <strong>숫자가 카운트업되며 등장하는 0.6초의 micro-moment</strong>를 만들 가치가 충분하다. 추가로 streak 뱃지에는 flame flicker 1.6s 알트네이트 — 보기엔 사소하지만 화면이 살아 있다는 신호.
+        </p>
+        <p>
+          → 처방: <strong>StatCard.value</strong>를 <code>data-counter</code> 패턴으로 만들고 IntersectionObserver로 viewport 진입 시 1회 carryover. 아래 §4.2.
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── Animation Lab ─── -->
+<section id="lab">
+  <div class="section-head">
+    <div>
+      <div class="eyebrow">04 · 라이브 애니메이션 랩</div>
+      <h2 class="h2">⚡ 모든 권고를 직접 눌러볼 수 있게.</h2>
+    </div>
+    <div class="meta">click · drag · hover everything</div>
+  </div>
+  <p class="dek">
+    아래 데모는 모두 vanilla CSS + JS로 작성된 <strong>실제 동작 코드</strong>다.
+    각 카드에 표시된 duration·easing 값은 그대로 <code>packages/design-tokens/src/motion.ts</code>에 추가할 수 있는 토큰.
+    토큰은 페이지 끝 §05에 정리.
+  </p>
+</section>
+
+<!-- ─── 4.1 Feedback & Reactions ─── -->
+<section id="feedback" style="margin-top:48px;">
+  <h3 class="h3">4.1 · 피드백 & 리액션</h3>
+  <p class="dek">사용자가 손을 댄 직후 0.15–0.4초 사이에 일어나는 모든 응답.</p>
+
+  <div class="lab-grid">
+    <!-- Ripple button -->
+    <div class="demo">
+      <div class="demo-label"><span class="name">Primary CTA · ripple + lift</span><span class="timing">120 / 200ms</span></div>
+      <div class="stage" style="gap:12px;">
+        <button class="btn btn-primary" data-ripple>Start session →</button>
+        <button class="btn btn-secondary" data-ripple>Restore purchases</button>
+        <button class="btn btn-ghost">← Back</button>
+      </div>
+      <div class="hint">호버 시 -2px lift + glow 강화 · 프레스 시 scale(0.96) · 클릭 위치에서 물결 600ms ease-out</div>
+    </div>
+
+    <!-- Audio button -->
+    <div class="demo">
+      <div class="demo-label"><span class="name">Audio button · play pulse</span><span class="timing">1400ms infinite</span></div>
+      <div class="stage">
+        <button class="audio-btn" data-audio aria-label="Toggle audio">▶</button>
+      </div>
+      <div class="hint">탭 → playing 상태. 박동하는 glow + 1px 더 확장된 ring이 점멸. <strong>녹음 중이 아닌 "발음을 듣고 있다"는 신호.</strong></div>
+    </div>
+
+    <!-- Quiz reveal -->
+    <div class="demo full">
+      <div class="demo-label"><span class="name">Quiz · 정답·오답 리액션</span><span class="timing">280ms reveal · 360ms shake · 600ms glow</span></div>
+      <div class="stage" style="align-items:stretch;padding:0;">
+        <div style="text-align:center;">
+          <div class="eyebrow" style="color:var(--neon-cyan);">Which one means</div>
+          <div style="margin-top:6px;font-size:28px;font-weight:900;color:var(--fg);letter-spacing:-0.02em;">"apple"?</div>
+        </div>
+        <div data-quiz="사과" style="display:flex;flex-direction:column;gap:8px;">
+          <button class="choice" data-value="고양이">고양이 <span class="ico">✕</span></button>
+          <button class="choice" data-value="사과">사과 <span class="ico">✓</span></button>
+          <button class="choice" data-value="물">물 <span class="ico">✕</span></button>
+          <button class="choice" data-value="학교">학교 <span class="ico">✕</span></button>
+        </div>
+      </div>
+      <div class="hint">선택 → 280ms 후 결과 reveal. 정답은 success border + glow + ✓ spring-in, 오답은 360ms shake + danger border. <strong>다시 누르면 리셋</strong>되니 여러 번 시도해 볼 것.</div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── 4.2 Transitions ─── -->
+<section id="transition" style="margin-top:48px;">
+  <h3 class="h3">4.2 · 화면 전환</h3>
+  <p class="dek">Lesson 단계 간 이동, modal sheet, 뒤로 가기 — 사용자가 무대 사이를 건널 때.</p>
+
+  <div class="lab-grid">
+
+    <!-- Slide / fade between panels -->
+    <div class="demo full">
+      <div class="demo-label"><span class="name">Page push / fade · 단계 전환</span><span class="timing">240–360ms ease-out</span></div>
+      <div class="stage" style="align-items:stretch;padding:0;">
+        <div class="transition-stage" data-transition>
+          <div class="panel"><div class="glyph" style="background:var(--gradient-hero);-webkit-background-clip:text;-webkit-text-fill-color:transparent;">사과</div><div class="sub">Notice</div></div>
+          <div class="panel"><div class="glyph" style="color:var(--fg);">사과</div><div class="sub">Hear · ▶ playing</div></div>
+          <div class="panel"><div class="glyph" style="color:var(--fg);">사과</div><div class="sub">Meaning · sa-gwa · apple</div></div>
+          <div class="panel"><div class="glyph" style="background:var(--gradient-cta);-webkit-background-clip:text;-webkit-text-fill-color:transparent;">apple?</div><div class="sub">Retrieve · 4-option quiz</div></div>
+        </div>
+        <div class="toolbar">
+          <button class="tab active" data-mode="slide">slide</button>
+          <button class="tab" data-mode="fade">fade</button>
+          <button class="btn btn-secondary" data-action="prev" style="height:36px;padding:0 16px;font-size:13px;">← Prev</button>
+          <button class="btn btn-primary" data-action="next" data-ripple style="height:36px;padding:0 16px;font-size:13px;">Next →</button>
+        </div>
+      </div>
+      <div class="hint">slide 모드: 다음 패널이 오른쪽에서 360ms ease-out으로 push-in. fade 모드: 현재 패널 96%로 축소+fade-out, 다음 패널 fade-in. <strong>학습 루프 단계 전환의 두 가지 후보.</strong></div>
+    </div>
+
+    <!-- Modal sheet -->
+    <div class="demo">
+      <div class="demo-label"><span class="name">Modal sheet · bottom rise</span><span class="timing">backdrop 220ms · sheet 360ms</span></div>
+      <div class="stage" style="align-items:stretch;padding:0;">
+        <div class="sheet-stage" id="sheet1">
+          <div class="backdrop"></div>
+          <div class="sheet">
+            <div class="handle"></div>
+            <div style="font-size:18px;font-weight:700;color:var(--fg);">Report an issue</div>
+            <p style="margin-top:8px;font-size:13px;color:var(--fg-secondary);">Typo · Translation · Romanization · Audio …</p>
+            <button class="btn btn-primary" data-ripple data-sheet-toggle="#sheet1" style="margin-top:14px;height:44px;font-size:14px;">Submit</button>
+          </div>
+        </div>
+      </div>
+      <div class="toolbar">
+        <button class="btn btn-secondary" data-sheet-toggle="#sheet1" style="height:36px;padding:0 16px;font-size:13px;">Open / close sheet</button>
+      </div>
+      <div class="hint">backdrop은 220ms fade, sheet 본체는 100% → 0 translateY 360ms ease-out. 동기 어긋남이 자연스러운 stack 느낌을 만듦.</div>
+    </div>
+
+    <!-- (placeholder card) -->
+    <div class="demo">
+      <div class="demo-label"><span class="name">Tab pill · active swap</span><span class="timing">200ms ease-out</span></div>
+      <div class="stage">
+        <div class="toolbar" style="margin:0;">
+          <button class="tab active" onclick="this.parentNode.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));this.classList.add('active');">Today</button>
+          <button class="tab" onclick="this.parentNode.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));this.classList.add('active');">Mastered</button>
+          <button class="tab" onclick="this.parentNode.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));this.classList.add('active');">Weak</button>
+        </div>
+      </div>
+      <div class="hint">active 칩은 gradient-cta + 글로우로 즉시 강조. 색·그림자가 함께 cross-fade되도록 한 묶음의 transition 사용.</div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── 4.3 Loading / Progress ─── -->
+<section id="loading" style="margin-top:48px;">
+  <h3 class="h3">4.3 · 로딩 & 진행</h3>
+  <p class="dek">사용자를 기다리게 하는 모든 순간 — 가장 자주 폴리시가 빠지는 곳.</p>
+
+  <div class="lab-grid">
+
+    <!-- Skeleton -->
+    <div class="demo">
+      <div class="demo-label"><span class="name">Skeleton · home</span><span class="timing">1400ms shimmer</span></div>
+      <div class="stage" style="align-items:stretch;">
+        <div style="display:flex;flex-direction:column;gap:10px;">
+          <div class="skeleton" style="height:14px;width:40%;"></div>
+          <div class="skeleton" style="height:32px;width:80%;"></div>
+          <div style="display:flex;gap:8px;margin-top:4px;">
+            <div class="skeleton" style="height:64px;flex:1;border-radius:12px;"></div>
+            <div class="skeleton" style="height:64px;flex:1;border-radius:12px;"></div>
+          </div>
+        </div>
+      </div>
+      <div class="hint">Today summary fetch 중 사용. <strong>spinner를 쓰지 말 것</strong> — 어떤 모양이 나올지 미리 알려주는 게 더 정직하다.</div>
+    </div>
+
+    <!-- Spinner -->
+    <div class="demo">
+      <div class="demo-label"><span class="name">Spinner · audio loading</span><span class="timing">900ms · 1200ms</span></div>
+      <div class="stage" style="gap:24px;flex-direction:row;">
+        <div class="spinner-ring"></div>
+        <div class="spinner-dots"><span></span><span></span><span></span></div>
+      </div>
+      <div class="hint">왼쪽: conic-gradient + mask로 만든 그라데이션 링. 오른쪽: cyan / purple / pink 도트 1.2s bounce. <strong>오디오 fetch 같은 짧은 대기에만</strong> — 화면 진입 시에는 skeleton 사용.</div>
+    </div>
+
+    <!-- Progress bar -->
+    <div class="demo">
+      <div class="demo-label"><span class="name">Progress · chain progress</span><span class="timing">600ms ease-out</span></div>
+      <div class="stage" style="align-items:stretch;gap:14px;">
+        <div data-progress-stage>
+          <div class="progress-bar"><div class="fill"></div></div>
+          <div style="display:flex;justify-content:space-between;margin-top:8px;font-size:11px;color:var(--fg-muted);font-family:var(--font-mono);">
+            <span>Card 1 of 3</span>
+            <span data-progress-label>0%</span>
+          </div>
+        </div>
+      </div>
+      <div class="hint">fill 자체에 진행 shimmer head — 정지 상태에서도 살아 있다는 단서. lesson chain · paywall checkout 진행 표시에 사용.</div>
+    </div>
+
+    <!-- Stats counter -->
+    <div class="demo">
+      <div class="demo-label"><span class="name">Number counter · lesson complete</span><span class="timing">900ms cubic out</span></div>
+      <div class="stage" style="flex-direction:row;gap:32px;">
+        <div style="text-align:center;">
+          <div class="eyebrow">Streak</div>
+          <div class="tick" data-counter="6"></div>
+          <div style="font-size:11px;color:var(--fg-muted);margin-top:6px;">🔥 days</div>
+        </div>
+        <div style="text-align:center;">
+          <div class="eyebrow">Mastered</div>
+          <div class="tick" data-counter="15"></div>
+          <div style="font-size:11px;color:var(--fg-muted);margin-top:6px;">↑ +3</div>
+        </div>
+      </div>
+      <div class="hint">스크롤로 viewport에 들어오면 0에서 목표값까지 count-up. 하루 한 번 마주치는 Complete 화면이라서 이 정도 모먼트는 정당화됨.</div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── 4.4 State & Notifications ─── -->
+<section id="state" style="margin-top:48px;">
+  <h3 class="h3">4.4 · 상태 & 알림</h3>
+  <p class="dek">새로 도착한 정보·결과·환경 변화를 알리는 방식.</p>
+
+  <div class="lab-grid">
+
+    <!-- Pull to refresh -->
+    <div class="demo full">
+      <div class="demo-label"><span class="name">Pull to refresh · home</span><span class="timing">drag · 1600ms refresh</span></div>
+      <div class="stage" style="align-items:stretch;padding:0;">
+        <div class="ptr-stage">
+          <div class="indicator">
+            <svg viewBox="0 0 24 24" fill="none" stroke="url(#ptrG)" stroke-width="2.5" stroke-linecap="round">
+              <defs>
+                <linearGradient id="ptrG" x1="0" y1="0" x2="1" y2="1">
+                  <stop offset="0%" stop-color="#06B6D4"/>
+                  <stop offset="100%" stop-color="#EC4899"/>
+                </linearGradient>
+              </defs>
+              <path d="M21 12a9 9 0 1 1-3.5-7.1"/>
+              <polyline points="21 5 21 12 14 12"/>
+            </svg>
+          </div>
+          <div class="scroll">
+            <div class="row">Today · 3 new · 7 reviews</div>
+            <div class="row">Streak · 5 days</div>
+            <div class="row">Mastered · 12 words</div>
+            <div class="row">Pack · Starter (20%)</div>
+            <div class="row">Tip · 사과 means apple and apology</div>
+          </div>
+        </div>
+      </div>
+      <div class="hint"><strong>위에서 아래로 끌어보세요.</strong> 64px 임계점 지나면 release 시 refresh trigger — 인디케이터 회전 + 콘텐츠가 48px 내려간 채 1.6s 대기 후 복귀. 임계점 미달이면 spring back.</div>
+    </div>
+
+    <!-- Toast -->
+    <div class="demo">
+      <div class="demo-label"><span class="name">Toast · transient feedback</span><span class="timing">420ms in · 240ms out</span></div>
+      <div class="stage" style="align-items:stretch;padding:0;">
+        <div class="toast-stage" id="toastStage">
+          <div class="toast-container"></div>
+        </div>
+      </div>
+      <div class="toolbar">
+        <button class="btn btn-secondary" data-toast-trigger data-toast-target="#toastStage" data-toast-variant="ok"   data-toast-msg="Saved." style="height:36px;padding:0 14px;font-size:12px;">✓ Saved</button>
+        <button class="btn btn-secondary" data-toast-trigger data-toast-target="#toastStage" data-toast-variant="info" data-toast-msg="Audio cached for offline." style="height:36px;padding:0 14px;font-size:12px;">i  Info</button>
+        <button class="btn btn-secondary" data-toast-trigger data-toast-target="#toastStage" data-toast-variant="warn" data-toast-msg="Reminders are off." style="height:36px;padding:0 14px;font-size:12px;">! Warn</button>
+        <button class="btn btn-secondary" data-toast-trigger data-toast-target="#toastStage" data-toast-variant="err"  data-toast-msg="Couldn't reach the server." style="height:36px;padding:0 14px;font-size:12px;">✕ Error</button>
+      </div>
+      <div class="hint">bottom-center, 2.4초 노출 후 슬라이드 down + fade. 스택 가능 — 빠르게 여러 번 눌러보세요.</div>
+    </div>
+
+    <!-- Badge pop -->
+    <div class="demo">
+      <div class="demo-label"><span class="name">Badge · achievement pop</span><span class="timing">420ms spring</span></div>
+      <div class="stage" id="badgeStage" style="gap:10px;flex-direction:column;">
+        <div style="display:flex;gap:8px;flex-wrap:wrap;justify-content:center;">
+          <span class="badge-pop"><span class="flame">🔥</span> 5 day streak</span>
+          <span class="badge-pop" style="background:rgba(6,182,212,0.15);border-color:rgba(6,182,212,0.4);color:var(--neon-cyan);">★ 12 mastered</span>
+          <span class="badge-pop" style="background:rgba(147,51,234,0.15);border-color:rgba(147,51,234,0.4);color:var(--neon-purple);">⚡ Pack 20%</span>
+        </div>
+      </div>
+      <div class="toolbar">
+        <button class="btn btn-secondary" data-pop-trigger data-pop-target="#badgeStage" style="height:36px;padding:0 14px;font-size:12px;">Replay pop</button>
+      </div>
+      <div class="hint">진입 시 차례로 80ms 간격 등장 · scale 0.4 → 1.08 → 1 spring(0.34, 1.56). 불꽃 이모지에는 무한 flicker 1.6s.</div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── 4.5 Microinteractions ─── -->
+<section id="micro" style="margin-top:48px;">
+  <h3 class="h3">4.5 · 마이크로 인터랙션</h3>
+  <p class="dek">사용자가 "재미있다"고 느끼는 모든 0.15–0.4초의 디테일.</p>
+
+  <div class="lab-grid">
+
+    <!-- Toggle -->
+    <div class="demo">
+      <div class="demo-label"><span class="name">Toggle switch · settings</span><span class="timing">320ms spring</span></div>
+      <div class="stage" style="gap:24px;">
+        <div style="display:flex;align-items:center;gap:16px;">
+          <span style="font-size:14px;color:var(--fg-secondary);">Show romanization</span>
+          <div class="toggle on" data-toggle><div class="knob"></div></div>
+        </div>
+        <div style="display:flex;align-items:center;gap:16px;">
+          <span style="font-size:14px;color:var(--fg-secondary);">Daily reminder</span>
+          <div class="toggle" data-toggle><div class="knob"></div></div>
+        </div>
+      </div>
+      <div class="hint">knob은 spring easing(0.34, 1.56)로 끝에서 살짝 overshoot. 색상은 280ms cubic.in-out로 cross-fade.</div>
+    </div>
+
+    <!-- Checkbox -->
+    <div class="demo">
+      <div class="demo-label"><span class="name">Checkbox · privacy choices</span><span class="timing">320ms stroke draw</span></div>
+      <div class="stage" style="gap:16px;align-items:flex-start;">
+        <div style="display:flex;align-items:center;gap:12px;">
+          <div class="check checked" data-check><svg viewBox="0 0 24 24"><polyline points="5 12 10 17 19 8"/></svg></div>
+          <span style="font-size:14px;color:var(--fg);">Analytics</span>
+        </div>
+        <div style="display:flex;align-items:center;gap:12px;">
+          <div class="check" data-check><svg viewBox="0 0 24 24"><polyline points="5 12 10 17 19 8"/></svg></div>
+          <span style="font-size:14px;color:var(--fg);">Crash diagnostics</span>
+        </div>
+      </div>
+      <div class="hint">stroke-dashoffset를 24 → 0으로 320ms 그려넣음. 박스는 gradient-cta + glow로 채워짐.</div>
+    </div>
+
+    <!-- Play/pause morph -->
+    <div class="demo">
+      <div class="demo-label"><span class="name">Icon morph · play ↔ pause</span><span class="timing">200ms cross-fade</span></div>
+      <div class="stage">
+        <button class="play-pause is-playing" data-playpause aria-label="Toggle">
+          <div class="bars"><span></span><span></span></div>
+          <div class="triangle"></div>
+        </button>
+      </div>
+      <div class="hint">▶ ↔ ❚❚ 변환 시 두 SVG가 opacity + scale로 교차 페이드. <strong>한 도형이 다른 도형으로 morph되는 환상</strong>.</div>
+    </div>
+
+    <!-- Heart burst -->
+    <div class="demo">
+      <div class="demo-label"><span class="name">Save · burst particles</span><span class="timing">480ms scale · 560ms burst</span></div>
+      <div class="stage">
+        <div class="icon-morph" data-iconmorph aria-label="Save">
+          <svg class="off" viewBox="0 0 24 24"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.29 1.51 4.04 3 5.5l7 7Z"/></svg>
+          <svg class="on" viewBox="0 0 24 24"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.29 1.51 4.04 3 5.5l7 7Z"/></svg>
+        </div>
+      </div>
+      <div class="hint">탭 시 outline → filled로 spring + 6 방향 파티클 burst. "단어 즐겨찾기" 같은 보조 액션에 한정해 사용.</div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── Motion tokens ─── -->
+<section id="tokens">
+  <div class="section-head">
+    <div>
+      <div class="eyebrow">05 · 모션 토큰 처방</div>
+      <h2 class="h2">packages/design-tokens/src/motion.ts 권장 갱신</h2>
+    </div>
+    <div class="meta">drop-in replacement</div>
+  </div>
+
+  <p class="dek">아래 토큰은 현재 4개(80/150/200/300ms)의 duration을 7개로 확장 + spring easing을 추가한 권장안. 모든 값은 위 랩에서 검증됨.</p>
+
+  <div class="token-grid">
+    <div class="token">
+      <div class="ms">80<span style="color:var(--fg-muted);font-size:14px;">ms</span></div>
+      <div class="name">motion.tap</div>
+      <div class="use">버튼 press scale, choice tap. 너무 짧으면 응답이 아예 없어 보이고, 100ms 넘으면 느린 느낌.</div>
+    </div>
+    <div class="token">
+      <div class="ms">150<span style="color:var(--fg-muted);font-size:14px;">ms</span></div>
+      <div class="name">motion.fast</div>
+      <div class="use">toggle color cross-fade, hover lift. 사용자가 의식하지 않을 만큼 빠른 변화.</div>
+    </div>
+    <div class="token">
+      <div class="ms">200<span style="color:var(--fg-muted);font-size:14px;">ms</span></div>
+      <div class="name">motion.base</div>
+      <div class="use">기본값. tab swap, modal backdrop, icon morph. 95%의 transition은 여기에 둘 것.</div>
+    </div>
+    <div class="token">
+      <div class="ms">240<span style="color:var(--fg-muted);font-size:14px;">ms</span></div>
+      <div class="name">motion.stage</div>
+      <div class="use" style="color:var(--neon-pink);"><strong>신규 · lesson stage 전환에 헌정</strong>. fade-out 240 → fade-in 240 stagger.</div>
+    </div>
+    <div class="token">
+      <div class="ms">320<span style="color:var(--fg-muted);font-size:14px;">ms</span></div>
+      <div class="name">motion.spring</div>
+      <div class="use" style="color:var(--neon-pink);"><strong>신규</strong> · toggle knob, badge pop, ✓ scale-in. easing.spring과 짝.</div>
+    </div>
+    <div class="token">
+      <div class="ms">360<span style="color:var(--fg-muted);font-size:14px;">ms</span></div>
+      <div class="name">motion.sheet</div>
+      <div class="use">bottom sheet rise, slide page push. backdrop fade(220ms)와 의도적 어긋남.</div>
+    </div>
+    <div class="token">
+      <div class="ms">600<span style="color:var(--fg-muted);font-size:14px;">ms</span></div>
+      <div class="name">motion.progress</div>
+      <div class="use">progress bar fill, lesson chain advance. 값 변화가 큰 transition.</div>
+    </div>
+    <div class="token">
+      <div class="ms">900<span style="color:var(--fg-muted);font-size:14px;">ms</span></div>
+      <div class="name">motion.count</div>
+      <div class="use">counter tick-up. Lesson Complete · Mastered total. <em>hero motion이므로 화면당 1회 제한</em>.</div>
+    </div>
+  </div>
+
+  <div style="margin-top:32px;background:var(--surface-card);border:1px solid var(--border-subtle);border-radius:16px;padding:20px 24px;">
+    <div class="eyebrow" style="color:var(--neon-cyan);margin-bottom:12px;">Easing additions</div>
+    <pre style="margin:0;font-family:var(--font-mono);font-size:12px;color:var(--fg);line-height:1.7;overflow:auto;">
+easing.out      cubic-bezier(0.16, 1, 0.3, 1)      // 95% — defaults
+easing.in       cubic-bezier(0.7, 0, 0.84, 0)      // exits
+easing.in-out   cubic-bezier(0.65, 0, 0.35, 1)     // toggles, color shifts
+easing.spring   cubic-bezier(0.34, 1.56, 0.64, 1)  // ✨ NEW — overshoot for pop / badge / knob
+easing.shake    cubic-bezier(0.36, 0.07, 0.19, 0.97) // ✨ NEW — incorrect answer</pre>
+  </div>
+</section>
+
+<!-- ─── Roadmap ─── -->
+<section id="roadmap">
+  <div class="section-head">
+    <div>
+      <div class="eyebrow">06 · 우선순위 로드맵</div>
+      <h2 class="h2">M4 (5/26 – 6/8) 안에 끝낼 일</h2>
+    </div>
+  </div>
+
+  <div class="roadmap">
+    <div class="lane p0">
+      <h4>P0 — GA 전 필수</h4>
+      <div class="when">M4 W17, 5/26–6/1</div>
+      <ul>
+        <li>Lesson 단계 전환 시그니처 모션 1개 — 한글 글자 + RR/gloss stagger fade-up</li>
+        <li>정답·오답 리액션 (success glow + ✓ spring / shake + danger border)</li>
+        <li>버튼 ripple + hover lift + focus ring (a11y 부채 해소 포함)</li>
+        <li>Home / Lesson skeleton — ActivityIndicator 제거</li>
+        <li>focus ring 도입(접근성)</li>
+      </ul>
+    </div>
+    <div class="lane p1">
+      <h4>P1 — GA 후 D+14 안</h4>
+      <div class="when">M5 W19–20, 6/9–6/22</div>
+      <ul>
+        <li>Number counter — Lesson Complete · Home 통계 영역</li>
+        <li>Streak / Mastered badge spring entry + flame flicker</li>
+        <li>Pull to refresh — Home only</li>
+        <li>Modal sheet (Report, Privacy update) bottom rise + backdrop fade</li>
+        <li>Toast 시스템 (현재 Alert.alert 대체)</li>
+      </ul>
+    </div>
+    <div class="lane p2">
+      <h4>P2 — D+30 이후 폴리시</h4>
+      <div class="when">post-GA</div>
+      <ul>
+        <li>Save / Favorite icon morph + burst</li>
+        <li>Paywall hero gradient slow drift (8s ease-in-out infinite)</li>
+        <li>App icon launch transition (system → first screen)</li>
+        <li>Sound design tokens — UI sound effect 도입 검토</li>
+        <li>reduce-motion ON/OFF 사용자 토글 (OS 외 명시 옵션)</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ─── Closing ─── -->
+<section id="closing">
+  <div class="section-head">
+    <div>
+      <div class="eyebrow">— 마무리</div>
+      <h2 class="h2">한 줄 권고</h2>
+    </div>
+  </div>
+
+  <p class="lede">
+    시각 시스템에 들인 만큼의 절반만큼만 모션 시스템에 투자하라.
+    <strong>위에 정리한 P0 5개 중 4개는 24시간 안에 구현 가능</strong>하고,
+    실측 효과는 GA 직후 ASO 리뷰에서 가장 먼저 드러난다.
+    한글이 hero인 dash2zero가 정말 hero답게 등장하려면, 그 등장을 받쳐줄 무대 조명이 필요하다.
+  </p>
+
+  <div style="margin-top:48px;padding:28px 32px;border-radius:20px;background:var(--gradient-paywall);box-shadow:0 8px 48px rgba(147,51,234,0.4);">
+    <div class="eyebrow" style="color:#fff;opacity:0.7;">Senior Designer · Review Sign-off</div>
+    <div style="margin-top:8px;font-family:var(--font-korean);font-size:36px;font-weight:900;color:#fff;letter-spacing:-0.02em;line-height:1.1;">
+      "정적인 mockup에서<br>살아 있는 제품으로."
+    </div>
+    <div style="margin-top:14px;font-size:13px;color:rgba(255,255,255,0.7);">
+      M4 W17 게이트 진입 전 P0 5개 완료 권고 · 추가 검토 필요 시 본 문서의 각 §로 직접 링크
+    </div>
+  </div>
+</section>
+
+</div><!-- end content col -->
+</div><!-- end toc-shell -->
+</div><!-- end page -->
+
+<script src="lab.js"></script>
+</body>
+</html>

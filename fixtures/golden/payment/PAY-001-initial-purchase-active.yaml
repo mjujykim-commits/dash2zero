@@ -1,0 +1,7 @@
+id: PAY-001
+description: INITIAL_PURCHASE → active (CC2-08)
+category: mapping
+input:
+  event_type: INITIAL_PURCHASE
+expected:
+  status: active

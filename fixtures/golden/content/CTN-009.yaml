@@ -1,0 +1,46 @@
+id: CTN-009
+description: distractor 의미 거리 임계 — 4지선다 오답 후보가 정답과 의미적으로 너무 가까우면 reject (M4 정량화 이연, yaml 형식 봉인)
+category: distractor_semantic_distance
+input:
+  pack_path: fixtures/seeded/words/starter-pack-candidates.yaml
+  word_id: w-058                              # 예: "물" (water)
+  word_meaning_en: water
+  word_pos: noun
+  distractors_candidate:
+    - id: w-061
+      meaning_en: rain                        # 의미적 거리 가까움 — 동일 의미장 (water-related)
+      pos: noun
+    - id: w-072
+      meaning_en: book                        # 의미적 거리 충분
+      pos: noun
+    - id: w-088
+      meaning_en: yellow                      # 의미적 거리 충분, 품사 다름 → 별도 reject
+      pos: adjective
+  semantic_distance_method:
+    type: cosine_similarity
+    embedding_model: text-embedding-3-small   # M4 결정
+    threshold_min: 0.30                       # 거리 ≥ 0.30 (즉 similarity ≤ 0.70) 통과
+    threshold_max: 0.85                       # 거리 ≤ 0.85 (similarity ≥ 0.15) — 너무 멀면 학습 효과 X
+expected:
+  # M3 W15 시점: 형식만 봉인, 실제 evaluator는 M4에서 활성화
+  evaluator_status: deferred_to_m4
+  schema_validation: pass                     # 본 yaml 구조는 검증
+  per_distractor_decision:
+    - id: w-061
+      decision: reject
+      reason: semantic_distance_too_close     # 동일 의미장 (water/rain)
+      similarity_estimated: 0.78
+    - id: w-072
+      decision: accept
+      reason: semantic_distance_in_range
+      similarity_estimated: 0.42
+    - id: w-088
+      decision: reject
+      reason: pos_mismatch                    # 별개 룰 (CON-003 보완)
+notes:
+  - M3 W15: yaml 스키마만 봉인. evaluator는 NotImplementedError로 skip
+  - M4: text-embedding-3-small + cosine 임계 0.30~0.85 활성화
+  - 의미장(semantic field) 추론은 1차 embedding 기반, 2차 LLM-as-judge로 검증 (M4 결정)
+  - 본 임계는 LingoDeer/Memrise distractor 분석 기반 휴리스틱 (참고: A1 학습자 대상 4지선다 평균 정답률 75-85% 유지 설계)
+  - threshold_min 너무 낮으면 학습 효과 X (정답이 너무 명백), 너무 높으면 좌절감 (혼동 야기)
+  - learning + content 합의 후 M4 W17 활성화 예정

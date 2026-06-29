@@ -1,0 +1,9 @@
+id: PAY-014
+description: cancelled status — period_ends_at 전이면 isPremium=true (CC2-08)
+category: cancellation_until_period_end
+input:
+  status: cancelled
+  period_ends_at: 2026-06-01T00:00:00Z
+  now: 2026-05-15T00:00:00Z   # period_ends_at 이전
+expected:
+  is_premium: true

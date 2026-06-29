@@ -1,0 +1,65 @@
+id: CTN-011
+description: pack manifest 갱신 후 client cache invalidation — 신규 단어 즉시 반영 + 기존 학습 진도 무손실
+category: pack_manifest_cache_invalidation
+input:
+  user_id: u-test-ctn-011
+  pack_id: starter-001
+  manifest_before:
+    pack_version: 1.2.0
+    word_count: 60
+    manifest_etag: W/"abc123-v1.2.0"
+    last_updated_at: 2026-04-15T00:00:00Z
+  manifest_after:
+    pack_version: 1.3.0
+    word_count: 62                            # +2 신규 (w-061, w-062)
+    manifest_etag: W/"def456-v1.3.0"
+    last_updated_at: 2026-05-11T22:00:00Z
+    diff:
+      added: [w-061, w-062]
+      removed: []
+      modified: [w-015]                       # 오타 수정 (예: meaning_en typo fix)
+  user_progress_before:
+    user_word_states_count: 18                # 기존 18단어 학습 중
+    sample_states:
+      - word_id: w-007
+        stage: 4
+        weak: false
+      - word_id: w-015
+        stage: 3
+        weak: false                           # 곧 modified 영향 받을 단어
+  client_request:
+    type: pack_fetch
+    if_none_match: W/"abc123-v1.2.0"          # 클라이언트 보유 etag
+    occurred_at: 2026-05-11T22:30:00Z
+expected:
+  http_status: 200                            # etag mismatch → 새 manifest 전송
+  response_etag: W/"def456-v1.3.0"
+  pack_version: 1.3.0
+  word_count: 62
+  cache_invalidation:
+    client_action: replace_manifest
+    word_assets_to_prefetch: [w-061, w-062]   # 신규 단어 audio + meta prefetch
+    word_assets_to_refresh: [w-015]           # modified 단어 — meta 재요청
+  user_progress_preserved:                    # 기존 학습 상태 무손실 보장
+    user_word_states_count: 18                # 변화 없음
+    w-007:
+      stage: 4                                # 보존
+      weak: false
+    w-015:
+      stage: 3                                # SRS state는 보존
+      weak: false
+      content_refreshed: true                 # meta만 갱신
+  daily_usage_change:
+    new_words_started_count_delta: 0          # manifest 갱신만으로는 신규 학습 카운트 X
+  # 동시성 정책
+  in_flight_attempt_handling:
+    if_attempt_in_flight: complete_with_old_version  # 진행 중 attempt는 1.2.0 기준 완료
+    next_attempt_uses: 1.3.0
+notes:
+  - HTTP If-None-Match / ETag 기반 (CDN 친화)
+  - pack manifest 변경이 user_word_states를 건드리지 않음 (FK orphan 방지는 별도 — 단어 retire 시 SRS-042/044~046)
+  - 신규 단어 prefetch는 lazy (pack 진입 시점에서 first_use 직전 fetch)
+  - modified 단어 (예: 오타 수정)는 SRS state 보존, 학습 화면에서만 새 meta 표시
+  - 학습 중 manifest 갱신이 발생해도 in-flight attempt는 old version으로 완료 (UX 마찰 최소화)
+  - client cache TTL: 6h (manifest), 30d (audio asset, immutable URL)
+  - 회귀 시그널: 사용자가 신규 단어를 보고할 수 없거나 (cache stale), 기존 학습 진도가 사라지는 경우

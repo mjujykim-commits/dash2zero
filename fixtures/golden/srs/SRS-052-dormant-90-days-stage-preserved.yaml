@@ -1,0 +1,31 @@
+id: SRS-052
+description: 90일 무활동 후 재진입. stage 3 word, 마지막 attempt 90일 전 정답. server는 stage/weak/mastered_at 모두 보존 (시간 경과 자체로 stage 강하 없음 — 강하는 명시적 오답에서만 발생, CC-08).
+category: stage_correct
+input:
+  user_id: u-test-052
+  word_id: w-052
+  current_state:
+    stage: 3
+    weak: false
+    correct_count: 2
+    incorrect_count: 0
+    last_attempt_at: 2026-02-08T17:00:00Z   # 90일 전 (overdue 83일)
+    last_attempt_correct: true
+    next_due_at: 2026-02-15T11:00:00Z   # 원래 due (overdue)
+    mastered_at: null
+  attempt:
+    correct: true
+    occurred_at: 2026-05-08T17:00:00Z
+    timezone: America/Los_Angeles
+expected:
+  # dormant 정책: 시간 경과만으로는 강하 없음. 정답 시 stage 3 → 4 정상 progression.
+  # overdue 단어는 review queue 우선순위 높지만 stage 자체는 변경 안 함.
+  stage: 4
+  weak: false
+  correct_count: 3
+  incorrect_count: 0
+  last_attempt_correct: true
+  mastered_at: null
+  next_due_at_after_days: 14
+# 분석: overdue_reviews 지표(docs/12 §6) 정의 검증 — 90일 overdue도 단순 due로 분류
+# dormancy KPI는 D7+ retention 분모에서 분리 (별도 cohort)

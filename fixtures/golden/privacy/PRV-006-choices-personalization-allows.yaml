@@ -1,0 +1,11 @@
+id: PRV-006
+description: personalization=true 선택 시 personalization 이벤트 전송 허용 (CC2-11 독립 토글)
+category: privacy_choices
+input:
+  choice:
+    analytics: false
+    personalization: true
+    marketing: false
+  requested_event_send: personalization
+expected:
+  event_sent: true

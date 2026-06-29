@@ -1,0 +1,26 @@
+id: PRV-016
+description: |
+  DSR delete cancel-window UX dark pattern 회피. 삭제 요청 후 cancel-window(< 30d) 내
+  사용자가 단순 재로그인 시도해도 soft_deleted_at은 보존되고 RLS deny 유지.
+  복구는 명시적 cancel API(설정 > 삭제 취소) 호출 시에만 발생.
+  배경: 일부 서비스가 "재로그인=삭제 자동 취소"로 처리 → 사용자가 의도치 않게 데이터 복구
+  (GDPR Art.7 동의 dark pattern, CCPA §1798.185(a)(20) "symmetry in choice" 위반 가능).
+  정합성: docs/16_privacy_policy.md §11 + apps/api/edge-functions/_shared 의 soft_deleted_at write timing
+  (backend 의존 — soft_deleted_at은 delete_request_at과 동일 timestamp로 즉시 기록).
+category: dsr_delete
+input:
+  delete_request_at: 2026-05-01T00:00:00Z
+  now: 2026-05-11T00:00:00Z                    # 10일 경과
+  user_action: re_login_attempt                # 단순 재로그인 (cancel API 미호출)
+expected:
+  soft_deleted_at: 2026-05-01T00:00:00Z        # 보존
+  scheduled_hard_delete_at: 2026-05-31T00:00:00Z
+  hard_delete_eligible: false                   # 30d 미경과
+  immediate_signout: true                       # 재로그인 차단 (RLS deny)
+  cancel_requires_explicit_api: true            # 단언 핵심 — 자동 복구 금지
+notes:
+  - 평가자 단언은 dsr_delete 기존 분기 재사용 (soft_deleted_at / scheduled_hard_delete_at /
+    hard_delete_eligible / immediate_signout). cancel_requires_explicit_api는 documentation field.
+  - "backend 의존 contract: soft_deleted_at은 delete_request_at과 동일 시각 기록되어야 evaluator 단언과 정합. apps/api/edge-functions/_shared/ 의존 (Q-LG-W15-06)."
+  - "PRV-011(29d, hard_delete_eligible=false)과의 차이: PRV-011은 시간 경계, PRV-016은 사용자 액션 (re-login 시도)에도 soft_deleted 상태 유지를 단언."
+  - UX 결합: 명시적 cancel은 별도 confirmation modal 필요 (designer 의존).

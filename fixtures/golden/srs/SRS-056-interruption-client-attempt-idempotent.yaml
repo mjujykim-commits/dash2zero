@@ -1,0 +1,43 @@
+id: SRS-056
+description: lesson 중 강제 종료 후 4h 재진입 — 동일 client_attempt_id 재전송 시 attempt 멱등성 (CC2-25 보호)
+category: interruption_resume
+input:
+  user_id: u-test-051
+  word_id: w-051
+  # 시나리오: lesson 진입 → attempt 1회 (correct) 마치고 앱 강제 종료 → 4h 후 재진입.
+  # 클라이언트는 네트워크 미완료를 인지하고 동일 client_attempt_id로 재시도.
+  # attempts table의 client_attempt_id UNIQUE 제약이 중복 INSERT 차단 (Q-BE-DOC-006).
+  # applySrs는 1회만 실행되고 SRS state 1회만 갱신됨.
+  client_attempt_id: 9f3c4b1e-051a-4c2e-9d6f-051abc000001
+  current_state:
+    stage: 2
+    weak: false
+    correct_count: 1
+    incorrect_count: 0
+    last_attempt_at: 2026-05-08T13:00:00Z   # 첫 attempt (PT 06:00)
+    last_attempt_correct: true
+    next_due_at: 2026-05-11T11:00:00Z
+    mastered_at: null
+  attempt:
+    correct: true
+    occurred_at: 2026-05-08T17:00:00Z       # 4h 후 재진입 재전송 (PT 10:00 — same cycle)
+    timezone: America/Los_Angeles
+    is_retry: true                           # client가 명시적으로 재시도 표기
+expected:
+  # 멱등성: 두 번째 호출은 409 conflict 또는 first attempt result echo. SRS state는 1회만 적용.
+  http_status: 409
+  error: duplicate_client_attempt_id
+  state_changed: false                       # 두 번째 호출에서는 변화 없음 (이미 첫 호출에서 stage 2 적용됨)
+  stage: 2                                   # 첫 attempt 결과 그대로 보존
+  weak: false
+  correct_count: 1
+  incorrect_count: 0
+  last_attempt_correct: true
+  mastered_at: null
+  next_due_at_after_days: 3                  # 첫 attempt 기준으로 이미 계산되어 있음
+  daily_usage_after:
+    new_words_started_count: 1               # 1회만 카운트 (CC2-07 한도 보호)
+notes:
+  - CC2-25 (3분 lesson 약속)을 깨뜨리지 않기 위해 강제 종료-재진입 시 사용자에게 페널티 없음
+  - 중복 INSERT 차단은 attempts.client_attempt_id UNIQUE 제약 (Q-BE-DOC-006 / ADR-0006)
+  - 4h 경과해도 같은 04:00 cycle 내라면 same-cycle 정책 적용 — SRS-022 참조

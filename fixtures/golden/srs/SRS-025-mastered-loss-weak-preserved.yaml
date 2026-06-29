@@ -1,0 +1,29 @@
+id: SRS-025
+description: Mastered → 다른 cycle 단일 오답 → stage 4 강하, mastered_at 해제. weak=false 유지 (Mastered 보호는 weak를 토글하지 않음)
+category: mastered_protection
+input:
+  user_id: u-test-025
+  word_id: w-025
+  current_state:
+    stage: 5
+    weak: false
+    correct_count: 7
+    incorrect_count: 1
+    last_attempt_at: 2026-04-08T17:00:00Z   # 30일 전 mastered (다른 cycle)
+    last_attempt_correct: true
+    next_due_at: 2026-05-08T11:00:00Z
+    mastered_at: 2026-04-08T17:00:00Z
+  attempt:
+    correct: false
+    occurred_at: 2026-05-08T17:00:00Z
+    timezone: America/Los_Angeles
+expected:
+  stage: 4
+  weak: false   # state.stage===5 분기는 weak=false 명시 (코드 라인 81)
+  correct_count: 7
+  incorrect_count: 2
+  last_attempt_correct: false
+  mastered_at: null
+  next_due_at_after_days: 14
+# srs_mastered_lost emit 단언 (frontend mock test):
+#   triggered_by="review" / stage_before=5 / stage_after=4 / reason="single_wrong_cross_cycle"

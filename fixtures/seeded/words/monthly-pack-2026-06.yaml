@@ -1,0 +1,129 @@
+# Monthly Pack 2026-06 — 첫 monthly release (50단어)
+#
+# 책임 agent: learning (lead) · orchestrator (D-019 quality gate) · qa (D-020 cross-review)
+# Quality policy: docs/learning/CONTENT_QUALITY_POLICY.md (D-019 + D-020 7단계 워크플로)
+#
+# 본 pack은 paywall "Monthly 50 new words" promise의 첫 release.
+# 출시 일자: 2026-06-15 (GA W20 출시 직후) 또는 GA 시점 + 7일
+# 사용자 가치: 베타 사용자에게 "내일부터 50개 새 단어가 자동 추가됩니다" 신호
+#
+# 카테고리 분포 (50단어, 봄·가정의 달·일상 응용 + 한국 문화):
+#   봄·초여름 시즌           10 (벚꽃, 봄나들이, 따스해, 더워지다, 장마, 시원해지다, 모기, 선풍기, 에어컨, 반팔)
+#   가정의 달 (5월)            8 (어린이날, 어버이날, 스승의 날, 선물, 카네이션, 부모님 사랑, 효도, 가족 모임)
+#   한국 명절·문화 응용         8 (설날, 추석, 떡국, 송편, 한복, 세배, 차례, 명절 인사)
+#   SNS·디지털 응용           10 (인스타, 유튜브, 틱톡, 카톡, 이모티콘, 공유, 저장, 팔로워, 인플루언서, 챌린지)
+#   일상 응용 + 슬랭          14 (감기, 약속 깨다, 늦잠, 줄 서다, 단골, 손님, 가성비, 핫플, 분위기, 진심, 부럽다, 멋지다, 부지런해, 게으르다)
+
+pack_id: "monthly-2026-06"
+pack_name: "Monthly Pack — June 2026 (Spring/Family/Korean Culture)"
+tier: monthly
+target_audience: "starter+core+premium 540 단어 학습 완료자, 베타 1개월 사용 후 cohort"
+target_count: 50
+cefr_band: "B1-B2"
+topik_band: "TOPIK II 초반"
+prerequisite_packs: ["starter-001", "core-kpop-001", "core-kdrama-001", "core-travel-001", "premium-pack-001"]
+content_version: 1
+release_at: "2026-06-15"           # GA W20 출시 일자 또는 +7일
+release_cohort: "month_1_active_users"
+license: "tts-google-neural2"
+
+words:
+  # === 봄·초여름 시즌 (10) ===
+  - { word_id: "w-mo-001", korean: "벚꽃",       romanization: "beot-kkot",         gloss: "cherry blossom",     example_ko: "벚꽃 예뻐요.",            example_en: "The cherry blossoms are pretty.", distractors_candidate: ["꽃","나무","봄"] }
+  - { word_id: "w-mo-002", korean: "봄나들이",   romanization: "bom-na-deu-ri",     gloss: "spring outing",      example_ko: "봄나들이 가요.",          example_en: "Let's go on a spring outing.",     distractors_candidate: ["산책","여행","피크닉"] }
+  - { word_id: "w-mo-003", korean: "따스해요",   romanization: "tta-seu-hae-yo",    gloss: "it's warm (gentle)", example_ko: "햇살이 따스해요.",         example_en: "The sunlight is warm.",            distractors_candidate: ["따뜻해요","더워요","시원해요"] }
+  - { word_id: "w-mo-004", korean: "더워지다",   romanization: "deo-wo-ji-da",      gloss: "to get hot",         example_ko: "곧 더워질 거예요.",       example_en: "It'll get hot soon.",              distractors_candidate: ["추워지다","시원해지다","따뜻해지다"] }
+  - { word_id: "w-mo-005", korean: "장마",       romanization: "jang-ma",           gloss: "rainy season",       example_ko: "장마가 시작됐어요.",       example_en: "The rainy season has started.",    distractors_candidate: ["비","태풍","폭우"] }
+  - { word_id: "w-mo-006", korean: "시원해지다", romanization: "si-won-hae-ji-da",  gloss: "to get cool",        example_ko: "저녁에 시원해져요.",       example_en: "It cools down in the evening.",    distractors_candidate: ["더워지다","따뜻해지다","상쾌해지다"] }
+  - { word_id: "w-mo-007", korean: "모기",       romanization: "mo-gi",             gloss: "mosquito",           example_ko: "모기 많아요.",            example_en: "There are a lot of mosquitoes.",   distractors_candidate: ["파리","벌","나비"] }
+  - { word_id: "w-mo-008", korean: "선풍기",     romanization: "seon-pung-gi",      gloss: "electric fan",       example_ko: "선풍기 켜요.",            example_en: "I'm turning on the fan.",          distractors_candidate: ["에어컨","난로","히터"] }
+  - { word_id: "w-mo-009", korean: "에어컨",     romanization: "e-eo-keon",         gloss: "air conditioner",    example_ko: "에어컨 시원해요.",         example_en: "The AC is cool.",                  distractors_candidate: ["선풍기","난방","온도"] }
+  - { word_id: "w-mo-010", korean: "반팔",       romanization: "ban-pal",           gloss: "short sleeves",      example_ko: "반팔 입어요.",            example_en: "I'm wearing short sleeves.",       distractors_candidate: ["긴팔","민소매","티셔츠"] }
+
+  # === 가정의 달 (5월) (8) ===
+  - { word_id: "w-mo-011", korean: "어린이날",   romanization: "eo-ri-ni-nal",      gloss: "Children's Day",     example_ko: "어린이날이에요.",          example_en: "It's Children's Day.",             distractors_candidate: ["어버이날","스승의 날","공휴일"] }
+  - { word_id: "w-mo-012", korean: "어버이날",   romanization: "eo-beo-i-nal",      gloss: "Parents' Day",       example_ko: "어버이날 선물 사요.",     example_en: "I'm buying a Parents' Day gift.",  distractors_candidate: ["어린이날","스승의 날","생일"] }
+  - { word_id: "w-mo-013", korean: "스승의 날", romanization: "seu-seung-ui-nal",  gloss: "Teachers' Day",      example_ko: "스승의 날 인사드려요.",   example_en: "I'm greeting my teacher.",         distractors_candidate: ["어린이날","어버이날","입학식"] }
+  - { word_id: "w-mo-014", korean: "선물",       romanization: "seon-mul",          gloss: "gift",               example_ko: "선물 준비했어요.",         example_en: "I prepared a gift.",               distractors_candidate: ["용돈","카드","꽃"] }
+  - { word_id: "w-mo-015", korean: "카네이션",   romanization: "ka-ne-i-syeon",     gloss: "carnation",          example_ko: "카네이션 드려요.",         example_en: "I'm giving carnations.",           distractors_candidate: ["장미","튤립","해바라기"] }
+  - { word_id: "w-mo-016", korean: "효도",       romanization: "hyo-do",            gloss: "filial piety",       example_ko: "효도 많이 해요.",          example_en: "Be filial to your parents.",       distractors_candidate: ["존경","공경","사랑"] }
+  - { word_id: "w-mo-017", korean: "가족 모임", romanization: "ga-jok-mo-im",     gloss: "family gathering",   example_ko: "오늘 가족 모임 있어요.",   example_en: "We have a family gathering today.", distractors_candidate: ["회식","파티","친목"] }
+  - { word_id: "w-mo-018", korean: "용돈",       romanization: "yong-don",          gloss: "allowance",          example_ko: "용돈 받았어요.",          example_en: "I got my allowance.",              distractors_candidate: ["월급","상금","선물"] }
+
+  # === 한국 명절·문화 응용 (8) ===
+  - { word_id: "w-mo-019", korean: "설날",       romanization: "seol-lal",          gloss: "Korean New Year",    example_ko: "설날 잘 보내세요.",        example_en: "Have a good Korean New Year.",     distractors_candidate: ["추석","대보름","구정"] }
+  - { word_id: "w-mo-020", korean: "추석",       romanization: "chu-seok",          gloss: "Chuseok (harvest)",  example_ko: "추석에 가족 만나요.",      example_en: "I meet family for Chuseok.",       distractors_candidate: ["설날","연휴","명절"] }
+  - { word_id: "w-mo-021", korean: "떡국",       romanization: "tteok-guk",         gloss: "rice cake soup",     example_ko: "설날에 떡국 먹어요.",     example_en: "We eat tteokguk on New Year's.",   distractors_candidate: ["만두국","미역국","된장국"] }
+  - { word_id: "w-mo-022", korean: "송편",       romanization: "song-pyeon",        gloss: "songpyeon (rice cake)", example_ko: "송편 만들어요.",          example_en: "We're making songpyeon.",          distractors_candidate: ["떡","빵","과자"] }
+  - { word_id: "w-mo-023", korean: "한복",       romanization: "han-bok",           gloss: "hanbok (traditional)", example_ko: "한복이 예뻐요.",          example_en: "The hanbok is beautiful.",         distractors_candidate: ["전통","의상","치마"] }
+  - { word_id: "w-mo-024", korean: "세배",       romanization: "se-bae",            gloss: "New Year bow",       example_ko: "할머니께 세배해요.",       example_en: "I bow to my grandmother.",         distractors_candidate: ["인사","절","예의"] }
+  - { word_id: "w-mo-025", korean: "차례",       romanization: "cha-rye",           gloss: "ancestor ritual",    example_ko: "차례 지내요.",            example_en: "We're performing the ritual.",     distractors_candidate: ["제사","의식","절"] }
+  - { word_id: "w-mo-026", korean: "명절 인사", romanization: "myeong-jeol-in-sa", gloss: "holiday greeting",   example_ko: "명절 인사 드려요.",        example_en: "I'm sending a holiday greeting.",  distractors_candidate: ["새해 인사","축하","안부"] }
+
+  # === SNS·디지털 응용 (10) ===
+  - { word_id: "w-mo-027", korean: "인스타",     romanization: "in-seu-ta",         gloss: "Instagram",          example_ko: "인스타 팔로우해요.",       example_en: "I follow you on Instagram.",       distractors_candidate: ["페북","트위터","틱톡"] }
+  - { word_id: "w-mo-028", korean: "유튜브",     romanization: "yu-tyu-beu",        gloss: "YouTube",            example_ko: "유튜브 자주 봐요.",        example_en: "I often watch YouTube.",           distractors_candidate: ["넷플릭스","왓차","티빙"] }
+  - { word_id: "w-mo-029", korean: "틱톡",       romanization: "tik-tok",           gloss: "TikTok",             example_ko: "틱톡 재밌어요.",          example_en: "TikTok is fun.",                   distractors_candidate: ["릴스","쇼츠","숏폼"] }
+  - { word_id: "w-mo-030", korean: "카톡",       romanization: "ka-tok",            gloss: "KakaoTalk (chat)",   example_ko: "카톡 보냈어요.",          example_en: "I sent a KakaoTalk message.",      distractors_candidate: ["문자","메시지","DM"] }
+  - { word_id: "w-mo-031", korean: "이모티콘",   romanization: "i-mo-ti-kon",       gloss: "emoji / sticker",    example_ko: "이모티콘 귀여워요.",       example_en: "The sticker is cute.",             distractors_candidate: ["스티커","이모지","움짤"] }
+  - { word_id: "w-mo-032", korean: "공유",       romanization: "gong-yu",           gloss: "share (action)",     example_ko: "이 영상 공유해요.",        example_en: "I'm sharing this video.",          distractors_candidate: ["저장","전송","업로드"] }
+  - { word_id: "w-mo-033", korean: "저장",       romanization: "jeo-jang",          gloss: "save",               example_ko: "사진 저장했어요.",         example_en: "I saved the photo.",               distractors_candidate: ["공유","삭제","다운로드"] }
+  - { word_id: "w-mo-034", korean: "팔로워",     romanization: "pal-lo-wo",         gloss: "follower",           example_ko: "팔로워가 많아요.",         example_en: "They have many followers.",        distractors_candidate: ["친구","구독자","팬"] }
+  - { word_id: "w-mo-035", korean: "인플루언서", romanization: "in-peul-lu-eon-seo", gloss: "influencer",         example_ko: "유명 인플루언서예요.",     example_en: "She's a famous influencer.",       distractors_candidate: ["유튜버","연예인","스타"] }
+  - { word_id: "w-mo-036", korean: "챌린지",     romanization: "chael-rin-ji",      gloss: "challenge (online)", example_ko: "챌린지 같이 해요!",        example_en: "Let's do the challenge together!", distractors_candidate: ["미션","이벤트","대회"] }
+
+  # === 일상 응용 + 슬랭 (14) ===
+  - { word_id: "w-mo-037", korean: "감기",       romanization: "gam-gi",            gloss: "cold (sickness)",    example_ko: "감기 걸렸어요.",          example_en: "I caught a cold.",                 distractors_candidate: ["몸살","열","독감"] }
+  - { word_id: "w-mo-038", korean: "약속 깨다", romanization: "yak-sok-kkae-da",   gloss: "to break a promise", example_ko: "약속 깨지 마세요.",        example_en: "Don't break your promise.",        distractors_candidate: ["취소하다","미루다","어기다"] }
+  - { word_id: "w-mo-039", korean: "늦잠",       romanization: "neut-jam",          gloss: "oversleeping",       example_ko: "늦잠 잤어요.",            example_en: "I overslept.",                     distractors_candidate: ["낮잠","꿀잠","불면"] }
+  - { word_id: "w-mo-040", korean: "줄 서다",   romanization: "jul-seo-da",        gloss: "to line up",         example_ko: "줄 서서 기다려요.",        example_en: "I'm waiting in line.",             distractors_candidate: ["기다리다","서다","앞서다"] }
+  - { word_id: "w-mo-041", korean: "단골",       romanization: "dan-gol",           gloss: "regular customer",   example_ko: "여기 단골이에요.",         example_en: "I'm a regular here.",              distractors_candidate: ["손님","고객","팬"] }
+  - { word_id: "w-mo-042", korean: "손님",       romanization: "son-nim",           gloss: "guest / customer",   example_ko: "손님 오셨어요.",          example_en: "A guest has arrived.",             distractors_candidate: ["고객","친구","방문객"] }
+  - { word_id: "w-mo-043", korean: "가성비",     romanization: "ga-seong-bi",       gloss: "value for money",    example_ko: "가성비 좋아요.",          example_en: "Good value for the price.",        distractors_candidate: ["가격","질","품질"] }
+  - { word_id: "w-mo-044", korean: "핫플",       romanization: "hat-peul",          gloss: "hot spot (trendy)",  example_ko: "여기 요즘 핫플이에요.",   example_en: "This is the hot spot lately.",     distractors_candidate: ["명소","유명한 곳","맛집"] }
+  - { word_id: "w-mo-045", korean: "분위기",     romanization: "bu-nwi-gi",         gloss: "atmosphere / vibe",  example_ko: "분위기 좋아요.",          example_en: "The atmosphere is nice.",          distractors_candidate: ["기분","느낌","공기"] }
+  - { word_id: "w-mo-046", korean: "진심",       romanization: "jin-sim",           gloss: "sincerely / truly",  example_ko: "진심 고마워요.",          example_en: "Truly, thank you.",                distractors_candidate: ["정말","진짜","마음"] }
+  - { word_id: "w-mo-047", korean: "부럽다",     romanization: "bu-reop-da",        gloss: "I'm envious",        example_ko: "정말 부러워요.",          example_en: "I'm really envious.",              distractors_candidate: ["멋있다","좋다","축하"] }
+  - { word_id: "w-mo-048", korean: "멋지다",     romanization: "meot-ji-da",        gloss: "it's awesome",       example_ko: "정말 멋져요!",            example_en: "Awesome!",                         distractors_candidate: ["멋있어요","좋아요","대단해요"] }
+  - { word_id: "w-mo-049", korean: "부지런해요", romanization: "bu-ji-reon-hae-yo", gloss: "diligent / hardworking", example_ko: "정말 부지런해요.",       example_en: "You're really hardworking.",       distractors_candidate: ["성실해요","열심히 해요","꾸준해요"] }
+  - { word_id: "w-mo-050", korean: "게으르다",   romanization: "ge-eu-reu-da",      gloss: "to be lazy",         example_ko: "너무 게을러요.",          example_en: "I'm so lazy.",                     distractors_candidate: ["부지런하다","느슨하다","쉬다"] }
+
+review_workflow_status:
+  candidate_list_drafted: true                     # ✅ 2026-05-14 D-019+D-020 봉인 후 작성
+  ai_assisted_review_pending: true
+  external_korean_reviewer_pending: true           # R-01 모집 진행 + D-020 dual-track
+  qa_cross_review_pending: true                    # D-020 정책: monthly pack도 qa cross-review 적용
+  external_english_reviewer_pending: true
+  tts_generation_pending: true                     # M5 W19 monthly release 일정
+  audio_qc_pending: true
+  storage_upload_pending: true
+  manifest_publish_pending: true
+
+quality_gates_self_check:
+  G-01: "필수 필드 50/50 통과"
+  G-02: "NFC normalize 50/50 (검수 자동 grep)"
+  G-03: "RR 발음 기준 (받침 변화 ~10단어 audio_qc 필수: 따스해요/시원해지다/스승의 날/효도/세배/명절 인사/약속 깨다/줄 서다/부지런해요/멋지다)"
+  G-04: "gloss 1-5 단어 + slash 통일 50/50"
+  G-05: "i+1: starter 60 + core 180 + premium 300 = 540 학습 어휘 활용. 본 monthly 50은 모든 prerequisite pack 학습 가정"
+  G-06: "example_en 자연 (영어 검수자 W19 review 권고)"
+  G-07: "distractor 자기참조 0건 (사전 검증)"
+  G-09: "금지/민감 0건"
+  G-10: "한국어 빈도 상위 5000 + 시즌·문화 동기 고빈도"
+
+distinctive_features:
+  - "5월 시즌 정합: 가정의 달 (어린이날/어버이날/스승의 날) 직접 포함"
+  - "한국 문화 어휘: 설날/추석/떡국/송편/한복/세배/차례 (베타 1개월 사용자에게 깊이 있는 가치)"
+  - "SNS·디지털 슬랭: 인스타/유튜브/틱톡/카톡/이모티콘/팔로워/인플루언서/챌린지 (현대 한국어 실제 사용)"
+  - "현대 슬랭: 가성비/핫플/진심/부럽다/멋지다 (Z세대 빈출 표현)"
+
+risks_local:
+  - "본 pack은 monthly release (paywall 'Monthly 50 new words' promise). post-GA 2026-06-15 출시 일정"
+  - "받침 변화 ~10단어 audio_qc 우선 (M5 W19 TTS batch)"
+  - "한국 명절 어휘 (설날/추석/세배/차례)는 K-drama pack과 일부 중복 가능 — 의미는 monthly가 명절 자체, kdrama는 트로프 강조. 정합성 review 권고"
+  - "외래어 (인스타/유튜브/틱톡/이모티콘/카네이션 등) 발음 변화 audio_qc 별도"
+
+notes:
+  - "월별 monthly release 시점에 사용자에게 'New 50 words available' notification 전송 (M5 W19 분석 emit 추가)"
+  - "Monthly Pack 2026-07부터 시즌·시사 토픽 따라 카테고리 변경 (예: 여름/휴가/올림픽/축제 등)"
+  - "베타 사용자 cohort: 베타 입력 1개월 후 활성 사용자에게만 release (engagement 강화)"
+  - "paywall promise '15 new words per day + Monthly 50 new words' 정합 — premium 사용자만 monthly pack 접근"

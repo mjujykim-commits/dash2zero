@@ -1,0 +1,17 @@
+id: PRV-ADV-003
+description: marketing=false 선택했음에도 marketing 카테고리 이벤트 firing 시도 (CC2-11 위반)
+threat_model: Compliance/GDPR · CPRA opt-out
+input:
+  attacker_role: app_developer_misuse
+  target:
+    endpoint: analytics.ts logEvent(category='marketing')
+  payload:
+    user_choice:
+      analytics: true
+      personalization: true
+      marketing: false   # 명시적 거부
+    event: ad_impression
+expected:
+  blocked: true
+  event_sent: false
+  audit_logged: false

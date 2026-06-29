@@ -1,0 +1,7 @@
+id: PAY-004
+description: CANCELLATION → cancelled (period_ends_at까지 유효)
+category: mapping
+input:
+  event_type: CANCELLATION
+expected:
+  status: cancelled

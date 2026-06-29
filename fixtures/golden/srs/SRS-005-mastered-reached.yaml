@@ -1,0 +1,27 @@
+id: SRS-005
+description: stage 4 정답 → stage 5 (Mastered) — mastered_at = occurred_at, 30일 maintenance (CC-08, CC2-09)
+category: stage_correct
+input:
+  user_id: u-test-005
+  word_id: w-005
+  current_state:
+    stage: 4
+    weak: false
+    correct_count: 3
+    incorrect_count: 0
+    last_attempt_at: 2026-04-24T17:00:00Z
+    last_attempt_correct: true
+    next_due_at: 2026-05-08T11:00:00Z
+    mastered_at: null
+  attempt:
+    correct: true
+    occurred_at: 2026-05-08T17:00:00Z
+    timezone: America/Los_Angeles
+expected:
+  stage: 5
+  weak: false
+  correct_count: 4
+  incorrect_count: 0
+  last_attempt_correct: true
+  mastered_at: 2026-05-08T17:00:00Z
+  next_due_at_after_days: 30  # CC-08 stage 5 → 30일 maintenance

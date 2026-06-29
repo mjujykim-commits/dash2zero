@@ -1,0 +1,527 @@
+/* dash2zero — K-pop Bold Design Tokens (D-022 봉인, 2026-05-18)
+ * Quiet/Steady 폐기 → 그라데이션 + neon + 한글 hero typography
+ */
+
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;700;900&family=Inter:wght@400;600;700;900&display=swap');
+
+:root {
+  /* ============================================================ */
+  /* GRADIENT — multi-stop vivid (K-pop signature)                 */
+  /* ============================================================ */
+  --gradient-hero: linear-gradient(135deg, #9333EA 0%, #EC4899 50%, #F97316 100%);  /* purple→pink→orange */
+  --gradient-cta: linear-gradient(135deg, #06B6D4 0%, #EC4899 100%);                  /* cyan→pink */
+  --gradient-card: linear-gradient(160deg, rgba(147,51,234,0.08) 0%, rgba(236,72,153,0.04) 100%);
+  --gradient-paywall: linear-gradient(135deg, #1E1B4B 0%, #4C1D95 50%, #831843 100%);  /* deep indigo→violet→burgundy */
+  --gradient-success: linear-gradient(135deg, #10B981 0%, #06B6D4 100%);
+  --gradient-dark: linear-gradient(180deg, #0F0F1A 0%, #1A0B2E 50%, #2D1B47 100%);
+
+  /* ============================================================ */
+  /* NEON ACCENTS                                                  */
+  /* ============================================================ */
+  --neon-cyan: #06B6D4;
+  --neon-pink: #EC4899;
+  --neon-purple: #9333EA;
+  --neon-orange: #F97316;
+  --neon-lime: #84CC16;
+  --neon-yellow: #FACC15;
+
+  /* ============================================================ */
+  /* SURFACE                                                       */
+  /* ============================================================ */
+  --surface-bg: #0F0F1A;            /* deep dark */
+  --surface-card: #1A1B2E;
+  --surface-elevated: #252640;
+  --surface-glass: rgba(255, 255, 255, 0.06);
+  --surface-glass-border: rgba(255, 255, 255, 0.1);
+
+  /* ============================================================ */
+  /* TEXT                                                          */
+  /* ============================================================ */
+  --text-primary: #FAFAF9;
+  --text-secondary: #B4B4C0;
+  --text-muted: #6B7280;
+  --text-inverse: #0F0F1A;
+  --text-neon: #EC4899;
+  --text-success: #10B981;
+  --text-danger: #F87171;
+
+  /* ============================================================ */
+  /* KOREAN GLYPH — hero element                                   */
+  /* ============================================================ */
+  --korean-hero: #FFFFFF;
+  --korean-secondary: #F4F4F2;
+
+  /* ============================================================ */
+  /* GLOW — neon outline / drop                                    */
+  /* ============================================================ */
+  --glow-cyan: 0 0 24px rgba(6, 182, 212, 0.5), 0 0 48px rgba(6, 182, 212, 0.25);
+  --glow-pink: 0 0 24px rgba(236, 72, 153, 0.55), 0 0 48px rgba(236, 72, 153, 0.3);
+  --glow-purple: 0 0 32px rgba(147, 51, 234, 0.5), 0 0 64px rgba(147, 51, 234, 0.25);
+  --glow-soft: 0 12px 32px rgba(147, 51, 234, 0.3);
+
+  /* Borders */
+  --border-subtle: rgba(255, 255, 255, 0.08);
+  --border-neon: rgba(236, 72, 153, 0.4);
+
+  /* Spacing (8pt grid) */
+  --space-0: 0; --space-1: 4px; --space-2: 8px; --space-3: 12px; --space-4: 16px;
+  --space-5: 20px; --space-6: 24px; --space-8: 32px; --space-10: 40px;
+  --space-12: 48px; --space-16: 64px; --space-20: 80px;
+
+  /* Font families */
+  --font-korean: "Noto Sans KR", "Apple SD Gothic Neo", "Malgun Gothic", system-ui, sans-serif;
+  --font-latin: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
+
+  /* ============================================================ */
+  /* MOTION & INTERACTION TOKENS (Premium Haptics)                 */
+  /* ============================================================ */
+  --ease-bounce: cubic-bezier(0.34, 1.56, 0.64, 1);
+  --ease-decelerate: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-exit: cubic-bezier(0.32, 0, 0.67, 0);
+
+  --duration-quick: 0.18s;
+  --duration-normal: 0.30s;
+  --duration-slow: 0.45s;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+html, body {
+  background: #0A0A0F;
+  font-family: var(--font-latin);
+  color: var(--text-primary);
+  min-height: 100vh;
+}
+
+/* ============================================================ */
+/* MOBILE DEVICE FRAME                                           */
+/* ============================================================ */
+.device {
+  width: 375px; height: 812px;
+  background: var(--surface-bg);
+  margin: 24px auto;
+  border-radius: 40px;
+  border: 12px solid #0A0A0F;
+  overflow: hidden;
+  position: relative;
+  box-shadow:
+    0 32px 80px rgba(147, 51, 234, 0.25),
+    0 24px 48px rgba(0, 0, 0, 0.5),
+    inset 0 0 0 1px rgba(255, 255, 255, 0.04);
+  display: flex; flex-direction: column;
+}
+
+.status-bar {
+  height: 44px;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0 24px;
+  background: transparent;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text-primary);
+  flex-shrink: 0;
+}
+.status-bar .right { display: flex; gap: 6px; align-items: center; font-size: 13px; }
+
+.screen {
+  flex: 1;
+  display: flex; flex-direction: column;
+  overflow-y: auto;
+  padding: 20px;
+  position: relative;
+}
+.screen.no-padding { padding: 0; }
+.screen.has-hero-bg {
+  background: var(--gradient-dark);
+}
+.screen.paywall-bg {
+  background: var(--gradient-paywall);
+}
+
+/* ============================================================ */
+/* TYPOGRAPHY — K-pop Bold scale                                 */
+/* ============================================================ */
+.t-hero-ko {
+  font-family: var(--font-korean);
+  font-size: 88px;
+  line-height: 0.95;
+  font-weight: 900;
+  letter-spacing: -0.04em;
+  color: var(--korean-hero);
+  background: var(--gradient-hero);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+.t-hero-ko-solid {
+  font-family: var(--font-korean);
+  font-size: 88px;
+  line-height: 0.95;
+  font-weight: 900;
+  letter-spacing: -0.04em;
+  color: var(--korean-hero);
+}
+.t-word-ko {
+  font-family: var(--font-korean);
+  font-size: 64px;
+  line-height: 1.0;
+  font-weight: 900;
+  letter-spacing: -0.03em;
+  color: var(--korean-hero);
+}
+.t-display-en {
+  font-family: var(--font-latin);
+  font-size: 36px;
+  line-height: 1.05;
+  font-weight: 900;
+  letter-spacing: -0.02em;
+  color: var(--text-primary);
+}
+.t-heading-lg { font-size: 28px; line-height: 1.15; font-weight: 700; letter-spacing: -0.01em; }
+.t-heading-md { font-size: 22px; line-height: 1.2; font-weight: 700; }
+.t-heading-sm { font-size: 18px; line-height: 1.3; font-weight: 600; }
+.t-body { font-size: 16px; line-height: 1.5; }
+.t-caption { font-size: 13px; line-height: 1.4; font-weight: 500; color: var(--text-muted); }
+.t-label { font-size: 11px; line-height: 1.4; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--text-muted); }
+
+.text-secondary { color: var(--text-secondary); }
+.text-muted { color: var(--text-muted); }
+.text-primary { color: var(--text-primary); }
+.text-neon { color: var(--neon-pink); }
+.text-success { color: var(--text-success); }
+
+.center { text-align: center; }
+.flex-1 { flex: 1; }
+.mt-2 { margin-top: 8px; } .mt-3 { margin-top: 12px; } .mt-4 { margin-top: 16px; }
+.mt-6 { margin-top: 24px; } .mt-8 { margin-top: 32px; } .mt-10 { margin-top: 40px; }
+.mt-12 { margin-top: 48px; }
+.mb-4 { margin-bottom: 16px; } .mb-6 { margin-bottom: 24px; }
+
+/* ============================================================ */
+/* BUTTON — neon gradient                                        */
+/* ============================================================ */
+.btn-primary {
+  height: 60px;
+  border-radius: 16px;
+  background: var(--gradient-cta);
+  color: white;
+  font-size: 17px;
+  font-weight: 700;
+  letter-spacing: 0.01em;
+  display: flex; align-items: center; justify-content: center;
+  border: none;
+  cursor: pointer;
+  position: relative;
+  box-shadow: var(--glow-pink);
+  transition: transform 0.2s ease-out, box-shadow 0.2s ease-out;
+}
+.btn-primary:hover { transform: translateY(-2px); box-shadow: 0 0 32px rgba(236, 72, 153, 0.7), 0 0 64px rgba(236, 72, 153, 0.35); }
+.btn-secondary {
+  height: 60px;
+  border-radius: 16px;
+  background: var(--surface-glass);
+  color: var(--text-primary);
+  font-size: 16px;
+  font-weight: 600;
+  border: 1px solid var(--surface-glass-border);
+  backdrop-filter: blur(12px);
+  display: flex; align-items: center; justify-content: center;
+  cursor: pointer;
+}
+.btn-text {
+  height: 44px;
+  display: flex; align-items: center; justify-content: center;
+  color: var(--neon-cyan);
+  background: transparent;
+  font-size: 15px;
+  font-weight: 600;
+  border: none;
+  cursor: pointer;
+}
+
+/* ============================================================ */
+/* CARD — glass morphism                                         */
+/* ============================================================ */
+.card {
+  background: var(--surface-card);
+  border: 1px solid var(--border-subtle);
+  border-radius: 20px;
+  padding: 20px;
+  position: relative;
+  overflow: hidden;
+}
+.card-glass {
+  background: var(--surface-glass);
+  backdrop-filter: blur(16px);
+  border: 1px solid var(--surface-glass-border);
+  border-radius: 20px;
+  padding: 20px;
+}
+.card.selected {
+  border-color: transparent;
+  background:
+    linear-gradient(var(--surface-card), var(--surface-card)) padding-box,
+    var(--gradient-cta) border-box;
+  border: 2px solid transparent;
+}
+.card.gradient-bg {
+  background: var(--gradient-card);
+  border: 1px solid var(--surface-glass-border);
+}
+
+/* Stats / metrics */
+.stats-row { display: flex; justify-content: space-between; gap: 16px; }
+.stat-card {
+  flex: 1;
+  background: var(--surface-card);
+  border: 1px solid var(--border-subtle);
+  border-radius: 16px;
+  padding: 16px;
+}
+.stat-value {
+  font-size: 32px;
+  font-weight: 900;
+  background: var(--gradient-hero);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* Pill / badge */
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 12px;
+  border-radius: 100px;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  background: var(--gradient-cta);
+  color: white;
+  box-shadow: var(--glow-pink);
+}
+.badge-glass {
+  background: var(--surface-glass);
+  border: 1px solid var(--surface-glass-border);
+  color: var(--neon-cyan);
+  backdrop-filter: blur(12px);
+}
+
+/* ============================================================ */
+/* CTA wrapper                                                   */
+/* ============================================================ */
+.cta-fixed {
+  padding: 16px 20px 28px;
+  background: linear-gradient(180deg, transparent 0%, var(--surface-bg) 30%, var(--surface-bg) 100%);
+  display: flex; flex-direction: column; gap: 12px;
+  flex-shrink: 0;
+}
+
+.divider { height: 1px; background: var(--border-subtle); }
+
+/* Glow orb decoration */
+.glow-orb {
+  position: absolute;
+  width: 280px; height: 280px;
+  border-radius: 50%;
+  filter: blur(80px);
+  opacity: 0.5;
+  pointer-events: none;
+}
+.glow-orb.purple { background: var(--neon-purple); }
+.glow-orb.pink { background: var(--neon-pink); }
+.glow-orb.cyan { background: var(--neon-cyan); }
+
+/* Honest disclosure (paywall) */
+.disclosure {
+  padding: 16px;
+  background: var(--surface-glass);
+  backdrop-filter: blur(12px);
+  border-radius: 14px;
+  font-size: 12px;
+  line-height: 1.5;
+  color: var(--text-muted);
+  border: 1px solid var(--surface-glass-border);
+}
+.disclosure ul { list-style: none; }
+.disclosure li { margin-bottom: 4px; }
+.disclosure li::before { content: "·  "; color: var(--neon-cyan); }
+
+/* Audio button (lesson) */
+.audio-btn {
+  width: 80px; height: 80px;
+  border-radius: 40px;
+  background: var(--gradient-cta);
+  color: white;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 28px;
+  margin: 0 auto;
+  box-shadow: var(--glow-pink);
+  cursor: pointer;
+  position: relative;
+}
+.audio-btn::before {
+  content: '';
+  position: absolute;
+  inset: -8px;
+  border-radius: 48px;
+  background: var(--gradient-cta);
+  filter: blur(20px);
+  opacity: 0.5;
+  z-index: -1;
+}
+
+/* Index page (flow tree) */
+.flow-tree { max-width: 1400px; margin: 40px auto; padding: 0 32px; }
+.flow-tree h1 {
+  text-align: center;
+  font-size: 56px;
+  font-weight: 900;
+  background: var(--gradient-hero);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  margin-bottom: 12px;
+  letter-spacing: -0.03em;
+}
+.flow-tree .subtitle {
+  text-align: center;
+  color: var(--text-secondary);
+  margin-bottom: 40px;
+  font-size: 16px;
+}
+.flow-group { margin-bottom: 56px; }
+.flow-group h2 { font-size: 24px; font-weight: 700; margin-bottom: 8px; }
+.flow-group .desc { color: var(--text-secondary); margin-bottom: 24px; font-size: 14px; }
+.flow-row { display: flex; gap: 16px; flex-wrap: wrap; align-items: flex-start; }
+.flow-card {
+  width: 240px;
+  background: var(--surface-card);
+  border: 1px solid var(--border-subtle);
+  border-radius: 16px;
+  overflow: hidden;
+  text-decoration: none;
+  color: inherit;
+  display: flex; flex-direction: column;
+  transition: transform 0.2s ease-out, box-shadow 0.2s ease-out;
+}
+.flow-card:hover { transform: translateY(-4px); box-shadow: var(--glow-soft); }
+.flow-card-iframe-wrap {
+  width: 100%; height: 250px;
+  overflow: hidden; position: relative;
+}
+.flow-card-iframe-wrap iframe {
+  width: 375px; height: 455px;
+  border: 0;
+  position: absolute; top: 0; left: 0;
+  transform: scale(0.55);
+  transform-origin: 0 0;
+  pointer-events: none;
+}
+.flow-card .meta { padding: 14px 16px; border-top: 1px solid var(--border-subtle); }
+.flow-card .meta .name { font-size: 14px; font-weight: 700; }
+.flow-card .meta .file { font-size: 11px; color: var(--text-muted); margin-top: 3px; font-family: monospace; }
+.note {
+  background: linear-gradient(135deg, rgba(147, 51, 234, 0.1) 0%, rgba(236, 72, 153, 0.06) 100%);
+  border: 1px solid rgba(236, 72, 153, 0.3);
+  border-radius: 14px;
+  padding: 20px 24px;
+  margin-bottom: 32px;
+  font-size: 14px;
+  line-height: 1.6;
+}
+.note strong { color: var(--neon-pink); }
+
+/* ============================================================ */
+/* PREMIUM MOTION UTILITIES & KEYFRAMES                         */
+/* ============================================================ */
+
+/* Active Button/Card Click Physics */
+.btn-interactive {
+  transition: transform var(--duration-quick) var(--ease-bounce), box-shadow var(--duration-quick) var(--ease-bounce);
+}
+.btn-interactive:active {
+  transform: scale(0.96);
+  box-shadow: 0 0 12px rgba(236, 72, 153, 0.3);
+}
+
+/* Haptic Error Shake for choices */
+.shake-error {
+  animation: shake-elastic var(--duration-normal) var(--ease-bounce) 1;
+}
+
+@keyframes shake-elastic {
+  0%, 100% { transform: translateX(0); }
+  20%, 60% { transform: translateX(-6px); }
+  40%, 80% { transform: translateX(6px); }
+}
+
+/* Shimmering Skeleton Shimmer Loader */
+.shimmer-effect {
+  position: relative;
+  overflow: hidden;
+  background: var(--surface-card);
+}
+.shimmer-effect::after {
+  content: '';
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.05), transparent);
+  transform: translateX(-100%);
+  animation: loading-shimmer 1.6s infinite linear;
+}
+
+@keyframes loading-shimmer {
+  100% { transform: translateX(100%); }
+}
+
+/* Elastic progress bar fill */
+.progress-fill-interactive {
+  transition: width var(--duration-normal) var(--ease-bounce);
+}
+
+/* Radial pulse glow for correct answers */
+.pulse-success {
+  animation: pulse-ring 0.6s var(--ease-decelerate) 1;
+}
+
+@keyframes pulse-ring {
+  0% {
+    box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7);
+  }
+  70% {
+    box-shadow: 0 0 0 12px rgba(16, 185, 129, 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(16, 185, 129, 0);
+  }
+}
+
+/* Smooth modal pop transition variables */
+.modal-transition-enter {
+  opacity: 0;
+  transform: translateY(24px) scale(0.96);
+  transition: opacity var(--duration-normal) var(--ease-decelerate), transform var(--duration-normal) var(--ease-decelerate);
+}
+.modal-transition-active {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+}
+.modal-transition-exit {
+  opacity: 0;
+  transform: translateY(16px) scale(0.97);
+  transition: opacity var(--duration-quick) var(--ease-exit), transform var(--duration-quick) var(--ease-exit);
+}
+
+/* Jelly stretch effect for switches */
+.jelly-toggle-active {
+  animation: jelly-stretch 0.3s var(--ease-bounce) 1;
+}
+@keyframes jelly-stretch {
+  0% { transform: scaleX(1); }
+  40% { transform: scaleX(1.3) scaleY(0.8); }
+  100% { transform: scaleX(1); }
+}

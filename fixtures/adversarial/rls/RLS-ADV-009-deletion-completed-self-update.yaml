@@ -1,0 +1,29 @@
+# Security review note (W15):
+#   위협 모델: STRIDE/Tampering + Repudiation (soft-delete 우회).
+#   account_deletion_requests의 completed_at은 30일 cron만 갱신해야 함 (운영자 SSOT).
+#   사용자가 completed_at을 임의로 NULL → 미래 시각 또는 NULL → 과거 시각으로 수정하면:
+#     - GDPR 30일 grace 기간 우회 가능
+#     - 삭제 cron이 이미 처리됐다고 오판 → 사용자 데이터 보존 누락 (배상 위험)
+#   policy: deletion_owner_update USING(auth.uid() = user_id AND completed_at IS NULL)
+#           WITH CHECK (auth.uid() = user_id) — completed_at IS NULL 가드가 있어
+#           이미 completed인 row는 update 차단되지만, 처음 INSERT 후 사용자가 completed_at을
+#           본인이 미래 시각으로 직접 set하는 케이스는 WITH CHECK이 컬럼 제약 없음 → 시도 가능.
+#   결론: WITH CHECK에 completed_at 변경 금지 trigger 또는 컬럼 GRANT 분리 필요 (W16 후속).
+#   static 분석은 컬럼 단위 권한 검증 못 함 — pg_test_role + UPDATE w/ completed_at SET 실측 필요.
+id: RLS-ADV-009
+description: 사용자가 본인 account_deletion_requests의 completed_at을 직접 SET 시도 (cron 우회)
+threat_model: STRIDE/Tampering
+input:
+  attacker_role: authenticated
+  target:
+    table: account_deletion_requests
+    user_id: 11111111-1111-1111-1111-111111111111
+    endpoint: PostgREST PATCH /account_deletion_requests?request_id=eq.del-001
+  payload:
+    sql: "UPDATE account_deletion_requests SET completed_at = NOW() + INTERVAL '1 year' WHERE request_id = 'del-001'"
+    user_id: 11111111-1111-1111-1111-111111111111
+    completed_at: 2099-12-31T00:00:00Z
+expected:
+  blocked: true       # USING의 completed_at IS NULL은 이미 처리된 row 차단. 첫 set은 W16 hybrid에서 trigger로 보강 필요.
+  http_status: 403
+  audit_logged: true  # P2 alert

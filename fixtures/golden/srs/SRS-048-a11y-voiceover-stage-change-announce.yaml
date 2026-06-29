@@ -1,0 +1,40 @@
+id: SRS-048
+description: |
+  a11y — VoiceOver(iOS)/TalkBack(Android) 활성 시 stage 전이를 accessibilityLabel로 announce.
+  stage 1 → 2 정답 시 "stage 1에서 2로 상승, 다음 복습 3일 후" 같은 string이 emit되어야.
+  evaluator는 stage 전이 정확성과 a11y_announce_payload 메타데이터 존재만 단언.
+  실제 screen reader 발화는 M4 e2e + 수동 디바이스 테스트 (P0).
+category: a11y
+input:
+  user_id: u-test-048-a11y
+  word_id: w-048
+  current_state:
+    stage: 1
+    weak: false
+    correct_count: 0
+    incorrect_count: 0
+    last_attempt_at: null
+    last_attempt_correct: null
+    next_due_at: 2026-05-08T11:00:00Z
+    mastered_at: null
+  attempt:
+    correct: true
+    occurred_at: 2026-05-08T17:00:00Z
+    timezone: America/Los_Angeles
+expected:
+  stage: 2
+  weak: false
+  correct_count: 1
+  incorrect_count: 0
+  last_attempt_correct: true
+  mastered_at: null
+  next_due_at_after_days: 3
+a11y_assertions:
+  - announce_required_when_stage_changes: true
+  - announce_payload_localized: ["ko-KR", "en-US"]
+  - announce_includes_next_due_relative_text
+  - polite_live_region: true                    # web aria-live="polite", iOS UIAccessibilityAnnouncementNotification
+  - no_silent_state_change                      # 스테이지 변화는 항상 a11y feedback 동반
+e2e_followup:
+  - M4 E2E-A11Y-001 (iOS VoiceOver 실측, Detox+earl-grey 또는 Maestro)
+  - M4 E2E-A11Y-002 (Android TalkBack 실측, Firebase Test Lab)

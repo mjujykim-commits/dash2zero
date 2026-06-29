@@ -1,0 +1,123 @@
+# Starter Pack 60단어 — Candidates v1.0 (B-1 batch, M2-S2~S4 W6-W8)
+#
+# 책임 agent: learning (D-008)
+# 검수 워크플로우 (CC3-07): list → AI 보조 초안 → 외부 한국어 원어민 pass/fail → TTS → audio_hash → upload → manifest publish
+# AI 보조 / 검수자 / TTS는 W7-W8에 진행. 본 파일은 candidate (검수 전) 60단어 완성본.
+#
+# 카테고리 분포 (60단어):
+#   인사·기본       10  (안녕하세요, 감사합니다, …)
+#   음식·카페       10  (사과, 물, 커피, …)
+#   이동·장소       8   (여기, 어디, 화장실, …)
+#   숫자·시간       8   (하나, 둘, 어제, …)
+#   인칭·소유       6   (나, 너, 우리, …)
+#   기본 형용사     8   (좋아요, 싫어요, 많아요, …)
+#   의문사          5   (뭐, 어떻게, 왜, …)
+#   패턴            5   (주세요, 이에요, 예요, 은/는, 이/가)
+
+pack_id: "starter-001"
+pack_name: "Starter — Survival 60"
+tier: starter
+version: 1
+target_audience: "영어권 K-content 동기 A0 학습자"
+target_count: 60
+
+words:
+  # === 인사·기본 (10) ===
+  - { word_id: "w-st-001", korean: "안녕하세요",   romanization: "an-nyeong-ha-se-yo",   gloss: "hello (formal)",  example_ko: "안녕하세요!",        example_en: "Hello!",                    distractors_candidate: ["감사합니다","죄송합니다","안녕히 가세요"] }
+  - { word_id: "w-st-002", korean: "감사합니다",   romanization: "gam-sa-ham-ni-da",       gloss: "thank you",       example_ko: "감사합니다.",       example_en: "Thank you.",                distractors_candidate: ["안녕하세요","죄송합니다","괜찮아요"] }
+  - { word_id: "w-st-003", korean: "네",           romanization: "ne",                     gloss: "yes",             example_ko: "네, 좋아요.",       example_en: "Yes, sounds good.",         distractors_candidate: ["아니요","괜찮아요","글쎄요"] }
+  - { word_id: "w-st-004", korean: "아니요",       romanization: "a-ni-yo",                gloss: "no",              example_ko: "아니요, 괜찮아요.", example_en: "No, it's okay.",            distractors_candidate: ["네","글쎄요","잘 모르겠어요"] }
+  - { word_id: "w-st-005", korean: "죄송합니다",   romanization: "joe-song-ham-ni-da",     gloss: "I'm sorry",       example_ko: "죄송합니다.",       example_en: "I'm sorry.",                distractors_candidate: ["감사합니다","괜찮아요","실례합니다"] }
+  - { word_id: "w-st-006", korean: "괜찮아요",     romanization: "gwaen-cha-na-yo",        gloss: "it's okay",       example_ko: "괜찮아요.",         example_en: "It's okay.",                distractors_candidate: ["좋아요","싫어요","미안해요"] }
+  - { word_id: "w-st-007", korean: "안녕히 가세요", romanization: "an-nyeong-hi-ga-se-yo", gloss: "goodbye (to going)", example_ko: "안녕히 가세요.",  example_en: "Goodbye.",                  distractors_candidate: ["안녕하세요","안녕히 계세요","감사합니다"] }
+  - { word_id: "w-st-008", korean: "안녕히 계세요", romanization: "an-nyeong-hi-gye-se-yo", gloss: "goodbye (to staying)", example_ko: "안녕히 계세요.", example_en: "Goodbye.",                distractors_candidate: ["안녕하세요","안녕히 가세요","감사합니다"] }
+  - { word_id: "w-st-009", korean: "실례합니다",   romanization: "sil-rye-ham-ni-da",      gloss: "excuse me",       example_ko: "실례합니다.",       example_en: "Excuse me.",                distractors_candidate: ["죄송합니다","괜찮아요","감사합니다"] }
+  - { word_id: "w-st-010", korean: "처음 뵙겠습니다", romanization: "cheo-eum-boep-get-seum-ni-da", gloss: "nice to meet you", example_ko: "처음 뵙겠습니다.", example_en: "Nice to meet you.",  distractors_candidate: ["안녕하세요","감사합니다","반갑습니다"] }
+
+  # === 음식·카페 (10) ===
+  - { word_id: "w-st-011", korean: "사과",   romanization: "sa-gwa",   gloss: "apple",   example_ko: "사과 주세요.",       example_en: "Apple, please.",       distractors_candidate: ["바나나","물","커피"] }
+  - { word_id: "w-st-012", korean: "물",     romanization: "mul",      gloss: "water",   example_ko: "물 한 잔 주세요.",   example_en: "A glass of water, please.", distractors_candidate: ["커피","사과","차"] }
+  - { word_id: "w-st-013", korean: "커피",   romanization: "keo-pi",   gloss: "coffee",  example_ko: "커피 한 잔이요.",    example_en: "One coffee, please.",  distractors_candidate: ["차","물","주스"] }
+  - { word_id: "w-st-014", korean: "차",     romanization: "cha",      gloss: "tea",     example_ko: "차 주세요.",         example_en: "Tea, please.",         distractors_candidate: ["커피","물","주스"] }
+  - { word_id: "w-st-015", korean: "밥",     romanization: "bap",      gloss: "rice / meal", example_ko: "밥 먹었어요?",   example_en: "Have you eaten?",      distractors_candidate: ["빵","면","국"] }
+  - { word_id: "w-st-016", korean: "빵",     romanization: "ppang",    gloss: "bread",   example_ko: "빵 주세요.",         example_en: "Bread, please.",       distractors_candidate: ["밥","면","과자"] }
+  - { word_id: "w-st-017", korean: "맛있어요", romanization: "ma-si-sseo-yo", gloss: "tasty", example_ko: "맛있어요!",      example_en: "It's tasty!",          distractors_candidate: ["맛없어요","좋아요","싫어요"] }
+  - { word_id: "w-st-018", korean: "주문",   romanization: "ju-mun",   gloss: "order",   example_ko: "주문할게요.",        example_en: "I'd like to order.",   distractors_candidate: ["계산","주세요","메뉴"] }
+  - { word_id: "w-st-019", korean: "메뉴",   romanization: "me-nyu",   gloss: "menu",    example_ko: "메뉴 주세요.",       example_en: "Menu, please.",        distractors_candidate: ["주문","계산","주세요"] }
+  - { word_id: "w-st-020", korean: "계산",   romanization: "gye-san",  gloss: "check / payment", example_ko: "계산 부탁드려요.", example_en: "The check, please.",   distractors_candidate: ["주문","메뉴","결제"] }
+
+  # === 이동·장소 (8) ===
+  - { word_id: "w-st-021", korean: "여기",    romanization: "yeo-gi",      gloss: "here",      example_ko: "여기 주세요.",   example_en: "Right here, please.", distractors_candidate: ["저기","거기","어디"] }
+  - { word_id: "w-st-022", korean: "어디",    romanization: "eo-di",       gloss: "where",     example_ko: "어디예요?",       example_en: "Where is it?",        distractors_candidate: ["여기","저기","어떻게"] }
+  - { word_id: "w-st-023", korean: "저기",    romanization: "jeo-gi",      gloss: "over there", example_ko: "저기 있어요.",  example_en: "It's over there.",    distractors_candidate: ["여기","거기","어디"] }
+  - { word_id: "w-st-024", korean: "화장실",  romanization: "hwa-jang-sil", gloss: "restroom", example_ko: "화장실 어디예요?", example_en: "Where is the restroom?", distractors_candidate: ["엘리베이터","문","입구"] }
+  - { word_id: "w-st-025", korean: "지하철",  romanization: "ji-ha-cheol", gloss: "subway",    example_ko: "지하철역이요.",   example_en: "Subway station.",     distractors_candidate: ["버스","택시","기차"] }
+  - { word_id: "w-st-026", korean: "버스",    romanization: "beo-seu",     gloss: "bus",       example_ko: "버스 정류장.",     example_en: "Bus stop.",           distractors_candidate: ["지하철","택시","기차"] }
+  - { word_id: "w-st-027", korean: "택시",    romanization: "taek-si",     gloss: "taxi",      example_ko: "택시 주세요.",     example_en: "Taxi, please.",       distractors_candidate: ["버스","지하철","기차"] }
+  - { word_id: "w-st-028", korean: "공항",    romanization: "gong-hang",   gloss: "airport",   example_ko: "공항 가요.",       example_en: "I'm going to the airport.", distractors_candidate: ["호텔","역","터미널"] }
+
+  # === 숫자·시간 (8) ===
+  - { word_id: "w-st-029", korean: "하나",  romanization: "ha-na",   gloss: "one",        example_ko: "하나 주세요.",     example_en: "One, please.",        distractors_candidate: ["둘","셋","넷"] }
+  - { word_id: "w-st-030", korean: "둘",    romanization: "dul",     gloss: "two",        example_ko: "둘이요.",          example_en: "Two of us.",          distractors_candidate: ["하나","셋","넷"] }
+  - { word_id: "w-st-031", korean: "셋",    romanization: "set",     gloss: "three",      example_ko: "셋 주세요.",       example_en: "Three, please.",      distractors_candidate: ["하나","둘","넷"] }
+  - { word_id: "w-st-032", korean: "넷",    romanization: "net",     gloss: "four",       example_ko: "넷이요.",          example_en: "Four.",               distractors_candidate: ["셋","다섯","둘"] }
+  - { word_id: "w-st-033", korean: "오늘",  romanization: "o-neul",  gloss: "today",      example_ko: "오늘 비 와요.",    example_en: "It's raining today.", distractors_candidate: ["어제","내일","지금"] }
+  - { word_id: "w-st-034", korean: "어제",  romanization: "eo-je",   gloss: "yesterday",  example_ko: "어제 갔어요.",     example_en: "I went yesterday.",   distractors_candidate: ["오늘","내일","아까"] }
+  - { word_id: "w-st-035", korean: "내일",  romanization: "nae-il",  gloss: "tomorrow",   example_ko: "내일 봐요.",       example_en: "See you tomorrow.",   distractors_candidate: ["오늘","어제","지금"] }
+  - { word_id: "w-st-036", korean: "지금",  romanization: "ji-geum", gloss: "now",        example_ko: "지금 가요.",       example_en: "I'm going now.",      distractors_candidate: ["오늘","아까","내일"] }
+
+  # === 인칭·소유 (6) ===
+  - { word_id: "w-st-037", korean: "나",   romanization: "na",     gloss: "I (informal)", example_ko: "나 좋아요.",     example_en: "I like it.",        distractors_candidate: ["너","우리","저"] }
+  - { word_id: "w-st-038", korean: "저",   romanization: "jeo",    gloss: "I (formal)",   example_ko: "저는 학생이에요.", example_en: "I am a student.",  distractors_candidate: ["나","너","우리"] }
+  - { word_id: "w-st-039", korean: "너",   romanization: "neo",    gloss: "you (informal)", example_ko: "너 어디 가?",    example_en: "Where are you going?", distractors_candidate: ["나","우리","저"] }
+  - { word_id: "w-st-040", korean: "우리", romanization: "u-ri",   gloss: "we / our",     example_ko: "우리 가요.",     example_en: "Let's go.",         distractors_candidate: ["나","너","저"] }
+  - { word_id: "w-st-041", korean: "이름", romanization: "i-reum", gloss: "name",         example_ko: "이름이 뭐예요?", example_en: "What's your name?", distractors_candidate: ["나이","주소","나"] }
+  - { word_id: "w-st-042", korean: "친구", romanization: "chin-gu", gloss: "friend",      example_ko: "친구 만나요.",   example_en: "I'm meeting a friend.", distractors_candidate: ["가족","사람","연인"] }
+
+  # === 기본 형용사 (8) ===
+  - { word_id: "w-st-043", korean: "좋아요", romanization: "jo-a-yo",  gloss: "good / I like it", example_ko: "좋아요!",       example_en: "Sounds good!",   distractors_candidate: ["싫어요","괜찮아요","나빠요"] }
+  - { word_id: "w-st-044", korean: "싫어요", romanization: "si-reo-yo", gloss: "I don't like",   example_ko: "이거 싫어요.",  example_en: "I don't like this.", distractors_candidate: ["좋아요","괜찮아요","미워요"] }
+  - { word_id: "w-st-045", korean: "많아요", romanization: "ma-na-yo",  gloss: "many / a lot",   example_ko: "사람 많아요.",  example_en: "There are many people.", distractors_candidate: ["적어요","조금","없어요"] }
+  - { word_id: "w-st-046", korean: "적어요", romanization: "jeo-geo-yo", gloss: "few / a little", example_ko: "사람 적어요.", example_en: "Few people.",  distractors_candidate: ["많아요","없어요","조금"] }
+  - { word_id: "w-st-047", korean: "있어요", romanization: "i-sseo-yo", gloss: "there is / I have", example_ko: "물 있어요.", example_en: "I have water.",   distractors_candidate: ["없어요","많아요","적어요"] }
+  - { word_id: "w-st-048", korean: "없어요", romanization: "eop-seo-yo", gloss: "don't have", example_ko: "시간 없어요.", example_en: "I don't have time.", distractors_candidate: ["있어요","많아요","바빠요"] }
+  - { word_id: "w-st-049", korean: "예뻐요", romanization: "ye-ppeo-yo", gloss: "pretty",        example_ko: "정말 예뻐요!",  example_en: "Really pretty!", distractors_candidate: ["귀여워요","멋있어요","좋아요"] }
+  - { word_id: "w-st-050", korean: "귀여워요", romanization: "gwi-yeo-wo-yo", gloss: "cute",     example_ko: "강아지 귀여워요.", example_en: "The puppy is cute.", distractors_candidate: ["예뻐요","멋있어요","좋아요"] }
+
+  # === 의문사 (5) ===
+  - { word_id: "w-st-051", korean: "뭐",     romanization: "mwo",      gloss: "what",      example_ko: "뭐예요?",        example_en: "What is it?",       distractors_candidate: ["어디","언제","누구"] }
+  - { word_id: "w-st-052", korean: "어떻게", romanization: "eo-tteo-ke", gloss: "how",     example_ko: "어떻게 가요?",   example_en: "How do I get there?", distractors_candidate: ["왜","뭐","언제"] }
+  - { word_id: "w-st-053", korean: "왜",     romanization: "wae",      gloss: "why",      example_ko: "왜요?",          example_en: "Why?",              distractors_candidate: ["뭐","어떻게","언제"] }
+  - { word_id: "w-st-054", korean: "언제",   romanization: "eon-je",   gloss: "when",     example_ko: "언제 와요?",     example_en: "When are you coming?", distractors_candidate: ["어디","누구","왜"] }
+  - { word_id: "w-st-055", korean: "누구",   romanization: "nu-gu",    gloss: "who",      example_ko: "누구예요?",      example_en: "Who is it?",        distractors_candidate: ["뭐","어디","언제"] }
+
+  # === 패턴 (5) ===
+  - { word_id: "w-st-056", korean: "주세요",  romanization: "ju-se-yo",   gloss: "please give me",   example_ko: "물 주세요.",     example_en: "Water, please.",     distractors_candidate: ["주문","감사합니다","계산"] }
+  - { word_id: "w-st-057", korean: "이에요",  romanization: "i-e-yo",     gloss: "is (after consonant)", example_ko: "학생이에요.", example_en: "I'm a student.",  distractors_candidate: ["예요","아니에요","있어요"] }
+  - { word_id: "w-st-058", korean: "예요",    romanization: "ye-yo",      gloss: "is (after vowel)", example_ko: "친구예요.",      example_en: "(He) is a friend.", distractors_candidate: ["이에요","아니에요","있어요"] }
+  - { word_id: "w-st-059", korean: "은/는",   romanization: "eun/neun",   gloss: "topic marker",    example_ko: "저는 한국 사람이에요.", example_en: "I am Korean.",  distractors_candidate: ["이/가","을/를","에"] }
+  - { word_id: "w-st-060", korean: "이/가",   romanization: "i/ga",       gloss: "subject marker",  example_ko: "친구가 와요.",   example_en: "(My) friend is coming.", distractors_candidate: ["은/는","을/를","에"] }
+
+review_workflow_v1_status:
+  candidate_list_drafted: true                     # ✅ M2-S2~S4
+  ai_assisted_draft_pending: false                 # ✅ 본 v1.0에 gloss/example/distractors 모두 채움
+  external_reviewer_recruitment: in_progress       # CC3-07 — R-01
+  external_reviewer_assigned: null                 # W8-W9 진행
+  tts_generation_pending: true                     # ADR-0005 Google Cloud Neural2, scripts/content/generate-audio.ts 사용
+  audio_qc_pending: true
+  storage_upload_pending: true
+  manifest_publish_pending: true
+
+quality_gates:
+  - 필수 필드 존재
+  - 한글 표기 NFC normalize
+  - RR Revised Romanization 일치
+  - gloss 1-5 단어
+  - 예문 i+1 (학습 어휘 + 1 신규)
+  - 금지/민감 표현 없음
+  - distractor 동의어/완전 무관 회피 (cosine 0.3-0.7)
+  - audio_hash 검증
+
+risks_local:
+  - "받침 발음 변화 단어 다수 (좋아요→[조아요], 맛있어요→[마시써요]) — RR 표기는 표준, audio가 진실"
+  - "은/는, 이/가 패턴은 단어 카운트 1로 처리 (Q-LD-DOC-008) — UX에서 '단어'로 부르지 않음 옵션 검토"

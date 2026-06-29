@@ -1,0 +1,59 @@
+{
+  "cli": {
+    "version": ">= 12.0.0",
+    "appVersionSource": "remote"
+  },
+  "build": {
+    "development": {
+      "developmentClient": true,
+      "distribution": "internal",
+      "channel": "development",
+      "env": {
+        "APP_ENV": "dev",
+        "BUNDLE_ID": "com.dash2zero.dev"
+      },
+      "ios": {
+        "simulator": true
+      }
+    },
+    "preview": {
+      "distribution": "internal",
+      "channel": "staging",
+      "env": {
+        "APP_ENV": "staging",
+        "BUNDLE_ID": "com.dash2zero.staging"
+      },
+      "ios": {
+        "simulator": false
+      }
+    },
+    "production": {
+      "channel": "production",
+      "env": {
+        "APP_ENV": "prod",
+        "BUNDLE_ID": "com.dash2zero.app"
+      },
+      "autoIncrement": true
+    }
+  },
+  "submit": {
+    "production": {
+      "ios": {
+        "language": "en-US",
+        "appleId": "TBD-APPLE-ID-EMAIL",
+        "ascAppId": "TBD-APP-STORE-CONNECT-APP-ID",
+        "appleTeamId": "TBD-APPLE-TEAM-ID"
+      },
+      "android": {
+        "track": "internal"
+      }
+    }
+  },
+  "_comment": [
+    "SSOT 사본 — CANONICAL은 apps/mobile/eas.json (EAS CLI가 읽는 위치). 두 파일 동기 유지.",
+    "TestFlight 절차는 docs/release/TESTFLIGHT_RUNBOOK.md 참조.",
+    "M2-S1 scaffold by devops (D-009). Apple Team ID / Google service account JSON은 EAS Secrets로 관리 (CC2-21).",
+    "Privacy Manifest (PrivacyInfo.xcprivacy) 자동 검증은 M4 (Q-OPS-NEW-005).",
+    "Phased Rollout halt trigger은 M5 (CC3-08)."
+  ]
+}

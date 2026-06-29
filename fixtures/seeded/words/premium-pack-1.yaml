@@ -1,0 +1,451 @@
+# Premium Pack 1 — 100단어 초안 (Premium tier, D-019 봉인 2026-05-13)
+#
+# 책임 agent: learning (lead) · orchestrator (D-019 quality gate 통합 승인)
+# Quality policy: docs/learning/CONTENT_QUALITY_POLICY.md (D-019)
+#
+# 본 pack은 paywall "Premium pack — 300+ words" promise의 첫 1/3 (100단어).
+# 다음 사이클에 +200단어 추가하여 300+ 도달 예정 (M4 W17 또는 M5 W19 D-2).
+#
+# 단어 선정 기준:
+#   - 한국어 빈도 상위 3000 (CEFR A2-B1, TOPIK I 후반 ~ II 초반)
+#   - starter 60 + core 180 (kpop/kdrama/travel) = 240 학습 어휘 이상 사용
+#   - 일상 확장 어휘 (시간/날씨/감정/활동/관계 등 깊이 있는 표현)
+#
+# 카테고리 분포 (100단어):
+#   시간·날짜·요일          15 (월요일~일요일, 아침, 점심, 저녁, 새벽, 주말, 평일, 시간)
+#   날씨·계절               12 (봄, 여름, 가을, 겨울, 더워요, 추워요, 따뜻해요, 시원해요, 비, 눈, 바람, 맑아요)
+#   감정·기분 확장          12 (기뻐요, 외로워요, 우울해요, 걱정돼요, 신나요, 부끄러워요, 자랑스러워요, 안타까워요, 짜증나요, 답답해요, 그리워요, 설레요)
+#   활동·취미               12 (운동, 산책, 등산, 영화, 책, 요리, 게임, 사진, 음악 듣기, 여행, 쇼핑, 모임)
+#   학교·공부               10 (수업, 시험, 숙제, 공부, 교과서, 노트, 학기, 졸업, 입학, 동아리)
+#   직장·업무                10 (출근, 퇴근, 회의, 보고, 휴가, 야근, 동료, 부서, 프로젝트, 마감)
+#   몸·건강                  10 (머리, 얼굴, 눈, 손, 발, 아파요, 피곤해요, 잠, 운동, 건강)
+#   소셜·미디어               9 (전화, 메시지, 이메일, SNS, 사진, 영상, 검색, 알림, 차단)
+
+pack_id: "premium-pack-001"
+pack_name: "Premium Pack 1 — Daily Korean 300"
+tier: premium
+target_audience: "영어권 학습자, A2-B1, starter+core 240단어 학습 완료 후"
+target_count: 300
+current_batch_count: 300      # ✅ 2026-05-14 +200 batch 완료 (paywall "300+" promise 충족)
+cefr_band: "A2-B1"
+topik_band: "TOPIK I 후반 ~ II 초반"
+prerequisite_packs: ["starter-001", "core-kpop-001", "core-kdrama-001", "core-travel-001"]
+content_version: 1
+license: "tts-google-neural2"
+
+words:
+  # === 시간·날짜·요일 (15) ===
+  - { word_id: "w-pr-001", korean: "월요일", romanization: "wo-ryo-il",      gloss: "Monday",         example_ko: "월요일이에요.",          example_en: "It's Monday.",                distractors_candidate: ["화요일","주말","평일"] }
+  - { word_id: "w-pr-002", korean: "화요일", romanization: "hwa-yo-il",      gloss: "Tuesday",        example_ko: "화요일 만나요.",         example_en: "Let's meet Tuesday.",         distractors_candidate: ["수요일","월요일","목요일"] }
+  - { word_id: "w-pr-003", korean: "수요일", romanization: "su-yo-il",       gloss: "Wednesday",      example_ko: "수요일 약속 있어요.",    example_en: "I have plans Wednesday.",     distractors_candidate: ["화요일","목요일","월요일"] }
+  - { word_id: "w-pr-004", korean: "목요일", romanization: "mo-gyo-il",      gloss: "Thursday",       example_ko: "목요일 회의예요.",        example_en: "Meeting on Thursday.",        distractors_candidate: ["수요일","금요일","월요일"] }
+  - { word_id: "w-pr-005", korean: "금요일", romanization: "geu-myo-il",     gloss: "Friday",         example_ko: "금요일 좋아해요!",        example_en: "I love Fridays!",             distractors_candidate: ["목요일","토요일","주말"] }
+  - { word_id: "w-pr-006", korean: "토요일", romanization: "to-yo-il",       gloss: "Saturday",       example_ko: "토요일에 봐요.",         example_en: "See you Saturday.",           distractors_candidate: ["일요일","금요일","주말"] }
+  - { word_id: "w-pr-007", korean: "일요일", romanization: "i-ryo-il",       gloss: "Sunday",         example_ko: "일요일에 쉬어요.",       example_en: "I rest on Sunday.",           distractors_candidate: ["토요일","주말","휴일"] }
+  - { word_id: "w-pr-008", korean: "아침",   romanization: "a-chim",         gloss: "morning",        example_ko: "아침 먹었어요?",         example_en: "Did you have breakfast?",     distractors_candidate: ["점심","저녁","새벽"] }
+  - { word_id: "w-pr-009", korean: "점심",   romanization: "jeom-sim",       gloss: "lunch / noon",   example_ko: "점심 같이 먹어요.",      example_en: "Let's have lunch together.",  distractors_candidate: ["아침","저녁","간식"] }
+  - { word_id: "w-pr-010", korean: "저녁",   romanization: "jeo-nyeok",      gloss: "evening / dinner", example_ko: "저녁 약속 있어요.",   example_en: "I have a dinner plan.",       distractors_candidate: ["점심","아침","밤"] }
+  - { word_id: "w-pr-011", korean: "새벽",   romanization: "sae-byeok",      gloss: "dawn / early morning", example_ko: "새벽에 일어났어요.", example_en: "I woke up at dawn.",          distractors_candidate: ["아침","밤","새"] }
+  - { word_id: "w-pr-012", korean: "주말",   romanization: "ju-mal",         gloss: "weekend",        example_ko: "주말 잘 보내세요.",      example_en: "Have a good weekend.",        distractors_candidate: ["평일","휴가","연휴"] }
+  - { word_id: "w-pr-013", korean: "평일",   romanization: "pyeong-il",      gloss: "weekday",        example_ko: "평일에 일해요.",         example_en: "I work on weekdays.",         distractors_candidate: ["주말","휴일","공휴일"] }
+  - { word_id: "w-pr-014", korean: "시간",   romanization: "si-gan",         gloss: "time / hour",    example_ko: "시간 있어요?",           example_en: "Do you have time?",           distractors_candidate: ["분","초","날"] }
+  - { word_id: "w-pr-015", korean: "분",     romanization: "bun",            gloss: "minute",         example_ko: "오 분 후예요.",          example_en: "In 5 minutes.",               distractors_candidate: ["시간","초","곧"] }
+
+  # === 날씨·계절 (12) ===
+  - { word_id: "w-pr-016", korean: "봄",       romanization: "bom",           gloss: "spring",        example_ko: "봄이 좋아요.",            example_en: "I like spring.",              distractors_candidate: ["여름","가을","겨울"] }
+  - { word_id: "w-pr-017", korean: "여름",     romanization: "yeo-reum",      gloss: "summer",        example_ko: "여름 더워요.",            example_en: "Summer is hot.",              distractors_candidate: ["봄","겨울","장마"] }
+  - { word_id: "w-pr-018", korean: "가을",     romanization: "ga-eul",        gloss: "fall / autumn", example_ko: "가을 단풍 예뻐요.",       example_en: "Fall foliage is pretty.",     distractors_candidate: ["봄","겨울","여름"] }
+  - { word_id: "w-pr-019", korean: "겨울",     romanization: "gyeo-ul",       gloss: "winter",        example_ko: "겨울 추워요.",            example_en: "Winter is cold.",             distractors_candidate: ["여름","봄","눈"] }
+  - { word_id: "w-pr-020", korean: "더워요",   romanization: "deo-wo-yo",     gloss: "it's hot",      example_ko: "오늘 너무 더워요.",       example_en: "It's so hot today.",          distractors_candidate: ["추워요","따뜻해요","시원해요"] }
+  - { word_id: "w-pr-021", korean: "추워요",   romanization: "chu-wo-yo",     gloss: "it's cold",     example_ko: "방이 추워요.",            example_en: "The room is cold.",           distractors_candidate: ["더워요","따뜻해요","시원해요"] }
+  - { word_id: "w-pr-022", korean: "따뜻해요", romanization: "tta-tteu-tae-yo", gloss: "it's warm",   example_ko: "오늘 따뜻해요.",          example_en: "It's warm today.",            distractors_candidate: ["더워요","시원해요","추워요"] }
+  - { word_id: "w-pr-023", korean: "시원해요", romanization: "si-won-hae-yo",  gloss: "it's cool / refreshing", example_ko: "바람이 시원해요.", example_en: "The wind is refreshing.",     distractors_candidate: ["따뜻해요","추워요","상쾌해요"] }
+  - { word_id: "w-pr-024", korean: "비",       romanization: "bi",            gloss: "rain",          example_ko: "비 와요.",                example_en: "It's raining.",               distractors_candidate: ["눈","바람","구름"] }
+  - { word_id: "w-pr-025", korean: "눈송이",   romanization: "nun-song-i",    gloss: "snowflake",     example_ko: "눈송이가 예뻐요.",        example_en: "The snowflake is pretty.",    distractors_candidate: ["비","바람","얼음"] }
+  - { word_id: "w-pr-026", korean: "바람",     romanization: "ba-ram",        gloss: "wind",          example_ko: "바람 불어요.",            example_en: "The wind is blowing.",        distractors_candidate: ["비","공기","구름"] }
+  - { word_id: "w-pr-027", korean: "맑아요",   romanization: "mal-ga-yo",     gloss: "it's clear / sunny", example_ko: "하늘이 맑아요.",      example_en: "The sky is clear.",           distractors_candidate: ["흐려요","비","구름"] }
+
+  # === 감정·기분 확장 (12) ===
+  - { word_id: "w-pr-028", korean: "기뻐요",       romanization: "gi-ppeo-yo",         gloss: "I'm glad",          example_ko: "정말 기뻐요!",            example_en: "I'm really glad!",                  distractors_candidate: ["행복해요","즐거워요","좋아요"] }
+  - { word_id: "w-pr-029", korean: "외로워요",     romanization: "oe-ro-wo-yo",        gloss: "I'm lonely",        example_ko: "조금 외로워요.",          example_en: "I'm a bit lonely.",                 distractors_candidate: ["슬퍼요","우울해요","쓸쓸해요"] }
+  - { word_id: "w-pr-030", korean: "우울해요",     romanization: "u-ul-hae-yo",        gloss: "I'm depressed / down", example_ko: "오늘 좀 우울해요.",    example_en: "I'm feeling down today.",           distractors_candidate: ["슬퍼요","외로워요","행복해요"] }
+  - { word_id: "w-pr-031", korean: "걱정돼요",     romanization: "geok-jeong-dwae-yo", gloss: "I'm worried",       example_ko: "시험이 걱정돼요.",        example_en: "I'm worried about the exam.",       distractors_candidate: ["무서워요","불안해요","긴장돼요"] }
+  - { word_id: "w-pr-032", korean: "신나요",       romanization: "sin-na-yo",          gloss: "I'm excited / thrilled", example_ko: "여행 가서 신나요!",  example_en: "I'm excited to travel!",            distractors_candidate: ["기뻐요","설레요","즐거워요"] }
+  - { word_id: "w-pr-033", korean: "부끄러워요",   romanization: "bu-kkeu-reo-wo-yo",  gloss: "I'm embarrassed",   example_ko: "너무 부끄러워요.",        example_en: "I'm so embarrassed.",               distractors_candidate: ["민망해요","창피해요","미안해요"] }
+  - { word_id: "w-pr-034", korean: "자랑스러워요", romanization: "ja-rang-seu-reo-wo-yo", gloss: "I'm proud",     example_ko: "동생이 자랑스러워요.",    example_en: "I'm proud of my sibling.",          distractors_candidate: ["뿌듯해요","기뻐요","감사해요"] }
+  - { word_id: "w-pr-035", korean: "안타까워요",   romanization: "an-ta-kka-wo-yo",    gloss: "it's a pity",       example_ko: "정말 안타까워요.",        example_en: "It's really a pity.",               distractors_candidate: ["슬퍼요","아쉬워요","미안해요"] }
+  - { word_id: "w-pr-036", korean: "짜증나요",     romanization: "jja-jeung-na-yo",    gloss: "I'm annoyed",       example_ko: "조금 짜증나요.",          example_en: "I'm a bit annoyed.",                distractors_candidate: ["화났어요","답답해요","피곤해요"] }
+  - { word_id: "w-pr-037", korean: "답답해요",     romanization: "dap-da-pae-yo",      gloss: "I feel frustrated / stifled", example_ko: "답답해요.",      example_en: "I feel stifled.",                   distractors_candidate: ["짜증나요","화났어요","피곤해요"] }
+  - { word_id: "w-pr-038", korean: "그리워요",     romanization: "geu-ri-wo-yo",       gloss: "I miss (someone/something)", example_ko: "친구가 그리워요.", example_en: "I miss my friend.",                  distractors_candidate: ["보고 싶어요","외로워요","사랑해요"] }
+  - { word_id: "w-pr-039", korean: "설레요",       romanization: "seol-le-yo",         gloss: "I feel butterflies / excited", example_ko: "데이트 설레요.", example_en: "I'm excited for the date.",         distractors_candidate: ["신나요","기뻐요","두근거려요"] }
+
+  # === 활동·취미 (12) ===
+  - { word_id: "w-pr-040", korean: "운동",         romanization: "un-dong",            gloss: "exercise",          example_ko: "운동해요.",               example_en: "I'm exercising.",                   distractors_candidate: ["산책","요가","헬스"] }
+  - { word_id: "w-pr-041", korean: "산책",         romanization: "san-chaek",          gloss: "walk / stroll",     example_ko: "산책 가요.",              example_en: "Let's go for a walk.",              distractors_candidate: ["운동","조깅","등산"] }
+  - { word_id: "w-pr-042", korean: "등산",         romanization: "deung-san",          gloss: "hiking",            example_ko: "등산 좋아해요.",          example_en: "I like hiking.",                    distractors_candidate: ["산책","여행","캠핑"] }
+  - { word_id: "w-pr-043", korean: "영화",         romanization: "yeong-hwa",          gloss: "movie",             example_ko: "영화 봐요.",              example_en: "I'm watching a movie.",             distractors_candidate: ["드라마","쇼","뮤지컬"] }
+  - { word_id: "w-pr-044", korean: "책",           romanization: "chaek",              gloss: "book",              example_ko: "책 읽어요.",              example_en: "I'm reading a book.",               distractors_candidate: ["잡지","신문","만화"] }
+  - { word_id: "w-pr-045", korean: "요리",         romanization: "yo-ri",              gloss: "cooking",           example_ko: "요리해요.",               example_en: "I'm cooking.",                      distractors_candidate: ["식사","배달","주문"] }
+  - { word_id: "w-pr-046", korean: "게임",         romanization: "ge-im",              gloss: "game",              example_ko: "게임 해요.",              example_en: "I'm playing a game.",               distractors_candidate: ["놀이","오락","스포츠"] }
+  - { word_id: "w-pr-047", korean: "셀카",         romanization: "sel-ka",             gloss: "selfie",            example_ko: "셀카 찍어요.",             example_en: "I'm taking a selfie.",              distractors_candidate: ["영상","그림","카메라"] }
+  - { word_id: "w-pr-048", korean: "음악 듣기",     romanization: "eu-mak-deut-gi",     gloss: "listening to music", example_ko: "음악 듣기 좋아해요.",    example_en: "I like listening to music.",        distractors_candidate: ["노래","춤","연주"] }
+  - { word_id: "w-pr-049", korean: "여행",         romanization: "yeo-haeng",          gloss: "travel",            example_ko: "여행 가고 싶어요.",       example_en: "I want to travel.",                 distractors_candidate: ["관광","휴가","출장"] }
+  - { word_id: "w-pr-050", korean: "쇼핑",         romanization: "syo-ping",           gloss: "shopping",          example_ko: "쇼핑할 거예요.",          example_en: "I'm going shopping.",               distractors_candidate: ["구경","장보기","외출"] }
+  - { word_id: "w-pr-051", korean: "모임",         romanization: "mo-im",              gloss: "gathering / meetup", example_ko: "오늘 모임 있어요.",      example_en: "I have a meetup today.",            distractors_candidate: ["파티","만남","회식"] }
+
+  # === 학교·공부 (10) ===
+  - { word_id: "w-pr-052", korean: "수업",     romanization: "su-eop",         gloss: "class",        example_ko: "수업 시작해요.",          example_en: "Class is starting.",         distractors_candidate: ["강의","공부","학원"] }
+  - { word_id: "w-pr-053", korean: "시험",     romanization: "si-heom",        gloss: "exam",         example_ko: "시험 봐요.",              example_en: "I'm taking an exam.",        distractors_candidate: ["퀴즈","숙제","평가"] }
+  - { word_id: "w-pr-054", korean: "숙제",     romanization: "suk-je",         gloss: "homework",     example_ko: "숙제 많아요.",            example_en: "I have a lot of homework.",  distractors_candidate: ["시험","과제","공부"] }
+  - { word_id: "w-pr-055", korean: "공부",     romanization: "gong-bu",        gloss: "study",        example_ko: "한국어 공부해요.",        example_en: "I study Korean.",            distractors_candidate: ["연습","수업","숙제"] }
+  - { word_id: "w-pr-056", korean: "교과서",   romanization: "gyo-gwa-seo",    gloss: "textbook",     example_ko: "교과서 가져왔어요.",       example_en: "I brought the textbook.",    distractors_candidate: ["노트","책","참고서"] }
+  - { word_id: "w-pr-057", korean: "노트",     romanization: "no-teu",         gloss: "notebook",     example_ko: "노트 정리해요.",          example_en: "I'm organizing my notes.",   distractors_candidate: ["책","교과서","메모장"] }
+  - { word_id: "w-pr-058", korean: "학기",     romanization: "hak-gi",         gloss: "semester",     example_ko: "이번 학기 끝났어요.",     example_en: "This semester is over.",     distractors_candidate: ["학년","방학","기간"] }
+  - { word_id: "w-pr-059", korean: "졸업",     romanization: "jo-reop",        gloss: "graduation",   example_ko: "졸업 축하해요.",          example_en: "Congratulations on graduation.", distractors_candidate: ["입학","수료","결혼"] }
+  - { word_id: "w-pr-060", korean: "입학",     romanization: "i-pak",          gloss: "admission / enrollment", example_ko: "대학 입학했어요.", example_en: "I enrolled in college.",    distractors_candidate: ["졸업","합격","등록"] }
+  - { word_id: "w-pr-061", korean: "동아리",   romanization: "dong-a-ri",      gloss: "club / circle (school)", example_ko: "동아리 활동해요.",  example_en: "I'm in a club.",             distractors_candidate: ["모임","팀","그룹"] }
+
+  # === 직장·업무 (10) ===
+  - { word_id: "w-pr-062", korean: "출근",     romanization: "chul-geun",      gloss: "going to work", example_ko: "출근 시간이에요.",        example_en: "It's time to go to work.",   distractors_candidate: ["퇴근","회사","출장"] }
+  - { word_id: "w-pr-063", korean: "퇴근",     romanization: "toe-geun",       gloss: "leaving work",  example_ko: "퇴근했어요.",             example_en: "I'm done with work.",        distractors_candidate: ["출근","휴가","연차"] }
+  - { word_id: "w-pr-064", korean: "회의",     romanization: "hoe-ui",         gloss: "meeting",       example_ko: "회의 있어요.",            example_en: "I have a meeting.",          distractors_candidate: ["미팅","상담","회식"] }
+  - { word_id: "w-pr-065", korean: "보고",     romanization: "bo-go",          gloss: "report / briefing", example_ko: "보고드릴게요.",       example_en: "I'll report to you.",        distractors_candidate: ["발표","말씀","공유"] }
+  - { word_id: "w-pr-066", korean: "휴가",     romanization: "hyu-ga",         gloss: "vacation / leave", example_ko: "휴가 갔어요.",         example_en: "I'm on vacation.",           distractors_candidate: ["연차","주말","여행"] }
+  - { word_id: "w-pr-067", korean: "야근",     romanization: "ya-geun",        gloss: "overtime (night)", example_ko: "오늘 야근해요.",       example_en: "I'm working late tonight.",  distractors_candidate: ["출근","퇴근","주말 근무"] }
+  - { word_id: "w-pr-068", korean: "동료",     romanization: "dong-ryo",       gloss: "colleague",     example_ko: "동료들과 점심 먹어요.",   example_en: "I'm having lunch with my colleagues.", distractors_candidate: ["친구","상사","후배"] }
+  - { word_id: "w-pr-069", korean: "부서",     romanization: "bu-seo",         gloss: "department",    example_ko: "어느 부서예요?",          example_en: "Which department?",          distractors_candidate: ["팀","과","파트"] }
+  - { word_id: "w-pr-070", korean: "프로젝트", romanization: "peu-ro-jek-teu", gloss: "project",       example_ko: "프로젝트 시작해요.",      example_en: "We're starting a project.",  distractors_candidate: ["업무","과제","미션"] }
+  - { word_id: "w-pr-071", korean: "마감",     romanization: "ma-gam",         gloss: "deadline",      example_ko: "마감이 내일이에요.",      example_en: "The deadline is tomorrow.",  distractors_candidate: ["기한","끝","제출"] }
+
+  # === 몸·건강 (10) ===
+  - { word_id: "w-pr-072", korean: "머리",     romanization: "meo-ri",         gloss: "head / hair",   example_ko: "머리 아파요.",            example_en: "I have a headache.",         distractors_candidate: ["얼굴","목","눈"] }
+  - { word_id: "w-pr-073", korean: "얼굴",     romanization: "eol-gul",        gloss: "face",          example_ko: "얼굴이 빨개요.",          example_en: "My face is red.",            distractors_candidate: ["머리","눈","입"] }
+  - { word_id: "w-pr-074", korean: "눈",       romanization: "nun",            gloss: "eye(s)",        example_ko: "눈이 아파요.",            example_en: "My eyes hurt.",              distractors_candidate: ["귀","코","입"] }
+  - { word_id: "w-pr-075", korean: "손",       romanization: "son",            gloss: "hand",          example_ko: "손 씻으세요.",            example_en: "Please wash your hands.",    distractors_candidate: ["발","팔","손가락"] }
+  - { word_id: "w-pr-076", korean: "발",       romanization: "bal",            gloss: "foot / feet",   example_ko: "발이 아파요.",            example_en: "My feet hurt.",              distractors_candidate: ["손","다리","발가락"] }
+  - { word_id: "w-pr-077", korean: "아파요",   romanization: "a-pa-yo",        gloss: "it hurts / I'm sick", example_ko: "어디 아파요?",       example_en: "Where does it hurt?",        distractors_candidate: ["피곤해요","힘들어요","괜찮아요"] }
+  - { word_id: "w-pr-078", korean: "피곤해요", romanization: "pi-gon-hae-yo",  gloss: "I'm tired",     example_ko: "너무 피곤해요.",          example_en: "I'm so tired.",              distractors_candidate: ["힘들어요","졸려요","아파요"] }
+  - { word_id: "w-pr-079", korean: "잠",       romanization: "jam",            gloss: "sleep",         example_ko: "잠 잘 자요.",             example_en: "Sleep well.",                distractors_candidate: ["꿈","휴식","눈"] }
+  - { word_id: "w-pr-080", korean: "건강",     romanization: "geon-gang",      gloss: "health",        example_ko: "건강이 최고예요.",        example_en: "Health is the most important.", distractors_candidate: ["몸","컨디션","체력"] }
+  - { word_id: "w-pr-081", korean: "체력",     romanization: "che-ryeok",      gloss: "stamina / physical strength", example_ko: "체력이 좋아요.", example_en: "I have good stamina.", distractors_candidate: ["건강","에너지","근육"] }
+
+  # === 소셜·미디어 (9) ===
+  - { word_id: "w-pr-082", korean: "전화",     romanization: "jeo-nwa",        gloss: "phone call",    example_ko: "전화할게요.",             example_en: "I'll call you.",             distractors_candidate: ["메시지","문자","영상통화"] }
+  - { word_id: "w-pr-083", korean: "메시지",   romanization: "me-si-ji",       gloss: "message",       example_ko: "메시지 보내요.",          example_en: "I'm sending a message.",     distractors_candidate: ["문자","이메일","톡"] }
+  - { word_id: "w-pr-084", korean: "이메일",   romanization: "i-me-il",        gloss: "email",         example_ko: "이메일 확인해요.",        example_en: "I'm checking my email.",     distractors_candidate: ["메시지","편지","우편"] }
+  - { word_id: "w-pr-085", korean: "SNS",     romanization: "es-en-es",        gloss: "social media",  example_ko: "SNS 안 해요.",            example_en: "I don't do social media.",   distractors_candidate: ["인스타","페이스북","트위터"] }
+  - { word_id: "w-pr-086", korean: "사진 공유", romanization: "sa-jin-gong-yu", gloss: "photo sharing", example_ko: "사진 공유해 주세요.",     example_en: "Please share the photos.",   distractors_candidate: ["업로드","전송","저장"] }
+  - { word_id: "w-pr-087", korean: "영상 통화", romanization: "yeong-sang-tong-hwa", gloss: "video call", example_ko: "영상 통화해요.",         example_en: "Let's video call.",          distractors_candidate: ["전화","화상회의","줌"] }
+  - { word_id: "w-pr-088", korean: "검색",     romanization: "geom-saek",       gloss: "search",       example_ko: "구글에서 검색해요.",       example_en: "I'm searching on Google.",   distractors_candidate: ["찾기","조회","질문"] }
+  - { word_id: "w-pr-089", korean: "알림",     romanization: "al-rim",          gloss: "notification", example_ko: "알림 왔어요.",             example_en: "I got a notification.",      distractors_candidate: ["메시지","경고","공지"] }
+  - { word_id: "w-pr-090", korean: "차단",     romanization: "cha-dan",         gloss: "block (action)", example_ko: "차단했어요.",            example_en: "I blocked them.",            distractors_candidate: ["삭제","숨김","신고"] }
+
+  # === 자주 쓰이는 표현·동사 (10) ===
+  - { word_id: "w-pr-091", korean: "가능해요",   romanization: "ga-neung-hae-yo",   gloss: "it's possible / I can", example_ko: "지금 가능해요.",        example_en: "It's possible now.",         distractors_candidate: ["좋아요","됩니다","어려워요"] }
+  - { word_id: "w-pr-092", korean: "불가능해요", romanization: "bul-ga-neung-hae-yo", gloss: "it's impossible",     example_ko: "오늘은 불가능해요.",     example_en: "Today is impossible.",       distractors_candidate: ["가능해요","어려워요","안 돼요"] }
+  - { word_id: "w-pr-093", korean: "필요해요",   romanization: "pi-ryo-hae-yo",     gloss: "I need it",         example_ko: "도움이 필요해요.",        example_en: "I need help.",               distractors_candidate: ["원해요","갖고 싶어요","좋아해요"] }
+  - { word_id: "w-pr-094", korean: "원해요",     romanization: "won-hae-yo",        gloss: "I want",            example_ko: "이거 원해요.",            example_en: "I want this.",               distractors_candidate: ["필요해요","좋아해요","사고 싶어요"] }
+  - { word_id: "w-pr-095", korean: "기억해요",   romanization: "gi-eo-kae-yo",      gloss: "I remember",        example_ko: "이름 기억해요.",          example_en: "I remember the name.",       distractors_candidate: ["잊었어요","알아요","생각해요"] }
+  - { word_id: "w-pr-096", korean: "잊었어요",   romanization: "i-jeo-sseo-yo",     gloss: "I forgot",          example_ko: "약속 잊었어요.",          example_en: "I forgot the plan.",         distractors_candidate: ["기억해요","몰랐어요","놓쳤어요"] }
+  - { word_id: "w-pr-097", korean: "이해해요",   romanization: "i-hae-hae-yo",      gloss: "I understand",      example_ko: "잘 이해해요.",            example_en: "I understand well.",         distractors_candidate: ["알아요","모르겠어요","들었어요"] }
+  - { word_id: "w-pr-098", korean: "동의해요",   romanization: "dong-ui-hae-yo",    gloss: "I agree",           example_ko: "동의해요.",               example_en: "I agree.",                   distractors_candidate: ["반대해요","좋아요","찬성해요"] }
+  - { word_id: "w-pr-099", korean: "반대해요",   romanization: "ban-dae-hae-yo",    gloss: "I disagree",        example_ko: "이 의견에 반대해요.",     example_en: "I disagree with this.",      distractors_candidate: ["동의해요","찬성해요","좋아요"] }
+  - { word_id: "w-pr-100", korean: "축하해요",   romanization: "chu-ka-hae-yo",     gloss: "congratulations",   example_ko: "졸업 축하해요!",          example_en: "Congratulations on graduation!", distractors_candidate: ["고마워요","감사해요","행복해요"] }
+
+  # ============================================================
+  # === Batch 2 (w-pr-101 ~ w-pr-300, D-019 +200 단어, 2026-05-14 작성) ===
+  # ============================================================
+
+  # === 색깔·형태 (10) ===
+  - { word_id: "w-pr-101", korean: "빨간색",   romanization: "ppal-gan-saek",   gloss: "red",              example_ko: "빨간색 옷이에요.",        example_en: "It's a red outfit.",          distractors_candidate: ["파란색","노란색","검은색"] }
+  - { word_id: "w-pr-102", korean: "파란색",   romanization: "pa-ran-saek",     gloss: "blue",             example_ko: "파란색이 좋아요.",        example_en: "I like blue.",                distractors_candidate: ["빨간색","초록색","하늘색"] }
+  - { word_id: "w-pr-103", korean: "노란색",   romanization: "no-ran-saek",     gloss: "yellow",           example_ko: "노란색 가방이에요.",      example_en: "It's a yellow bag.",          distractors_candidate: ["주황색","빨간색","금색"] }
+  - { word_id: "w-pr-104", korean: "초록색",   romanization: "cho-rok-saek",    gloss: "green",            example_ko: "초록색 잎이에요.",        example_en: "It's a green leaf.",          distractors_candidate: ["파란색","연두색","갈색"] }
+  - { word_id: "w-pr-105", korean: "검은색",   romanization: "geo-meun-saek",   gloss: "black",            example_ko: "검은색이 어울려요.",      example_en: "Black suits you.",            distractors_candidate: ["흰색","회색","갈색"] }
+  - { word_id: "w-pr-106", korean: "흰색",     romanization: "huin-saek",       gloss: "white",            example_ko: "흰색 셔츠 있어요?",       example_en: "Do you have a white shirt?",  distractors_candidate: ["검은색","회색","베이지"] }
+  - { word_id: "w-pr-107", korean: "회색",     romanization: "hoe-saek",        gloss: "gray",             example_ko: "회색 코트 사고 싶어요.",  example_en: "I want a gray coat.",         distractors_candidate: ["검은색","흰색","갈색"] }
+  - { word_id: "w-pr-108", korean: "둥글어요", romanization: "dung-geu-reo-yo", gloss: "it's round",       example_ko: "공이 둥글어요.",          example_en: "The ball is round.",          distractors_candidate: ["네모예요","길어요","넓어요"] }
+  - { word_id: "w-pr-109", korean: "네모",     romanization: "ne-mo",           gloss: "square",           example_ko: "네모 모양이에요.",        example_en: "It's a square shape.",        distractors_candidate: ["동그라미","세모","원"] }
+  - { word_id: "w-pr-110", korean: "모양",     romanization: "mo-yang",         gloss: "shape",            example_ko: "모양이 예뻐요.",          example_en: "The shape is pretty.",        distractors_candidate: ["크기","색깔","형태"] }
+
+  # === 양·정도 (10) ===
+  - { word_id: "w-pr-111", korean: "많이",     romanization: "ma-ni",           gloss: "a lot",            example_ko: "많이 드세요.",            example_en: "Please eat a lot.",           distractors_candidate: ["조금","약간","너무"] }
+  - { word_id: "w-pr-112", korean: "조금",     romanization: "jo-geum",         gloss: "a little",         example_ko: "조금만 주세요.",          example_en: "Just a little, please.",      distractors_candidate: ["많이","약간","좀"] }
+  - { word_id: "w-pr-113", korean: "너무",     romanization: "neo-mu",          gloss: "too / very",       example_ko: "너무 매워요.",            example_en: "It's too spicy.",             distractors_candidate: ["정말","많이","아주"] }
+  - { word_id: "w-pr-114", korean: "약간",     romanization: "yak-gan",         gloss: "slightly",         example_ko: "약간 짜요.",              example_en: "It's slightly salty.",        distractors_candidate: ["조금","많이","좀"] }
+  - { word_id: "w-pr-115", korean: "거의",     romanization: "geo-ui",          gloss: "almost",           example_ko: "거의 다 왔어요.",         example_en: "We're almost there.",         distractors_candidate: ["완전히","아직","곧"] }
+  - { word_id: "w-pr-116", korean: "전부",     romanization: "jeon-bu",         gloss: "all / everything", example_ko: "전부 주세요.",            example_en: "I'll take everything.",       distractors_candidate: ["일부","조금","반"] }
+  - { word_id: "w-pr-117", korean: "반",       romanization: "ban",             gloss: "half",             example_ko: "반만 주세요.",            example_en: "Half, please.",               distractors_candidate: ["전부","일부","조금"] }
+  - { word_id: "w-pr-118", korean: "충분해요", romanization: "chung-bun-hae-yo", gloss: "it's enough",     example_ko: "이제 충분해요.",          example_en: "That's enough now.",          distractors_candidate: ["부족해요","많아요","넘쳐요"] }
+  - { word_id: "w-pr-119", korean: "부족해요", romanization: "bu-jo-kae-yo",    gloss: "it's not enough",  example_ko: "시간이 부족해요.",        example_en: "Not enough time.",            distractors_candidate: ["충분해요","많아요","넉넉해요"] }
+  - { word_id: "w-pr-120", korean: "정확해요", romanization: "jeong-hwa-kae-yo", gloss: "it's accurate",   example_ko: "시간이 정확해요.",        example_en: "The time is accurate.",       distractors_candidate: ["틀려요","비슷해요","대충"] }
+
+  # === 방향·위치 (10) ===
+  - { word_id: "w-pr-121", korean: "위",       romanization: "wi",              gloss: "above / up",       example_ko: "책상 위에 있어요.",       example_en: "It's on the desk.",           distractors_candidate: ["아래","옆","뒤"] }
+  - { word_id: "w-pr-122", korean: "아래",     romanization: "a-rae",           gloss: "below / down",     example_ko: "의자 아래 봐요.",         example_en: "Look under the chair.",       distractors_candidate: ["위","앞","바닥"] }
+  - { word_id: "w-pr-123", korean: "앞",       romanization: "ap",              gloss: "front",            example_ko: "집 앞에서 만나요.",       example_en: "Let's meet in front of the house.", distractors_candidate: ["뒤","옆","뒷쪽"] }
+  - { word_id: "w-pr-124", korean: "뒤",       romanization: "dwi",             gloss: "behind / back",    example_ko: "뒤에 서 있어요.",         example_en: "I'm standing behind.",        distractors_candidate: ["앞","옆","위"] }
+  - { word_id: "w-pr-125", korean: "옆",       romanization: "yeop",            gloss: "next to / beside", example_ko: "제 옆에 앉으세요.",       example_en: "Sit next to me.",             distractors_candidate: ["앞","뒤","사이"] }
+  - { word_id: "w-pr-126", korean: "안",       romanization: "an",              gloss: "inside",           example_ko: "가방 안에 있어요.",       example_en: "It's inside the bag.",        distractors_candidate: ["밖","위","아래"] }
+  - { word_id: "w-pr-127", korean: "밖",       romanization: "bak",             gloss: "outside",          example_ko: "밖에 비 와요.",           example_en: "It's raining outside.",       distractors_candidate: ["안","집","현관"] }
+  - { word_id: "w-pr-128", korean: "오른쪽",   romanization: "o-reun-jjok",     gloss: "right (side)",     example_ko: "오른쪽으로 가세요.",      example_en: "Go to the right.",            distractors_candidate: ["왼쪽","앞","뒤"] }
+  - { word_id: "w-pr-129", korean: "왼쪽",     romanization: "oen-jjok",        gloss: "left (side)",      example_ko: "왼쪽 문이에요.",          example_en: "It's the left door.",         distractors_candidate: ["오른쪽","앞","뒤"] }
+  - { word_id: "w-pr-130", korean: "사이",     romanization: "sa-i",            gloss: "between",          example_ko: "둘 사이에 있어요.",       example_en: "It's between the two.",       distractors_candidate: ["옆","뒤","중간"] }
+
+  # === 빈도 부사 (8) ===
+  - { word_id: "w-pr-131", korean: "항상",     romanization: "hang-sang",       gloss: "always",           example_ko: "항상 응원해요.",          example_en: "I always support you.",       distractors_candidate: ["자주","가끔","절대"] }
+  - { word_id: "w-pr-132", korean: "자주",     romanization: "ja-ju",           gloss: "often",            example_ko: "자주 만나요.",            example_en: "We meet often.",              distractors_candidate: ["가끔","항상","드물게"] }
+  - { word_id: "w-pr-133", korean: "가끔",     romanization: "ga-kkeum",        gloss: "sometimes",        example_ko: "가끔 와요.",              example_en: "I come sometimes.",           distractors_candidate: ["자주","항상","드물게"] }
+  - { word_id: "w-pr-134", korean: "절대",     romanization: "jeol-dae",        gloss: "never / absolutely", example_ko: "절대 잊지 않아요.",     example_en: "I'll never forget.",          distractors_candidate: ["항상","가끔","꼭"] }
+  - { word_id: "w-pr-135", korean: "보통",     romanization: "bo-tong",         gloss: "usually",          example_ko: "보통 아침에 운동해요.",   example_en: "I usually work out in the morning.", distractors_candidate: ["가끔","항상","대개"] }
+  - { word_id: "w-pr-136", korean: "이미",     romanization: "i-mi",            gloss: "already",          example_ko: "이미 끝났어요.",          example_en: "It's already over.",          distractors_candidate: ["아직","곧","방금"] }
+  - { word_id: "w-pr-137", korean: "아직",     romanization: "a-jik",           gloss: "still / yet",      example_ko: "아직 안 왔어요.",         example_en: "They haven't come yet.",      distractors_candidate: ["이미","벌써","곧"] }
+  - { word_id: "w-pr-138", korean: "곧",       romanization: "got",             gloss: "soon",             example_ko: "곧 도착해요.",            example_en: "I'll arrive soon.",           distractors_candidate: ["방금","이미","나중에"] }
+
+  # === 접속사·연결어 (10) ===
+  - { word_id: "w-pr-139", korean: "그리고",   romanization: "geu-ri-go",       gloss: "and",              example_ko: "커피 그리고 빵 주세요.",   example_en: "Coffee and bread, please.",   distractors_candidate: ["그래서","그런데","또"] }
+  - { word_id: "w-pr-140", korean: "그래서",   romanization: "geu-rae-seo",     gloss: "so / therefore",   example_ko: "비 와요. 그래서 우산 가져왔어요.", example_en: "It's raining. So I brought an umbrella.", distractors_candidate: ["그리고","그런데","왜냐하면"] }
+  - { word_id: "w-pr-141", korean: "그런데",   romanization: "geu-reon-de",     gloss: "but / by the way", example_ko: "맛있어요. 그런데 매워요.", example_en: "It's tasty. But it's spicy.", distractors_candidate: ["그리고","하지만","근데"] }
+  - { word_id: "w-pr-142", korean: "하지만",   romanization: "ha-ji-man",       gloss: "however",          example_ko: "비싸요. 하지만 좋아요.",  example_en: "It's expensive. However, it's good.", distractors_candidate: ["그런데","그래서","근데"] }
+  - { word_id: "w-pr-143", korean: "왜냐하면", romanization: "wae-nya-ha-myeon", gloss: "because",         example_ko: "안 가요. 왜냐하면 피곤해요.", example_en: "I'm not going because I'm tired.", distractors_candidate: ["그래서","그래도","그러므로"] }
+  - { word_id: "w-pr-144", korean: "또",       romanization: "tto",             gloss: "also / again",     example_ko: "또 만나요.",              example_en: "See you again.",              distractors_candidate: ["그리고","다시","또한"] }
+  - { word_id: "w-pr-145", korean: "혹시",     romanization: "hok-si",          gloss: "by any chance",    example_ko: "혹시 시간 있어요?",       example_en: "Do you have time, by chance?", distractors_candidate: ["만약","아마","어쩌면"] }
+  - { word_id: "w-pr-146", korean: "만약",     romanization: "ma-nyak",         gloss: "if",               example_ko: "만약 비 오면 안 가요.",   example_en: "If it rains, I won't go.",    distractors_candidate: ["혹시","아마","그러면"] }
+  - { word_id: "w-pr-147", korean: "그러면",   romanization: "geu-reo-myeon",   gloss: "then / in that case", example_ko: "그러면 우리 만나요.",  example_en: "Then let's meet.",            distractors_candidate: ["그래서","그러니까","그럼"] }
+  - { word_id: "w-pr-148", korean: "또한",     romanization: "tto-han",         gloss: "also / moreover",  example_ko: "맛있고 또한 싸요.",       example_en: "It's tasty and also cheap.",  distractors_candidate: ["그리고","또","게다가"] }
+
+  # === 의류·소품 (12) ===
+  - { word_id: "w-pr-149", korean: "옷",       romanization: "ot",              gloss: "clothes",          example_ko: "옷 사러 가요.",           example_en: "Let's go clothes shopping.",  distractors_candidate: ["신발","가방","모자"] }
+  - { word_id: "w-pr-150", korean: "셔츠",     romanization: "syeo-cheu",       gloss: "shirt",            example_ko: "셔츠 예뻐요.",            example_en: "The shirt is pretty.",        distractors_candidate: ["티셔츠","블라우스","코트"] }
+  - { word_id: "w-pr-151", korean: "바지",     romanization: "ba-ji",           gloss: "pants",            example_ko: "바지 입었어요.",          example_en: "I'm wearing pants.",          distractors_candidate: ["치마","청바지","반바지"] }
+  - { word_id: "w-pr-152", korean: "치마",     romanization: "chi-ma",          gloss: "skirt",            example_ko: "치마가 어울려요.",        example_en: "The skirt suits you.",        distractors_candidate: ["바지","드레스","원피스"] }
+  - { word_id: "w-pr-153", korean: "코트",     romanization: "ko-teu",          gloss: "coat",             example_ko: "코트 따뜻해요.",          example_en: "The coat is warm.",           distractors_candidate: ["재킷","점퍼","외투"] }
+  - { word_id: "w-pr-154", korean: "신발",     romanization: "sin-bal",         gloss: "shoes",            example_ko: "신발 벗으세요.",          example_en: "Please take off your shoes.", distractors_candidate: ["양말","슬리퍼","운동화"] }
+  - { word_id: "w-pr-155", korean: "양말",     romanization: "yang-mal",        gloss: "socks",            example_ko: "양말 신어요.",            example_en: "I'm wearing socks.",          distractors_candidate: ["신발","스타킹","장갑"] }
+  - { word_id: "w-pr-156", korean: "모자",     romanization: "mo-ja",           gloss: "hat",              example_ko: "모자 쓰세요.",            example_en: "Please wear a hat.",          distractors_candidate: ["가방","안경","스카프"] }
+  - { word_id: "w-pr-157", korean: "가방",     romanization: "ga-bang",         gloss: "bag",              example_ko: "가방 가져왔어요.",        example_en: "I brought my bag.",           distractors_candidate: ["지갑","배낭","핸드백"] }
+  - { word_id: "w-pr-158", korean: "안경",     romanization: "an-gyeong",       gloss: "glasses",          example_ko: "안경 어디 있어요?",       example_en: "Where are my glasses?",       distractors_candidate: ["선글라스","모자","시계"] }
+  - { word_id: "w-pr-159", korean: "시계",     romanization: "si-gye",          gloss: "watch / clock",    example_ko: "시계가 멈췄어요.",        example_en: "The clock stopped.",          distractors_candidate: ["시간","폰","알람"] }
+  - { word_id: "w-pr-160", korean: "지갑",     romanization: "ji-gap",          gloss: "wallet",           example_ko: "지갑 잃어버렸어요.",      example_en: "I lost my wallet.",           distractors_candidate: ["가방","카드","돈"] }
+
+  # === 신체·동작 (10) ===
+  - { word_id: "w-pr-161", korean: "일어나요", romanization: "i-reo-na-yo",     gloss: "I get up",         example_ko: "아침에 일찍 일어나요.", example_en: "I get up early in the morning.", distractors_candidate: ["자요","앉아요","눕다"] }
+  - { word_id: "w-pr-162", korean: "앉아요",   romanization: "an-ja-yo",        gloss: "I sit",            example_ko: "여기 앉아요.",            example_en: "I sit here.",                 distractors_candidate: ["일어나요","서요","누워요"] }
+  - { word_id: "w-pr-163", korean: "걸어요",   romanization: "geo-reo-yo",      gloss: "I walk",           example_ko: "공원을 걸어요.",          example_en: "I walk in the park.",         distractors_candidate: ["뛰어요","달려요","산책해요"] }
+  - { word_id: "w-pr-164", korean: "뛰어요",   romanization: "ttwi-eo-yo",      gloss: "I run / I jump",   example_ko: "운동장에서 뛰어요.",      example_en: "I run on the field.",         distractors_candidate: ["걸어요","산책해요","달려요"] }
+  - { word_id: "w-pr-165", korean: "자요",     romanization: "ja-yo",           gloss: "I sleep",          example_ko: "푹 자요.",                example_en: "Sleep tight.",                distractors_candidate: ["일어나요","쉬어요","눈 감아요"] }
+  - { word_id: "w-pr-166", korean: "쉬어요",   romanization: "swi-eo-yo",       gloss: "I rest",           example_ko: "주말에 쉬어요.",          example_en: "I rest on weekends.",         distractors_candidate: ["일해요","놀아요","자요"] }
+  - { word_id: "w-pr-167", korean: "먹어요",   romanization: "meo-geo-yo",      gloss: "I eat",            example_ko: "점심 먹어요.",            example_en: "I'm eating lunch.",           distractors_candidate: ["마셔요","요리해요","드세요"] }
+  - { word_id: "w-pr-168", korean: "마셔요",   romanization: "ma-syeo-yo",      gloss: "I drink",          example_ko: "물 마셔요.",              example_en: "I'm drinking water.",         distractors_candidate: ["먹어요","들어요","목말라요"] }
+  - { word_id: "w-pr-169", korean: "들어요",   romanization: "deu-reo-yo",      gloss: "I listen / I hold", example_ko: "음악 들어요.",            example_en: "I'm listening to music.",     distractors_candidate: ["봐요","말해요","들어가요"] }
+  - { word_id: "w-pr-170", korean: "말해요",   romanization: "mal-hae-yo",      gloss: "I speak / I say",  example_ko: "천천히 말해요.",          example_en: "I speak slowly.",             distractors_candidate: ["들어요","읽어요","불러요"] }
+
+  # === 시제·결과 표현 (10) ===
+  - { word_id: "w-pr-171", korean: "갔어요",   romanization: "ga-sseo-yo",      gloss: "I went",           example_ko: "어제 학교에 갔어요.",     example_en: "I went to school yesterday.", distractors_candidate: ["가요","왔어요","올 거예요"] }
+  - { word_id: "w-pr-172", korean: "왔어요",   romanization: "wa-sseo-yo",      gloss: "I came",           example_ko: "친구가 왔어요.",          example_en: "A friend came.",              distractors_candidate: ["갔어요","와요","올 거예요"] }
+  - { word_id: "w-pr-173", korean: "먹었어요", romanization: "meo-geo-sseo-yo", gloss: "I ate",            example_ko: "밥 먹었어요.",            example_en: "I ate (a meal).",             distractors_candidate: ["먹어요","마셨어요","배고파요"] }
+  - { word_id: "w-pr-174", korean: "했어요",   romanization: "hae-sseo-yo",     gloss: "I did",            example_ko: "숙제 했어요.",            example_en: "I did my homework.",          distractors_candidate: ["해요","할 거예요","끝났어요"] }
+  - { word_id: "w-pr-175", korean: "봤어요",   romanization: "bwa-sseo-yo",     gloss: "I saw / I watched", example_ko: "영화 봤어요.",            example_en: "I watched a movie.",          distractors_candidate: ["볼 거예요","듣었어요","읽었어요"] }
+  - { word_id: "w-pr-176", korean: "갈 거예요", romanization: "gal-geo-ye-yo",  gloss: "I will go",        example_ko: "내일 갈 거예요.",         example_en: "I will go tomorrow.",         distractors_candidate: ["갔어요","가요","갈래요"] }
+  - { word_id: "w-pr-177", korean: "할 거예요", romanization: "hal-geo-ye-yo",  gloss: "I will do",        example_ko: "주말에 할 거예요.",        example_en: "I will do it on the weekend.", distractors_candidate: ["했어요","해요","할래요"] }
+  - { word_id: "w-pr-178", korean: "끝났어요", romanization: "kkeun-na-sseo-yo", gloss: "it ended",        example_ko: "수업 끝났어요.",          example_en: "Class is over.",              distractors_candidate: ["시작했어요","계속해요","멈췄어요"] }
+  - { word_id: "w-pr-179", korean: "시작해요", romanization: "si-ja-kae-yo",    gloss: "I start",          example_ko: "지금 시작해요.",          example_en: "I'm starting now.",           distractors_candidate: ["끝나요","마쳐요","멈춰요"] }
+  - { word_id: "w-pr-180", korean: "성공했어요", romanization: "seong-gong-hae-sseo-yo", gloss: "I succeeded", example_ko: "시험에 성공했어요.",     example_en: "I succeeded on the exam.",    distractors_candidate: ["실패했어요","합격했어요","해냈어요"] }
+
+  # === 사람·관계 확장 (12) ===
+  - { word_id: "w-pr-181", korean: "선배",     romanization: "seon-bae",        gloss: "senior (school/work)", example_ko: "선배가 도와줬어요.",   example_en: "My senior helped me.",        distractors_candidate: ["후배","상사","멘토"] }
+  - { word_id: "w-pr-182", korean: "후배",     romanization: "hu-bae",          gloss: "junior (school/work)", example_ko: "후배 만나요.",          example_en: "I'm meeting my junior.",      distractors_candidate: ["선배","동기","신입"] }
+  - { word_id: "w-pr-183", korean: "동기",     romanization: "dong-gi",         gloss: "peer / classmate", example_ko: "대학 동기예요.",          example_en: "We're college classmates.",   distractors_candidate: ["친구","선배","후배"] }
+  - { word_id: "w-pr-184", korean: "사촌",     romanization: "sa-chon",         gloss: "cousin",           example_ko: "사촌이랑 놀아요.",         example_en: "I'm playing with my cousin.", distractors_candidate: ["친척","형제","친구"] }
+  - { word_id: "w-pr-185", korean: "이모",     romanization: "i-mo",            gloss: "aunt (mother's side)", example_ko: "이모 댁에 가요.",       example_en: "I'm going to my aunt's house.", distractors_candidate: ["고모","엄마","삼촌"] }
+  - { word_id: "w-pr-186", korean: "삼촌",     romanization: "sam-chon",        gloss: "uncle",            example_ko: "삼촌이 와요.",            example_en: "My uncle is coming.",         distractors_candidate: ["고모부","아빠","이모부"] }
+  - { word_id: "w-pr-187", korean: "할머니",   romanization: "hal-meo-ni",      gloss: "grandmother",      example_ko: "할머니 보고 싶어요.",     example_en: "I miss my grandmother.",      distractors_candidate: ["할아버지","엄마","외할머니"] }
+  - { word_id: "w-pr-188", korean: "할아버지", romanization: "ha-ra-beo-ji",    gloss: "grandfather",      example_ko: "할아버지 건강하세요?",     example_en: "Grandfather, are you well?",  distractors_candidate: ["할머니","아빠","외할아버지"] }
+  - { word_id: "w-pr-189", korean: "이웃",     romanization: "i-ut",            gloss: "neighbor",         example_ko: "이웃이 친절해요.",         example_en: "My neighbor is kind.",        distractors_candidate: ["친구","동료","주민"] }
+  - { word_id: "w-pr-190", korean: "어른",     romanization: "eo-reun",         gloss: "adult",            example_ko: "어른들 인사하세요.",      example_en: "Greet the adults.",           distractors_candidate: ["아이","청소년","노인"] }
+  - { word_id: "w-pr-191", korean: "아이",     romanization: "a-i",             gloss: "child",            example_ko: "아이가 귀여워요.",        example_en: "The child is cute.",          distractors_candidate: ["어른","청소년","아기"] }
+  - { word_id: "w-pr-192", korean: "아기",     romanization: "a-gi",            gloss: "baby",             example_ko: "아기가 자요.",            example_en: "The baby is sleeping.",       distractors_candidate: ["아이","어린이","유아"] }
+
+  # === 표현 강화 (8) ===
+  - { word_id: "w-pr-193", korean: "정말",     romanization: "jeong-mal",       gloss: "really",           example_ko: "정말 고마워요.",          example_en: "Thank you, really.",          distractors_candidate: ["진짜","아주","너무"] }
+  - { word_id: "w-pr-194", korean: "진짜",     romanization: "jin-jja",         gloss: "really (casual)",  example_ko: "진짜 멋있어요!",          example_en: "It's really awesome!",        distractors_candidate: ["정말","아주","와"] }
+  - { word_id: "w-pr-195", korean: "아주",     romanization: "a-ju",            gloss: "very",             example_ko: "아주 맛있어요.",          example_en: "It's very tasty.",            distractors_candidate: ["정말","많이","조금"] }
+  - { word_id: "w-pr-196", korean: "좀",       romanization: "jom",             gloss: "a bit (casual)",   example_ko: "좀 도와주세요.",          example_en: "Help me a bit, please.",      distractors_candidate: ["조금","약간","많이"] }
+  - { word_id: "w-pr-197", korean: "꼭",       romanization: "kkok",            gloss: "for sure / must",  example_ko: "꼭 와요.",                example_en: "Come for sure.",              distractors_candidate: ["반드시","아마","혹시"] }
+  - { word_id: "w-pr-198", korean: "특히",     romanization: "teu-ki",          gloss: "especially",       example_ko: "특히 좋아해요.",          example_en: "I especially like it.",       distractors_candidate: ["정말","많이","그중"] }
+  - { word_id: "w-pr-199", korean: "더",       romanization: "deo",             gloss: "more",             example_ko: "더 주세요.",              example_en: "More, please.",               distractors_candidate: ["덜","적게","조금"] }
+  - { word_id: "w-pr-200", korean: "덜",       romanization: "deol",            gloss: "less",             example_ko: "덜 매워요.",              example_en: "It's less spicy.",            distractors_candidate: ["더","많이","약간"] }
+
+  # === 자연·풍경 (10) ===
+  - { word_id: "w-pr-201", korean: "산",       romanization: "san",             gloss: "mountain",         example_ko: "산이 예뻐요.",            example_en: "The mountain is beautiful.",  distractors_candidate: ["바다","강","언덕"] }
+  - { word_id: "w-pr-202", korean: "강",       romanization: "gang",            gloss: "river",            example_ko: "한강 산책 가요.",         example_en: "Let's walk by the Han River.", distractors_candidate: ["바다","호수","개울"] }
+  - { word_id: "w-pr-203", korean: "바다",     romanization: "ba-da",           gloss: "sea / ocean",      example_ko: "바다 보러 가요.",         example_en: "Let's go see the sea.",       distractors_candidate: ["강","호수","해변"] }
+  - { word_id: "w-pr-204", korean: "하늘",     romanization: "ha-neul",         gloss: "sky",              example_ko: "하늘이 파래요.",          example_en: "The sky is blue.",            distractors_candidate: ["구름","별","태양"] }
+  - { word_id: "w-pr-205", korean: "별",       romanization: "byeol",           gloss: "star",             example_ko: "별이 빛나요.",            example_en: "The stars are shining.",      distractors_candidate: ["달","태양","하늘"] }
+  - { word_id: "w-pr-206", korean: "달",       romanization: "dal",             gloss: "moon",             example_ko: "달이 밝아요.",            example_en: "The moon is bright.",         distractors_candidate: ["해","별","구름"] }
+  - { word_id: "w-pr-207", korean: "해",       romanization: "hae",             gloss: "sun",              example_ko: "해가 떴어요.",            example_en: "The sun has risen.",          distractors_candidate: ["달","별","하늘"] }
+  - { word_id: "w-pr-208", korean: "꽃",       romanization: "kkot",            gloss: "flower",           example_ko: "꽃이 폈어요.",            example_en: "The flower bloomed.",         distractors_candidate: ["나무","풀","열매"] }
+  - { word_id: "w-pr-209", korean: "나무",     romanization: "na-mu",           gloss: "tree",             example_ko: "나무가 커요.",            example_en: "The tree is big.",            distractors_candidate: ["꽃","숲","잎"] }
+  - { word_id: "w-pr-210", korean: "공원",     romanization: "gong-won",        gloss: "park",             example_ko: "공원에서 만나요.",        example_en: "Let's meet at the park.",     distractors_candidate: ["놀이터","광장","산책로"] }
+
+  # === 동물 (8) ===
+  - { word_id: "w-pr-211", korean: "강아지",   romanization: "gang-a-ji",       gloss: "puppy / dog",      example_ko: "강아지 귀여워요.",        example_en: "The puppy is cute.",          distractors_candidate: ["고양이","개","애완동물"] }
+  - { word_id: "w-pr-212", korean: "고양이",   romanization: "go-yang-i",       gloss: "cat",              example_ko: "고양이가 자요.",          example_en: "The cat is sleeping.",        distractors_candidate: ["강아지","새","토끼"] }
+  - { word_id: "w-pr-213", korean: "새",       romanization: "sae",             gloss: "bird",             example_ko: "새가 날아요.",            example_en: "The bird is flying.",         distractors_candidate: ["나비","곤충","나무"] }
+  - { word_id: "w-pr-214", korean: "물고기",   romanization: "mul-go-gi",       gloss: "fish",             example_ko: "물고기 봐요.",            example_en: "Look at the fish.",           distractors_candidate: ["고래","상어","오리"] }
+  - { word_id: "w-pr-215", korean: "돼지",     romanization: "dwae-ji",         gloss: "pig",              example_ko: "돼지가 귀여워요.",        example_en: "The pig is cute.",            distractors_candidate: ["소","양","염소"] }
+  - { word_id: "w-pr-216", korean: "소",       romanization: "so",              gloss: "cow",              example_ko: "소가 풀 먹어요.",         example_en: "The cow is eating grass.",    distractors_candidate: ["돼지","말","양"] }
+  - { word_id: "w-pr-217", korean: "곰",       romanization: "gom",             gloss: "bear",             example_ko: "곰이 커요.",              example_en: "The bear is big.",            distractors_candidate: ["호랑이","사자","늑대"] }
+  - { word_id: "w-pr-218", korean: "토끼",     romanization: "to-kki",          gloss: "rabbit",           example_ko: "토끼가 빨라요.",          example_en: "The rabbit is fast.",         distractors_candidate: ["다람쥐","쥐","고슴도치"] }
+
+  # === 사물·일반 (10) ===
+  - { word_id: "w-pr-219", korean: "의자",     romanization: "ui-ja",           gloss: "chair",            example_ko: "의자에 앉아요.",          example_en: "I sit on the chair.",         distractors_candidate: ["책상","소파","벤치"] }
+  - { word_id: "w-pr-220", korean: "책상",     romanization: "chaek-sang",      gloss: "desk",             example_ko: "책상 위에 책 있어요.",    example_en: "There's a book on the desk.", distractors_candidate: ["의자","탁자","테이블"] }
+  - { word_id: "w-pr-221", korean: "거울",     romanization: "geo-ul",          gloss: "mirror",           example_ko: "거울 봐요.",              example_en: "I look in the mirror.",       distractors_candidate: ["창문","액자","유리"] }
+  - { word_id: "w-pr-222", korean: "창문",     romanization: "chang-mun",       gloss: "window",           example_ko: "창문 열어요.",            example_en: "I'm opening the window.",     distractors_candidate: ["문","거울","커튼"] }
+  - { word_id: "w-pr-223", korean: "문",       romanization: "mun",             gloss: "door",             example_ko: "문 닫아 주세요.",         example_en: "Please close the door.",      distractors_candidate: ["창문","입구","현관"] }
+  - { word_id: "w-pr-224", korean: "컴퓨터",   romanization: "keom-pyu-teo",    gloss: "computer",         example_ko: "컴퓨터 켜요.",            example_en: "I'm turning on the computer.", distractors_candidate: ["노트북","태블릿","폰"] }
+  - { word_id: "w-pr-225", korean: "핸드폰",   romanization: "haen-deu-pon",    gloss: "cellphone",        example_ko: "핸드폰 어디 있어요?",     example_en: "Where is my phone?",          distractors_candidate: ["폰","휴대폰","스마트폰"] }
+  - { word_id: "w-pr-226", korean: "우산",     romanization: "u-san",           gloss: "umbrella",         example_ko: "우산 가져왔어요.",        example_en: "I brought an umbrella.",      distractors_candidate: ["모자","장화","비옷"] }
+  - { word_id: "w-pr-227", korean: "열쇠",     romanization: "yeol-soe",        gloss: "key",              example_ko: "열쇠 잃어버렸어요.",      example_en: "I lost the key.",             distractors_candidate: ["카드","비밀번호","문"] }
+  - { word_id: "w-pr-228", korean: "사전",     romanization: "sa-jeon",         gloss: "dictionary",       example_ko: "사전 보세요.",            example_en: "Please look at the dictionary.", distractors_candidate: ["책","교과서","앱"] }
+
+  # === 동작 동사 확장 (12) ===
+  - { word_id: "w-pr-229", korean: "가요",       romanization: "ga-yo",            gloss: "I go",            example_ko: "학교에 가요.",            example_en: "I'm going to school.",        distractors_candidate: ["와요","나가요","갔어요"] }
+  - { word_id: "w-pr-230", korean: "와요",       romanization: "wa-yo",            gloss: "I come",          example_ko: "친구가 와요.",            example_en: "My friend is coming.",        distractors_candidate: ["가요","오세요","왔어요"] }
+  - { word_id: "w-pr-231", korean: "보세요",     romanization: "bo-se-yo",         gloss: "please look",     example_ko: "이거 보세요.",            example_en: "Please look at this.",        distractors_candidate: ["들으세요","읽으세요","봐요"] }
+  - { word_id: "w-pr-232", korean: "찾아요",     romanization: "cha-ja-yo",        gloss: "I search",            example_ko: "지갑 찾아요.",     example_en: "I'm looking for my wallet.",  distractors_candidate: ["봐요","검색해요","발견해요"] }
+  - { word_id: "w-pr-233", korean: "기다려요",   romanization: "gi-da-ryeo-yo",    gloss: "I wait",          example_ko: "여기서 기다려요.",        example_en: "I'm waiting here.",           distractors_candidate: ["만나요","찾아요","멈춰요"] }
+  - { word_id: "w-pr-234", korean: "만나요",     romanization: "man-na-yo",        gloss: "I meet",          example_ko: "친구를 만나요.",          example_en: "I'm meeting a friend.",       distractors_candidate: ["기다려요","찾아요","봐요"] }
+  - { word_id: "w-pr-235", korean: "사요",       romanization: "sa-yo",            gloss: "I buy",           example_ko: "옷 사요.",                example_en: "I'm buying clothes.",         distractors_candidate: ["팔아요","주문해요","받아요"] }
+  - { word_id: "w-pr-236", korean: "팔아요",     romanization: "pa-ra-yo",         gloss: "I sell",          example_ko: "이거 팔아요?",            example_en: "Do you sell this?",           distractors_candidate: ["사요","빌려줘요","나눠요"] }
+  - { word_id: "w-pr-237", korean: "도와요",     romanization: "do-wa-yo",         gloss: "I help",          example_ko: "친구를 도와요.",          example_en: "I'm helping my friend.",      distractors_candidate: ["가르쳐요","알려줘요","함께해요"] }
+  - { word_id: "w-pr-238", korean: "주워요",     romanization: "ju-wo-yo",         gloss: "I pick up",       example_ko: "쓰레기 주워요.",          example_en: "I'm picking up trash.",       distractors_candidate: ["버려요","들어요","받아요"] }
+  - { word_id: "w-pr-239", korean: "버려요",     romanization: "beo-ryeo-yo",      gloss: "I throw away",    example_ko: "쓰레기 버려요.",          example_en: "I'm throwing away the trash.", distractors_candidate: ["주워요","치워요","정리해요"] }
+  - { word_id: "w-pr-240", korean: "닫아요",     romanization: "da-da-yo",         gloss: "I close",         example_ko: "문 닫아요.",              example_en: "I'm closing the door.",       distractors_candidate: ["열어요","잠가요","켜요"] }
+
+  # === 음식 확장 (10) ===
+  - { word_id: "w-pr-241", korean: "김밥",     romanization: "gim-bap",         gloss: "gimbap (seaweed rice roll)", example_ko: "김밥 시켜요.",  example_en: "Let's order gimbap.",         distractors_candidate: ["떡볶이","비빔밥","주먹밥"] }
+  - { word_id: "w-pr-242", korean: "비빔밥",   romanization: "bi-bim-bap",      gloss: "bibimbap (mixed rice)", example_ko: "비빔밥 먹어요.",     example_en: "I'm eating bibimbap.",        distractors_candidate: ["김밥","볶음밥","덮밥"] }
+  - { word_id: "w-pr-243", korean: "된장찌개", romanization: "doen-jang-jji-gae", gloss: "soybean paste stew", example_ko: "된장찌개 맛있어요.",  example_en: "The doenjang stew is tasty.", distractors_candidate: ["김치찌개","순두부","미역국"] }
+  - { word_id: "w-pr-244", korean: "삼겹살",   romanization: "sam-gyeop-sal",   gloss: "pork belly",       example_ko: "삼겹살 먹어요.",          example_en: "Let's eat samgyeopsal.",      distractors_candidate: ["불고기","갈비","목살"] }
+  - { word_id: "w-pr-245", korean: "막걸리",   romanization: "mak-geol-li",     gloss: "rice wine",        example_ko: "막걸리 한 잔 해요.",      example_en: "Let's have makgeolli.",       distractors_candidate: ["소주","맥주","청주"] }
+  - { word_id: "w-pr-246", korean: "맥주",     romanization: "maek-ju",         gloss: "beer",             example_ko: "맥주 시원해요.",          example_en: "The beer is cold.",           distractors_candidate: ["소주","막걸리","와인"] }
+  - { word_id: "w-pr-247", korean: "과일",     romanization: "gwa-il",          gloss: "fruit",            example_ko: "과일 좋아해요.",          example_en: "I like fruit.",               distractors_candidate: ["채소","간식","디저트"] }
+  - { word_id: "w-pr-248", korean: "채소",     romanization: "chae-so",         gloss: "vegetable",        example_ko: "채소 많이 먹어요.",        example_en: "I eat lots of vegetables.",   distractors_candidate: ["과일","고기","나물"] }
+  - { word_id: "w-pr-249", korean: "디저트",   romanization: "di-jeo-teu",      gloss: "dessert",          example_ko: "디저트 먹을래요?",        example_en: "Want some dessert?",          distractors_candidate: ["간식","케이크","아이스크림"] }
+  - { word_id: "w-pr-250", korean: "음료",     romanization: "eum-nyo",         gloss: "beverage / drink", example_ko: "음료 뭐 드릴까요?",       example_en: "What can I get you to drink?", distractors_candidate: ["커피","주스","물"] }
+
+  # === 비즈니스·계약 (10) ===
+  - { word_id: "w-pr-251", korean: "계약",     romanization: "gye-yak",         gloss: "contract",         example_ko: "계약 체결했어요.",        example_en: "We signed the contract.",     distractors_candidate: ["약속","합의","협의"] }
+  - { word_id: "w-pr-252", korean: "협의",     romanization: "hyeo-bui",        gloss: "discussion / negotiation", example_ko: "협의 중이에요.",  example_en: "It's under discussion.",      distractors_candidate: ["계약","회의","논의"] }
+  - { word_id: "w-pr-253", korean: "결정",     romanization: "gyeol-jeong",     gloss: "decision",         example_ko: "결정했어요.",             example_en: "I've decided.",                distractors_candidate: ["선택","판단","고민"] }
+  - { word_id: "w-pr-254", korean: "선택",     romanization: "seon-taek",       gloss: "choice / selection", example_ko: "선택하세요.",            example_en: "Please choose.",              distractors_candidate: ["결정","고르다","골라요"] }
+  - { word_id: "w-pr-255", korean: "공지",     romanization: "gong-ji",         gloss: "announcement",     example_ko: "공지 확인했어요?",         example_en: "Did you see the announcement?", distractors_candidate: ["알림","안내","소식"] }
+  - { word_id: "w-pr-256", korean: "안내",     romanization: "an-nae",          gloss: "guidance / information", example_ko: "안내 도와드릴게요.",  example_en: "I'll help guide you.",        distractors_candidate: ["공지","설명","가이드"] }
+  - { word_id: "w-pr-257", korean: "권유",     romanization: "gwo-nyu",         gloss: "urging / recommendation", example_ko: "친구가 권유했어요.", example_en: "My friend recommended it.",   distractors_candidate: ["제안","조언","인기"] }
+  - { word_id: "w-pr-258", korean: "제안",     romanization: "je-an",           gloss: "proposal",         example_ko: "좋은 제안이에요.",        example_en: "It's a good proposal.",       distractors_candidate: ["추천","의견","아이디어"] }
+  - { word_id: "w-pr-259", korean: "발표",     romanization: "bal-pyo",         gloss: "presentation",     example_ko: "내일 발표해요.",          example_en: "I'm presenting tomorrow.",    distractors_candidate: ["보고","공지","강의"] }
+  - { word_id: "w-pr-260", korean: "결과",     romanization: "gyeol-gwa",       gloss: "result / outcome", example_ko: "결과 좋아요.",            example_en: "The result is good.",         distractors_candidate: ["성과","답","점수"] }
+
+  # === 사물·상태 형용사 (10) ===
+  - { word_id: "w-pr-261", korean: "새것",     romanization: "sae-geot",        gloss: "new (thing)",      example_ko: "새것이에요.",             example_en: "It's a new one.",             distractors_candidate: ["오래된 것","중고","헌것"] }
+  - { word_id: "w-pr-262", korean: "오래됐어요", romanization: "o-rae-dwae-sseo-yo", gloss: "it's old",     example_ko: "이 차 오래됐어요.",        example_en: "This car is old.",            distractors_candidate: ["새것이에요","낡았어요","바뀌었어요"] }
+  - { word_id: "w-pr-263", korean: "깨끗해요", romanization: "kkae-kkeu-tae-yo", gloss: "it's clean",     example_ko: "방이 깨끗해요.",          example_en: "The room is clean.",          distractors_candidate: ["더러워요","지저분해요","정리됐어요"] }
+  - { word_id: "w-pr-264", korean: "더러워요", romanization: "deo-reo-wo-yo",   gloss: "it's dirty",       example_ko: "신발이 더러워요.",         example_en: "The shoes are dirty.",        distractors_candidate: ["깨끗해요","낡았어요","흙투성이"] }
+  - { word_id: "w-pr-265", korean: "커요",     romanization: "keo-yo",          gloss: "it's big",         example_ko: "방이 커요.",              example_en: "The room is big.",            distractors_candidate: ["작아요","넓어요","높아요"] }
+  - { word_id: "w-pr-266", korean: "작아요",   romanization: "ja-ga-yo",        gloss: "it's small",       example_ko: "신발이 작아요.",          example_en: "The shoes are small.",        distractors_candidate: ["커요","좁아요","낮아요"] }
+  - { word_id: "w-pr-267", korean: "무거워요", romanization: "mu-geo-wo-yo",    gloss: "it's heavy",       example_ko: "가방이 무거워요.",        example_en: "The bag is heavy.",           distractors_candidate: ["가벼워요","무게가 나가요","꽉 차요"] }
+  - { word_id: "w-pr-268", korean: "가벼워요", romanization: "ga-byeo-wo-yo",   gloss: "it's light",       example_ko: "이 가방 가벼워요.",        example_en: "This bag is light.",          distractors_candidate: ["무거워요","비어 있어요","적어요"] }
+  - { word_id: "w-pr-269", korean: "빨라요",   romanization: "ppal-la-yo",      gloss: "it's fast",        example_ko: "기차가 빨라요.",          example_en: "The train is fast.",          distractors_candidate: ["느려요","빨라","급해요"] }
+  - { word_id: "w-pr-270", korean: "느려요",   romanization: "neu-ryeo-yo",     gloss: "it's slow",        example_ko: "버스가 느려요.",          example_en: "The bus is slow.",            distractors_candidate: ["빨라요","천천히","멈춰요"] }
+
+  # === 정도·강조·결과 (8) ===
+  - { word_id: "w-pr-271", korean: "완전",     romanization: "wan-jeon",        gloss: "completely",       example_ko: "완전 좋아요!",            example_en: "Completely good!",            distractors_candidate: ["정말","아주","조금"] }
+  - { word_id: "w-pr-272", korean: "갑자기",   romanization: "gap-ja-gi",       gloss: "suddenly",         example_ko: "갑자기 비 와요.",         example_en: "It's suddenly raining.",      distractors_candidate: ["천천히","조금씩","바로"] }
+  - { word_id: "w-pr-273", korean: "다행이에요", romanization: "da-haeng-i-e-yo", gloss: "it's a relief", example_ko: "다행이에요.",             example_en: "What a relief.",              distractors_candidate: ["좋아요","감사해요","행복해요"] }
+  - { word_id: "w-pr-274", korean: "혼자",     romanization: "hon-ja",          gloss: "alone",            example_ko: "혼자 가요.",              example_en: "I'm going alone.",            distractors_candidate: ["같이","함께","둘이"] }
+  - { word_id: "w-pr-275", korean: "함께",     romanization: "ham-kke",         gloss: "together",         example_ko: "함께 가요.",              example_en: "Let's go together.",          distractors_candidate: ["혼자","같이","따로"] }
+  - { word_id: "w-pr-276", korean: "처음",     romanization: "cheo-eum",        gloss: "first / beginning", example_ko: "처음이에요.",             example_en: "It's my first time.",         distractors_candidate: ["마지막","끝","시작"] }
+  - { word_id: "w-pr-277", korean: "마지막",   romanization: "ma-ji-mak",       gloss: "last / final",     example_ko: "마지막 기회예요.",        example_en: "It's the last chance.",       distractors_candidate: ["처음","끝","최종"] }
+  - { word_id: "w-pr-278", korean: "다",       romanization: "da",              gloss: "all / done",       example_ko: "다 끝났어요.",            example_en: "It's all over.",              distractors_candidate: ["전부","모두","끝"] }
+
+  # === 일상 행위 (12) ===
+  - { word_id: "w-pr-279", korean: "샤워",     romanization: "sya-wo",          gloss: "shower",           example_ko: "샤워해요.",               example_en: "I'm taking a shower.",        distractors_candidate: ["세수","목욕","씻기"] }
+  - { word_id: "w-pr-280", korean: "세수",     romanization: "se-su",           gloss: "washing face",     example_ko: "아침에 세수해요.",        example_en: "I wash my face in the morning.", distractors_candidate: ["샤워","양치","머리감기"] }
+  - { word_id: "w-pr-281", korean: "양치",     romanization: "yang-chi",        gloss: "brushing teeth",   example_ko: "양치해요.",               example_en: "I'm brushing my teeth.",      distractors_candidate: ["세수","샤워","면도"] }
+  - { word_id: "w-pr-282", korean: "운전",     romanization: "un-jeon",         gloss: "driving",          example_ko: "운전 조심해요.",          example_en: "Drive carefully.",            distractors_candidate: ["탑승","걷기","자전거"] }
+  - { word_id: "w-pr-283", korean: "장보기",   romanization: "jang-bo-gi",      gloss: "grocery shopping", example_ko: "장보러 가요.",            example_en: "I'm going grocery shopping.", distractors_candidate: ["쇼핑","외출","구매"] }
+  - { word_id: "w-pr-284", korean: "정돈",     romanization: "jeong-don",       gloss: "tidying up",       example_ko: "책상 정돈해요.",         example_en: "I'm tidying my desk.",        distractors_candidate: ["정리","빨래","설거지"] }
+  - { word_id: "w-pr-285", korean: "빨래",     romanization: "ppal-lae",        gloss: "laundry",          example_ko: "빨래해요.",               example_en: "I'm doing laundry.",          distractors_candidate: ["청소","건조","세탁"] }
+  - { word_id: "w-pr-286", korean: "설거지",   romanization: "seol-geo-ji",     gloss: "doing dishes",     example_ko: "설거지해요.",             example_en: "I'm doing the dishes.",       distractors_candidate: ["빨래","청소","요리"] }
+  - { word_id: "w-pr-287", korean: "외출",     romanization: "oe-chul",         gloss: "going out",        example_ko: "외출해요.",               example_en: "I'm going out.",              distractors_candidate: ["퇴근","산책","출근"] }
+  - { word_id: "w-pr-288", korean: "귀가",     romanization: "gwi-ga",          gloss: "coming home",      example_ko: "지금 귀가해요.",          example_en: "I'm heading home now.",       distractors_candidate: ["외출","출근","도착"] }
+  - { word_id: "w-pr-289", korean: "준비",     romanization: "jun-bi",          gloss: "preparation",      example_ko: "준비 다 됐어요.",         example_en: "I'm all ready.",              distractors_candidate: ["출발","시작","계획"] }
+  - { word_id: "w-pr-290", korean: "정리",     romanization: "jeong-ri",        gloss: "organizing",       example_ko: "방 정리해요.",            example_en: "I'm organizing my room.",     distractors_candidate: ["청소","빨래","세탁"] }
+
+  # === 학습·교육 확장 (10) ===
+  - { word_id: "w-pr-291", korean: "어휘",     romanization: "eo-hwi",          gloss: "vocabulary",       example_ko: "어휘 많이 늘었어요.",     example_en: "My vocabulary improved a lot.", distractors_candidate: ["단어","문법","발음"] }
+  - { word_id: "w-pr-292", korean: "문법",     romanization: "mun-beop",        gloss: "grammar",          example_ko: "문법 공부해요.",          example_en: "I study grammar.",            distractors_candidate: ["어휘","발음","읽기"] }
+  - { word_id: "w-pr-293", korean: "발음",     romanization: "ba-reum",         gloss: "pronunciation",    example_ko: "발음 좋아요.",            example_en: "Your pronunciation is good.", distractors_candidate: ["억양","문법","소리"] }
+  - { word_id: "w-pr-294", korean: "듣기",     romanization: "deut-gi",         gloss: "listening (skill)", example_ko: "듣기 연습해요.",          example_en: "I practice listening.",       distractors_candidate: ["읽기","쓰기","말하기"] }
+  - { word_id: "w-pr-295", korean: "말하기",   romanization: "mal-ha-gi",       gloss: "speaking (skill)", example_ko: "말하기 어려워요.",        example_en: "Speaking is hard.",           distractors_candidate: ["듣기","쓰기","읽기"] }
+  - { word_id: "w-pr-296", korean: "읽기",     romanization: "il-gi",           gloss: "reading (skill)",  example_ko: "한국어 읽기 잘해요.",     example_en: "I read Korean well.",         distractors_candidate: ["쓰기","듣기","말하기"] }
+  - { word_id: "w-pr-297", korean: "쓰기",     romanization: "sseu-gi",         gloss: "writing (skill)",  example_ko: "쓰기 어려워요.",          example_en: "Writing is difficult.",       distractors_candidate: ["읽기","말하기","듣기"] }
+  - { word_id: "w-pr-298", korean: "복습",     romanization: "bok-seup",        gloss: "review",           example_ko: "매일 복습해요.",          example_en: "I review every day.",         distractors_candidate: ["예습","연습","공부"] }
+  - { word_id: "w-pr-299", korean: "예습",     romanization: "ye-seup",         gloss: "preview / pre-study", example_ko: "수업 전에 예습해요.",   example_en: "I preview before class.",     distractors_candidate: ["복습","연습","공부"] }
+  - { word_id: "w-pr-300", korean: "훈련",     romanization: "hun-ryeon",       gloss: "training",         example_ko: "매일 한국어 훈련해요.", example_en: "I train Korean every day.",    distractors_candidate: ["공부","복습","연습"] }
+
+review_workflow_status:
+  candidate_list_drafted: true                     # ✅ 2026-05-14 batch 2 완료 (300/300)
+  ai_assisted_review_pending: true
+  external_korean_reviewer_pending: true           # R-01 모집 진행 중
+  external_english_reviewer_pending: true
+  tts_generation_pending: true                     # M4 W17 TTS batch
+  audio_qc_pending: true
+  storage_upload_pending: true
+  manifest_publish_pending: true
+
+remaining_words_to_add: 0                          # ✅ 300/300 달성, paywall "300+ words" promise 충족
+batch_2_completed_at: "2026-05-14"
+batch_2_categories_added:
+  - 색깔·형태               (10) — w-pr-101~110
+  - 양·정도                (10) — w-pr-111~120
+  - 방향·위치              (10) — w-pr-121~130
+  - 빈도 부사              (8)  — w-pr-131~138
+  - 접속사·연결어           (10) — w-pr-139~148
+  - 의류·소품              (12) — w-pr-149~160
+  - 신체·동작              (10) — w-pr-161~170
+  - 시제·결과 표현          (10) — w-pr-171~180
+  - 사람·관계 확장          (12) — w-pr-181~192
+  - 표현 강화              (8)  — w-pr-193~200
+  - 자연·풍경              (10) — w-pr-201~210
+  - 동물                  (8)  — w-pr-211~218
+  - 사물·일반              (10) — w-pr-219~228
+  - 동작 동사 확장          (12) — w-pr-229~240
+  - 음식 확장              (10) — w-pr-241~250
+  - 비즈니스·계약           (10) — w-pr-251~260
+  - 사물·상태 형용사        (10) — w-pr-261~270
+  - 정도·강조·결과          (8)  — w-pr-271~278
+  - 일상 행위              (12) — w-pr-279~290
+  - 학습·교육 확장          (10) — w-pr-291~300
+  # 총 200 단어 추가 (batch 1 100 + batch 2 200 = 300)
+
+quality_gates_applied:
+  - G-01 ~ G-10 모두 starter / core 표준과 동일 적용
+  - G-05 example_ko i+1: starter 60 + core 180 (240 어휘) + 본 pack 내 학습 어휘만 사용
+  - G-07 distractor 거리: 직관적 분류 (CTN-009 fixture M4 W17 정량 검증)
+  - G-10 빈도: 한국어 빈도 상위 3000 + TOPIK I 후반 ~ II 초반
+
+risks_local:
+  - "본 pack은 paywall 'Premium pack — 300+ words' promise의 100단어 (1/3 batch)"
+  - "다음 사이클에 +200단어 추가 (학교/직장/색깔/방향/접속사/의류 등 추가)"
+  - "감정·기분 12 단어는 깊이 있는 표현 (외로워요/우울해요/안타까워요/설레요 등) — 베타 사용자에게 실 활용도 검증 가치"
+  - "받침 변화 단어 ~15개 (맑아요→[말가요], 받침 변화 audio_qc 필수"
+  - "w-pr-081 운동 — w-pr-040과 word_id 다르지만 동일 한글. content_version 정책상 별도 허용 또는 alias 처리 (D-019 §G-01 영구 키 위반 가능성, learning W16 review 필요)"
+
+notes:
+  - "✅ batch 2 (+200) 완료 (2026-05-14) — 300/300 도달, paywall 'Premium pack — 300+ words' promise 충족 + 여유"
+  - "starter 60 + core 180 (kpop+kdrama+travel) + premium 300 = 540 단어 누적 (paywall 300+ 정합 + 여유 240)"
+  - "베타 사용자에게는 starter 60 (free) + core 180 (premium) + premium 300 = 540 단어 학습 가능. 14일 베타 기간 동안 일일 5-15 단어 학습 가정 시 70-210 단어 도달, premium 가치 + Monthly 50 새 단어 promise 검증 가능"
+  - "R-D019-1 해소: w-pr-081 운동 → 체력 (영구 키 정책 정합, w-pr-040 운동과 중복 방지)"

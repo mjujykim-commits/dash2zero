@@ -1,0 +1,39 @@
+id: SRS-023
+description: weak=true stage 4 정답 → stage 5 진입 (mastered_reached) + weak=false 해제 동시. srs_mastered_reached 이벤트 emit 단언 통합 (작업 2 fixture 흡수)
+category: mastered_reached
+input:
+  user_id: u-test-023
+  word_id: w-023
+  current_state:
+    stage: 4
+    weak: true   # 과거 same-cycle 강하 후 회복 path
+    correct_count: 4
+    incorrect_count: 2
+    last_attempt_at: 2026-04-24T17:00:00Z
+    last_attempt_correct: true
+    next_due_at: 2026-05-08T11:00:00Z
+    mastered_at: null
+  attempt:
+    correct: true
+    occurred_at: 2026-05-08T17:00:00Z
+    timezone: America/Los_Angeles
+expected:
+  stage: 5
+  weak: false   # weak clear (SRS correct branch는 항상 weak=false)
+  correct_count: 5
+  incorrect_count: 2
+  last_attempt_correct: true
+  mastered_at: 2026-05-08T17:00:00Z
+  next_due_at_after_days: 30
+# ---------------------------------------------------------------------------
+# emit 단언 (frontend vitest mock 측 검증, evaluator는 transition만 단언):
+# - srs_mastered_reached 1회 발화 — properties:
+#   word_id="w-023" / pack_id="<dynamic>" / triggered_by="lesson"
+#   stage_before=4 / stage_after=5 / weak_before=true / weak_after=false
+#   same_cycle=false / attempts_count=8 (correct+incorrect 합)
+#   days_since_first_seen=14 / local_day="2026-05-08"
+# - srs_weak_flagged 발화 없음 (weak는 clear되었음, flag된 것이 아님)
+# - srs_mastered_lost 발화 없음 (이번 transition은 lost가 아닌 reached)
+# 통합 fixture 사유: SRS-045_emit.yaml은 qa(i18n+a11y) 영역이므로 analytics 측 1건
+# 단언은 본 케이스에 흡수해 emit spec 회귀 안전망 역할 (W15 readiness §4.4)
+# ---------------------------------------------------------------------------

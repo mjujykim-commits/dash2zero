@@ -1,0 +1,7 @@
+id: CON-004
+description: 0.8초 TTS 오디오 — 범위 내 (0.5~2.5s)
+category: audio_length
+input:
+  audio_length_sec: 0.8
+expected:
+  audio_in_range: true

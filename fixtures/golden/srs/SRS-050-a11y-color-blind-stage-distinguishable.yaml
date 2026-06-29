@@ -1,0 +1,47 @@
+id: SRS-050
+description: |
+  a11y — 색약(deuteranopia/protanopia/tritanopia) 모드에서 stage 색 + 정답/오답 색이 구분 가능.
+  현재 stage 색 매핑 (1=red / 2=orange / 3=yellow / 4=green / 5=blue) 중 deuteranopia에서
+  red↔green 구분 불가. 색-only 의존 금지 — icon/label/패턴 동반 단언.
+  evaluator는 SRS state 정확성 + a11y_color_assertions 메타. 실제 색 대비/시뮬은 M4 e2e (Sim Daltonism / aXe).
+category: a11y
+input:
+  user_id: u-test-050-a11y
+  word_id: w-050
+  current_state:
+    stage: 4                                  # 색 의존 stage 4 (green) — 색약 사용자가 stage 5(blue)와 구분 가능해야
+    weak: false
+    correct_count: 3
+    incorrect_count: 0
+    last_attempt_at: 2026-04-24T17:00:00Z
+    last_attempt_correct: true
+    next_due_at: 2026-05-08T11:00:00Z
+    mastered_at: null
+  attempt:
+    correct: false                            # 정답/오답 색-only 구분 시 deuteranopia 위험
+    occurred_at: 2026-05-08T17:00:00Z
+    timezone: America/Los_Angeles
+expected:
+  stage: 3                                    # stage 4 → 3 일반 오답 (prev_correct=true이므로 same-cycle 아님)
+  weak: false
+  correct_count: 3
+  incorrect_count: 1
+  last_attempt_correct: false
+  mastered_at: null
+  next_due_at_after_days: 7
+a11y_assertions:
+  color_modes_to_test:
+    - normal_vision
+    - deuteranopia
+    - protanopia
+    - tritanopia
+    - grayscale
+  rules:
+    - stage_label_text_present_alongside_color   # "Stage 4" 텍스트 항상 표시
+    - correct_incorrect_uses_icon_not_color_only # 체크/X 아이콘 의무
+    - wcag_contrast_ratio_min_4_5_to_1           # WCAG 2.1 AA normal text
+    - wcag_contrast_ratio_min_3_to_1_large       # WCAG 2.1 AA large text
+    - dark_mode_palette_separately_validated
+e2e_followup:
+  - M4 E2E-A11Y-005 (color blindness sim screenshot diff)
+  - M4 E2E-A11Y-006 (axe-core / accessibility-scanner CI)

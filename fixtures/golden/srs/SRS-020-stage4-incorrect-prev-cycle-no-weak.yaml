@@ -1,0 +1,27 @@
+id: SRS-020
+description: stage 4 오답, 직전 cycle 오답이지만 다른 cycle이라 same-cycle 룰 미적용 → stage 3, weak 유지
+category: stage_incorrect
+input:
+  user_id: u-test-020
+  word_id: w-020
+  current_state:
+    stage: 4
+    weak: false
+    correct_count: 3
+    incorrect_count: 1
+    last_attempt_at: 2026-04-24T17:00:00Z   # 14일 전 cycle 오답 (다른 cycle)
+    last_attempt_correct: false
+    next_due_at: 2026-05-08T11:00:00Z
+    mastered_at: null
+  attempt:
+    correct: false
+    occurred_at: 2026-05-08T17:00:00Z
+    timezone: America/Los_Angeles
+expected:
+  stage: 3   # 일반 오답 (cross-cycle 이므로 same-cycle 룰 미적용)
+  weak: false
+  correct_count: 3
+  incorrect_count: 2
+  last_attempt_correct: false
+  mastered_at: null
+  next_due_at_after_days: 7   # stage 3 → 7일

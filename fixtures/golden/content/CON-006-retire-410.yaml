@@ -1,0 +1,8 @@
+id: CON-006
+description: retired_at != null인 word fetch 시 410 Gone (Q-CO-DOC-003)
+category: retire_410
+input:
+  word_id: w-st-099
+  retired_at: 2026-05-01T00:00:00Z
+expected:
+  http_status: 410

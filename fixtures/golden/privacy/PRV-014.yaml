@@ -1,0 +1,26 @@
+id: PRV-014
+description: |
+  GDPR Art.7(3) "right to withdraw consent at any time" — 사용자가 analytics=true로
+  동의 후 30일간 이벤트 수집된 상태에서 analytics=false로 철회 → 향후 이벤트 차단(forward-only).
+  retroactive purge는 GDPR 의무 아님 (Art.7(3) "withdrawal shall not affect lawfulness of
+  processing based on consent before its withdrawal"). 단 사용자가 별도 DSR delete 요청 시 PRV-008 경로로 분리.
+  정합성: docs/16_privacy_policy.md §6 "동의 철회 후 이후 이벤트 수집 중단" 정확 반영.
+category: privacy_choices
+input:
+  choice:
+    analytics: false
+    personalization: true
+    marketing: false
+  requested_event_send: analytics
+  consent_withdrawn_at: 2026-05-11T10:00:00Z
+  prior_events_collected_count: 423          # 철회 전 수집된 이벤트
+expected:
+  event_sent: false                            # 철회 후 신규 이벤트 차단
+  retroactive_purge_required: false            # GDPR Art.7(3) — 과거 처리 적법성 유지
+  prior_events_retained: true                  # forward-only withdrawal 명시
+notes:
+  - 본 케이스는 PRV-005(analytics=false 시 차단)와 분리. PRV-005는 초기 상태,
+    PRV-014는 동의 후 철회 sequence를 단언.
+  - evaluator는 기존 privacy_choices 분기 재사용 가능 (event_sent만 단언). retroactive_purge_required와
+    prior_events_retained는 documentation field로 둠 (강한 단언 불요).
+  - 만약 사용자가 retroactive purge를 명시 요청 → DSR delete(PRV-008) 또는 export(PRV-010) 경로로 라우팅.

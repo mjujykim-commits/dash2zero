@@ -1,0 +1,25 @@
+# DEPRECATED — RENAMED TO SRS-061
+# M3 W15: ID 045~050 슬롯이 i18n/a11y 카테고리로 재배정됨 (qa agent 자율 결정).
+# 이 파일은 다음 commit에서 삭제 예정. runner ID 충돌 회피를 위해 id를 SRS-DEPRECATED-047로 변경.
+# 신규 active fixture: SRS-061-daily-limit-free.yaml
+id: SRS-DEPRECATED-047
+description: deprecated — see SRS-061
+category: daily_limit
+deprecated: true
+replaced_by: SRS-061
+input:
+  user_id: deprecated
+  word_id: deprecated
+  current_state: null
+  daily_usage_before:
+    new_words_started_count: 0
+    reviews_completed_count: 0
+    local_day: 2026-05-08
+    timezone: UTC
+  entitlement:
+    is_premium: false  # blocked=false 분기로 들어가도록 (count=0/new_word) → expected={} 모두 skip → pass
+  attempt:
+    correct: true
+    occurred_at: 2026-05-08T17:00:00Z
+    timezone: UTC
+expected: {}

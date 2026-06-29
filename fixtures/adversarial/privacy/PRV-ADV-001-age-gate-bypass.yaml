@@ -1,0 +1,14 @@
+id: PRV-ADV-001
+description: age=12 입력 후 age-gate를 client에서 우회하여 onboarding 진입 시도
+threat_model: STRIDE/Elevation of Privilege + Compliance/KOPPA
+input:
+  attacker_role: anon
+  target:
+    endpoint: client navigate /onboarding
+  payload:
+    age_attested: 12
+    bypass_attempt: skip_age_gate_screen
+expected:
+  blocked: true
+  http_status: 403   # 서버 측 onboarding 진입 가드에서 age >= 13 재확인
+  audit_logged: true

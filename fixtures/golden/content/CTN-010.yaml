@@ -1,0 +1,61 @@
+id: CTN-010
+description: RR 받침 단순 단어 romanization 검증 — Starter 60단어 정합 spot check
+category: romanization_rr_batchim
+input:
+  pack_path: fixtures/seeded/words/starter-pack-candidates.yaml
+  romanization_system: revised_romanization   # RR (국립국어원 2000)
+  samples:
+    - word_id: w-001
+      hangul: 물
+      expected_rr: mul                        # ㅁ + ㅜ + ㄹ (받침 ㄹ → l)
+      syllables: 1
+    - word_id: w-002
+      hangul: 책
+      expected_rr: chaek                      # ㅊ + ㅐ + ㄱ (받침 ㄱ → k)
+      syllables: 1
+    - word_id: w-003
+      hangul: 학교
+      expected_rr: hakgyo                     # 학(hak) + 교(gyo). 받침 ㄱ + 초성 ㄱ — RR은 hakgyo (연음 표기 X, 음절 단위)
+      syllables: 2
+      pronunciation_note: 실발음은 [학꾜] (경음화)지만 RR 표기는 hakgyo 유지
+    - word_id: w-004
+      hangul: 안녕
+      expected_rr: annyeong                   # 안(an) + 녕(nyeong). ㅇ 종성 → ng
+      syllables: 2
+    - word_id: w-005
+      hangul: 좋다
+      expected_rr: jota                       # 종성 ㅎ + 초성 ㄷ → 격음화 [조타], RR은 jota
+      syllables: 2
+      pronunciation_note: ㅎ + ㄷ → ㅌ 격음화. RR은 발음 기준
+    - word_id: w-006
+      hangul: 먹다
+      expected_rr: meokda                     # 먹(meok) + 다(da). 받침 ㄱ → k
+      syllables: 2
+expected:
+  all_samples_pass: true
+  per_sample_results:
+    - word_id: w-001
+      pass: true
+    - word_id: w-002
+      pass: true
+    - word_id: w-003
+      pass: true
+    - word_id: w-004
+      pass: true
+    - word_id: w-005
+      pass: true
+    - word_id: w-006
+      pass: true
+  romanization_consistency_score: 1.00        # 6/6
+  edge_cases_documented:
+    - rule: 격음화 (좋다 → jota)
+    - rule: 경음화는 RR 미반영 (학교 → hakgyo, not hakkyo)
+    - rule: 음절 종성 ㅇ → ng (안녕 → annyeong)
+    - rule: 종성 ㄹ → l (단독), r (모음 앞)
+notes:
+  - RR (Revised Romanization 2000)을 SoT로 채택 (M2 결정 — docs/03)
+  - Starter 60단어 spot check 6건 (10%) — 전수 검증은 content 검수표 v0.1
+  - MR (McCune-Reischauer)나 IPA는 미사용. 학습자 혼란 방지
+  - 영어권 학습자 발음 hint는 별도 필드 (pronunciation_hint_en) — 본 case 미검증
+  - 받침 발음 변화 (연음, 경음화, 격음화)는 RR 표기와 다를 수 있음 — pronunciation_note 필드로 명시
+  - 음성 파일과 RR 표기 mismatch 시 audio_mismatch 신고 라인 (CC2-15)

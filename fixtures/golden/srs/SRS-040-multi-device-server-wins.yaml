@@ -1,0 +1,30 @@
+id: SRS-040
+description: 두 device에서 동시 attempt — last-write-wins by last_attempt_at (CC2-04 + Q-BE-DOC-004)
+category: multi_device
+input:
+  user_id: u-test-040
+  word_id: w-040
+  current_state:
+    stage: 2  # device A의 결과가 이미 반영됨 (stage 1 → 2)
+    weak: false
+    correct_count: 1
+    incorrect_count: 0
+    last_attempt_at: 2026-05-08T17:00:05Z  # device A: 17:00:05
+    last_attempt_correct: true
+    next_due_at: 2026-05-11T11:00:00Z
+    mastered_at: null
+  attempt:
+    correct: false
+    occurred_at: 2026-05-08T17:00:01Z  # device B: 17:00:01 (먼저 발생, 늦게 도착 — 거부)
+    timezone: America/Los_Angeles
+expected:
+  # 이미 last_attempt_at(17:00:05)가 attempt(17:00:01)보다 늦으므로 server는 stale로 거부 — submit-attempt 측 정책
+  # 본 evaluator는 applySrs를 직접 호출하므로 stale 거부 검증은 submit-attempt 통합 test에서 (M3 W15)
+  # 여기서는 applySrs 자체의 동작만 확인 — 일반 stage_incorrect (stage 2 → 1, weak=false)
+  stage: 1   # 일반 오답, same-cycle 판정도 직전이 정답이라 false
+  weak: false
+  correct_count: 1
+  incorrect_count: 1
+  last_attempt_correct: false
+  mastered_at: null
+  next_due_at_after_days: 1

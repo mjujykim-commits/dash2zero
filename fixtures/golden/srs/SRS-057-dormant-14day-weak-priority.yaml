@@ -1,0 +1,70 @@
+id: SRS-057
+description: 14일 미접속 후 복귀 — overdue + weak 단어가 무료 한도(review 30) 내 우선 노출
+category: dormant_return
+input:
+  user_id: u-test-052-free
+  # 시나리오: 무료 user가 마지막 학습 2026-04-27 후 14일 미접속.
+  # 복귀 시점 2026-05-11 17:00 UTC (PT 10:00).
+  # user_word_states에 다음 3가지 cohort 존재:
+  #   (a) overdue + weak: 6단어 (next_due_at < now AND weak=true)
+  #   (b) overdue + non-weak: 12단어
+  #   (c) due-today: 8단어
+  # 무료 일일 review 한도 = 30. 우선순위는 weak > overdue > due-today.
+  entitlement:
+    is_premium: false
+  daily_usage_before:
+    new_words_started_count: 0
+    reviews_completed_count: 0
+    local_day: 2026-05-11
+    timezone: America/Los_Angeles
+  queue_candidates:
+    - cohort: weak_overdue
+      count: 6
+      sample_word_id: w-052-weak-001
+      sample_state:
+        stage: 2
+        weak: true
+        next_due_at: 2026-04-29T11:00:00Z   # 12d overdue
+    - cohort: non_weak_overdue
+      count: 12
+      sample_word_id: w-052-overdue-001
+      sample_state:
+        stage: 3
+        weak: false
+        next_due_at: 2026-05-04T11:00:00Z   # 7d overdue
+    - cohort: due_today
+      count: 8
+      sample_word_id: w-052-due-001
+      sample_state:
+        stage: 4
+        weak: false
+        next_due_at: 2026-05-11T11:00:00Z
+  request:
+    type: review_queue_fetch
+    occurred_at: 2026-05-11T17:00:00Z
+    timezone: America/Los_Angeles
+expected:
+  queue_total_returned: 26                   # 6 + 12 + 8 = 26 (≤ 무료 한도 30)
+  queue_order:
+    - cohort: weak_overdue
+      count: 6
+      priority: 1
+    - cohort: non_weak_overdue
+      count: 12
+      priority: 2
+      ordering: oldest_next_due_at_first     # 동일 cohort 내 가장 오래된 overdue 우선
+    - cohort: due_today
+      count: 8
+      priority: 3
+  daily_limit_remaining: 4                   # 30 - 26
+  paywall_required: false
+  # UX 메시지 (정보성, evaluator는 존재 여부만 단언):
+  resume_banner:
+    show: true
+    copy_token: dormant_return_14d           # ux_writing_guide.md 참조 키
+    suggested_action: review_first
+notes:
+  - CC-08 (review 우선 정책) + 무료 한도 (CC2-07)
+  - weak 단어 우선 노출은 망각 곡선 회복 + 학습자 동기 (작은 성공) 양방향 효과
+  - overdue 26건이 한도 30을 초과했다면 weak 6 + non_weak 12 + due_today 12로 cap (due_today만 부분 잘림)
+  - 14일 + 미접속자에게 streak break 처리는 별개 (CC-17) — 본 case는 queue 노출만 검증

@@ -1,0 +1,27 @@
+id: SRS-024
+description: 같은 cycle 직전이 정답인 경우 — 1회 오답은 same-cycle double-wrong 아님 (일반 strep down)
+category: stage_incorrect
+input:
+  user_id: u-test-024
+  word_id: w-024
+  current_state:
+    stage: 3
+    weak: false
+    correct_count: 2
+    incorrect_count: 0
+    last_attempt_at: 2026-05-08T15:00:00Z  # 같은 cycle 정답
+    last_attempt_correct: true
+    next_due_at: 2026-05-08T11:00:00Z
+    mastered_at: null
+  attempt:
+    correct: false
+    occurred_at: 2026-05-08T17:00:00Z
+    timezone: America/Los_Angeles
+expected:
+  stage: 2   # 일반 오답 — last_attempt_correct=true이라 same-cycle 룰 미적용
+  weak: false
+  correct_count: 2
+  incorrect_count: 1
+  last_attempt_correct: false
+  mastered_at: null
+  next_due_at_after_days: 3

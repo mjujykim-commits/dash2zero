@@ -1,0 +1,24 @@
+id: SRS-064
+description: 무료 사용자 신규 2/3 — 3번째 신규 정상 처리 (한도 경계 안전 case)
+category: daily_limit
+input:
+  user_id: u-test-064-free
+  word_id: w-064
+  current_state: null
+  daily_usage_before:
+    new_words_started_count: 2  # 한도 직전
+    reviews_completed_count: 0
+    local_day: 2026-05-08
+    timezone: America/Los_Angeles
+  entitlement:
+    is_premium: false
+  attempt:
+    correct: true
+    occurred_at: 2026-05-08T17:00:00Z
+    timezone: America/Los_Angeles
+expected:
+  # 신규 2 < 3 한도 → blocked=false, 일반 처리. evaluator outcome=applied 상태로 진입.
+  # daily_limit evaluator의 non-blocked 분기 검증.
+  http_status: 200
+  state_changed: true
+renamed_from: "SRS-050 (M3 W15: ID 045~050이 i18n/a11y로 재배정)"

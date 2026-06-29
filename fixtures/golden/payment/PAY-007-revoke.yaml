@@ -1,0 +1,7 @@
+id: PAY-007
+description: REVOKE → revoked (Apple Family Sharing 회수 등)
+category: mapping
+input:
+  event_type: REVOKE
+expected:
+  status: revoked

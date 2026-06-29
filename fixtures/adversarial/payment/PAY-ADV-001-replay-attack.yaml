@@ -1,0 +1,20 @@
+id: PAY-ADV-001
+description: 동일 event_id를 1시간 후 재전송 — last_rc_event_id 멱등 무시
+threat_model: STRIDE/Tampering + Repudiation
+input:
+  attacker_role: external_webhook_caller
+  target:
+    endpoint: POST /functions/v1/revenuecat-webhook
+  payload:
+    authorization: Bearer real_webhook_secret  # 정상 서명
+    event:
+      id: evt_replay_99999
+      type: INITIAL_PURCHASE
+      app_user_id: 22222222-2222-2222-2222-222222222222  # 다른 유저로 알아낸 ID
+  prior_state:
+    db_last_rc_event_id: evt_replay_99999  # 이전에 처리됨
+expected:
+  blocked: true
+  http_status: 200          # RC retry 방지를 위해 200 OK 응답
+  outcome: idempotent_skip
+  state_changed: false

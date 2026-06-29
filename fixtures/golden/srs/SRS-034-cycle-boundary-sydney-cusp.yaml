@@ -1,0 +1,28 @@
+id: SRS-034
+description: Australia/Sydney 04:00 경계 — 직전 03:30, 신규 04:30 (cycle 전환), Mastered 단일 오답 보호 적용
+category: cycle_boundary
+input:
+  user_id: u-test-034
+  word_id: w-034
+  current_state:
+    stage: 5
+    weak: false
+    correct_count: 5
+    incorrect_count: 0
+    last_attempt_at: 2026-05-08T17:30:00Z   # AEST(UTC+10) 03:30 (2026-05-07 cycle, 04:00 이전)
+    last_attempt_correct: false
+    next_due_at: 2026-05-08T18:00:00Z
+    mastered_at: 2026-04-08T17:30:00Z
+  attempt:
+    correct: false
+    occurred_at: 2026-05-08T18:30:00Z   # AEST 04:30 (2026-05-08 cycle, 04:00 이후)
+    timezone: Australia/Sydney
+expected:
+  # 직전 오답이 cross-cycle이므로 same-cycle 룰 미적용 → Mastered 보호 분기 (stage 4)
+  stage: 4
+  weak: false
+  correct_count: 5
+  incorrect_count: 1
+  last_attempt_correct: false
+  mastered_at: null   # nextStage(4)≠5 → mastered_at = null
+  next_due_at_after_days: 14

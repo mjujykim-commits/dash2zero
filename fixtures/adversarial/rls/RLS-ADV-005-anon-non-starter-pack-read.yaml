@@ -1,0 +1,21 @@
+# Security review note (W15):
+#   위협 모델: STRIDE/Information Disclosure (tier 우회).
+#   anon이 starter 외 pack의 word/translation/distractor를 읽으면 free 한도 위반 = 매출 손실.
+#   policy: words_anon_select / wt_anon_select / distractors_anon_select 의
+#           EXISTS (... wp.tier='starter') 절이 enforce. static 분석은 EXISTS join을
+#           재현 못 하므로 W16 pg_test_role hybrid에서 실측 필수.
+id: RLS-ADV-005
+description: anon이 starter 외 pack(예 'core_a1', 'topik_2')의 word를 직접 SELECT 시도
+threat_model: STRIDE/Information Disclosure
+input:
+  attacker_role: anon
+  target:
+    table: words
+    endpoint: PostgREST GET /words?word_id=eq.w-core-001
+  payload:
+    sql: "SELECT * FROM words WHERE word_id = 'w-core-001'"
+expected:
+  blocked: true
+  row_count: 0       # words_anon_select USING(EXISTS ... tier='starter')에서 매칭 실패 → row hide
+  http_status: 200   # RLS row hide는 200 OK로 빈 결과
+  audit_logged: false

@@ -1,0 +1,779 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>dash2zero · Motion Showcase (D-023~D-027)</title>
+<link rel="stylesheet" href="./assets/tokens-kpop-bold.css" />
+<style>
+  /* ============================================================
+   * Motion tokens — packages/design-tokens/src/motion.ts와 동일값
+   * ============================================================ */
+  :root {
+    --ease-bounce: cubic-bezier(0.34, 1.56, 0.64, 1);
+    --ease-decelerate: cubic-bezier(0.22, 1, 0.36, 1);
+    --ease-exit: cubic-bezier(0.32, 0, 0.67, 0);
+    --duration-quick: 180ms;
+    --duration-normal: 300ms;
+    --duration-slow: 450ms;
+    --reduce-fade: 150ms;
+    --shimmer-loop: 1600ms;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body {
+    background: var(--gradient-dark);
+    color: var(--text-primary);
+    font-family: var(--font-latin);
+    min-height: 100vh;
+  }
+
+  .wrap {
+    max-width: 880px;
+    margin: 0 auto;
+    padding: 48px 24px 96px;
+  }
+
+  /* Hero */
+  .hero {
+    margin-bottom: 48px;
+  }
+  .hero .eyebrow {
+    font-size: 11px;
+    font-weight: 800;
+    color: var(--neon-cyan);
+    letter-spacing: 2px;
+    text-transform: uppercase;
+  }
+  .hero h1 {
+    font-family: var(--font-korean);
+    font-size: 56px;
+    font-weight: 900;
+    line-height: 1.05;
+    margin-top: 12px;
+    background: var(--gradient-hero);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+  .hero p {
+    color: var(--text-secondary);
+    font-size: 16px;
+    margin-top: 16px;
+    line-height: 1.5;
+    max-width: 640px;
+  }
+  .hero .meta {
+    display: flex;
+    gap: 8px;
+    margin-top: 20px;
+    flex-wrap: wrap;
+  }
+  .hero .meta .pill {
+    font-size: 11px;
+    font-weight: 700;
+    padding: 6px 12px;
+    border-radius: 999px;
+    background: rgba(255,255,255,0.06);
+    border: 1px solid var(--border-subtle);
+    color: var(--text-secondary);
+  }
+  .hero .meta .pill.success { color: var(--neon-lime); border-color: rgba(132,204,22,0.4); }
+  .hero .meta .pill.haptic { color: var(--neon-pink); border-color: rgba(236,72,153,0.4); }
+
+  /* Section */
+  section.demo {
+    margin-bottom: 56px;
+  }
+  section.demo h2 {
+    font-size: 24px;
+    font-weight: 900;
+    color: var(--text-primary);
+    margin-bottom: 6px;
+  }
+  section.demo .desc {
+    font-size: 14px;
+    color: var(--text-secondary);
+    margin-bottom: 20px;
+    line-height: 1.5;
+  }
+  section.demo .desc code {
+    background: rgba(255,255,255,0.08);
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-family: ui-monospace, "SF Mono", Menlo, monospace;
+    font-size: 12px;
+    color: var(--neon-cyan);
+  }
+  .stage {
+    background: var(--surface-card);
+    border: 1px solid var(--border-subtle);
+    border-radius: 18px;
+    padding: 28px;
+  }
+  .controls {
+    display: flex;
+    gap: 12px;
+    margin-top: 18px;
+    flex-wrap: wrap;
+  }
+
+  /* ============================================================
+   * 1) Button press (scale 0.96 + EASE_BOUNCE, 180ms) — NeonButton 정합
+   * ============================================================ */
+  .neon-btn {
+    height: 56px;
+    padding: 0 24px;
+    border: 0;
+    border-radius: 14px;
+    background: var(--gradient-cta);
+    color: #fff;
+    font-size: 16px;
+    font-weight: 800;
+    cursor: pointer;
+    box-shadow: var(--glow-pink);
+    transition: transform var(--duration-quick) var(--ease-bounce),
+                box-shadow var(--duration-quick) var(--ease-bounce);
+  }
+  .neon-btn:active {
+    transform: scale(0.96);
+    box-shadow: 0 0 12px rgba(236,72,153,0.3);
+  }
+  .neon-btn.secondary {
+    background: var(--surface-glass);
+    border: 1px solid var(--surface-glass-border);
+    box-shadow: none;
+  }
+
+  /* ============================================================
+   * 2) ChoiceCard — 정답 pulse + 오답 shake + 햅틱 표시 indicator
+   * ============================================================ */
+  .quiz-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+  }
+  .choice {
+    position: relative;
+    overflow: hidden;
+    background: var(--surface-card);
+    border: 1px solid var(--border-subtle);
+    border-radius: 14px;
+    padding: 18px 20px;
+    font-family: var(--font-korean);
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--text-primary);
+    cursor: pointer;
+    transition: transform var(--duration-quick) var(--ease-bounce),
+                border-color var(--duration-quick) var(--ease-decelerate);
+  }
+  .choice:active { transform: scale(0.96); }
+  .choice.selected {
+    border-color: var(--neon-pink);
+    border-width: 2px;
+    box-shadow: 0 0 16px rgba(236,72,153,0.3);
+  }
+  .choice.correct {
+    border-color: var(--text-success);
+    border-width: 2px;
+    background: rgba(16,185,129,0.12);
+  }
+  .choice.error {
+    border-color: var(--text-danger);
+    border-width: 2px;
+    background: rgba(248,113,113,0.12);
+    animation: shake-error var(--duration-normal) var(--ease-decelerate);
+  }
+  /* SHAKE_AMPLITUDE 6 정합 */
+  @keyframes shake-error {
+    0%   { transform: translateX(0); }
+    20%  { transform: translateX(-6px); }
+    40%  { transform: translateX(6px); }
+    60%  { transform: translateX(-4px); }
+    80%  { transform: translateX(4px); }
+    100% { transform: translateX(0); }
+  }
+  /* PULSE — scale 0→2.2 + opacity 0.4→0, 450ms */
+  .pulse-ring {
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    pointer-events: none;
+    background: var(--text-success);
+    opacity: 0;
+    transform: scale(0);
+  }
+  .pulse-ring.fire {
+    animation: pulse-ripple var(--duration-slow) var(--ease-decelerate);
+  }
+  @keyframes pulse-ripple {
+    0%   { transform: scale(0);    opacity: 0.4; }
+    100% { transform: scale(2.2);  opacity: 0;   }
+  }
+  .choice .check {
+    float: right;
+    color: var(--text-success);
+    font-weight: 900;
+    margin-left: 8px;
+  }
+
+  /* Haptic indicator (web에선 진동 불가 → 시각 hint) */
+  .haptic-pulse {
+    position: fixed;
+    top: 24px;
+    right: 24px;
+    background: rgba(15,15,26,0.85);
+    backdrop-filter: blur(10px);
+    border: 1px solid var(--neon-pink);
+    border-radius: 999px;
+    padding: 10px 18px;
+    color: var(--neon-pink);
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    opacity: 0;
+    transform: translateY(-12px) scale(0.9);
+    transition: opacity 200ms var(--ease-decelerate),
+                transform 200ms var(--ease-bounce);
+    pointer-events: none;
+    z-index: 100;
+  }
+  .haptic-pulse.visible {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+
+  /* ============================================================
+   * 3) Skeleton shimmer (translateX -100% → +100%, 1.6s loop)
+   * ============================================================ */
+  .shimmer-row {
+    background: var(--surface-elevated);
+    border-radius: 8px;
+    overflow: hidden;
+    position: relative;
+    height: 16px;
+    margin-bottom: 12px;
+  }
+  .shimmer-row::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(90deg,
+      rgba(255,255,255,0) 0%,
+      rgba(255,255,255,0.08) 50%,
+      rgba(255,255,255,0) 100%);
+    transform: translateX(-100%);
+    animation: shimmer var(--shimmer-loop) linear infinite;
+  }
+  @keyframes shimmer {
+    0%   { transform: translateX(-100%); }
+    100% { transform: translateX(100%); }
+  }
+
+  /* ============================================================
+   * 4) Jelly Switch — thumb translateX + jelly scale (1→1.15→0.95→1.05→1)
+   * ============================================================ */
+  .jelly {
+    --track-w: 56px;
+    --track-h: 32px;
+    --thumb: 28px;
+    --pad: 2px;
+    width: var(--track-w);
+    height: var(--track-h);
+    border-radius: calc(var(--track-h) / 2);
+    background: #3F3F46;
+    position: relative;
+    overflow: hidden;
+    cursor: pointer;
+    transition: background var(--duration-quick) var(--ease-decelerate);
+  }
+  .jelly.on { background: var(--neon-purple); }
+  .jelly .thumb {
+    position: absolute;
+    top: var(--pad);
+    left: var(--pad);
+    width: var(--thumb);
+    height: var(--thumb);
+    border-radius: 50%;
+    background: #fff;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.4);
+    transform: translateX(0) scale(1);
+    transition: transform var(--duration-quick) var(--ease-bounce);
+  }
+  .jelly.on .thumb {
+    transform: translateX(calc(var(--track-w) - var(--thumb) - 2 * var(--pad))) scale(1);
+  }
+  .jelly .thumb.bouncing {
+    animation: jelly-bounce 320ms var(--ease-bounce);
+  }
+  @keyframes jelly-bounce {
+    0%   { /* 현 위치 + scale 1 */ }
+    25%  { transform: var(--bounce-pos1, translateX(0)) scale(1.15); }
+    50%  { transform: var(--bounce-pos2, translateX(0)) scale(0.95); }
+    75%  { transform: var(--bounce-pos3, translateX(0)) scale(1.05); }
+    100% { transform: var(--bounce-pos4, translateX(0)) scale(1); }
+  }
+
+  .jelly-row { display: flex; align-items: center; gap: 16px; }
+  .jelly-label {
+    color: var(--text-primary);
+    font-size: 15px;
+    font-weight: 600;
+  }
+  .jelly-sub {
+    color: var(--text-muted);
+    font-size: 12px;
+    margin-top: 2px;
+  }
+
+  /* ============================================================
+   * 5) Page Transition — slide_from_right (300ms EASE_DECELERATE)
+   * ============================================================ */
+  .pager {
+    position: relative;
+    height: 240px;
+    background: var(--surface-elevated);
+    border-radius: 14px;
+    overflow: hidden;
+  }
+  .page {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 28px;
+    font-weight: 800;
+    transition: transform var(--duration-normal) var(--ease-decelerate),
+                opacity var(--duration-normal) var(--ease-decelerate);
+    transform: translateX(100%);
+    opacity: 0;
+  }
+  .page.active {
+    transform: translateX(0);
+    opacity: 1;
+  }
+  .page.exiting {
+    transform: translateX(-100%);
+    opacity: 0;
+  }
+  .page.p1 { background: linear-gradient(135deg, #9333EA, #EC4899); }
+  .page.p2 { background: linear-gradient(135deg, #06B6D4, #84CC16); }
+  .page.p3 { background: linear-gradient(135deg, #F97316, #EC4899); }
+
+  /* ============================================================
+   * 6) BottomSheet — translateY 24→0 + scale 0.96→1 + opacity 0→1, 300ms EASE_DECELERATE
+   * ============================================================ */
+  .sheet-backdrop {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.55);
+    opacity: 0;
+    transition: opacity var(--duration-normal) var(--ease-decelerate);
+    pointer-events: none;
+    z-index: 50;
+  }
+  .sheet-backdrop.visible {
+    opacity: 1;
+    pointer-events: auto;
+  }
+  .sheet {
+    position: fixed;
+    left: 0; right: 0; bottom: 0;
+    background: var(--surface-elevated);
+    border-top-left-radius: 24px;
+    border-top-right-radius: 24px;
+    padding: 16px 20px 32px;
+    transform: translateY(24px) scale(0.96);
+    opacity: 0;
+    transition: transform var(--duration-normal) var(--ease-decelerate),
+                opacity var(--duration-normal) var(--ease-decelerate);
+    z-index: 51;
+    box-shadow: 0 -8px 24px rgba(0,0,0,0.4);
+    max-width: 640px;
+    margin: 0 auto;
+  }
+  .sheet.visible {
+    transform: translateY(0) scale(1);
+    opacity: 1;
+  }
+  .sheet.exiting {
+    transform: translateY(24px);
+    opacity: 0;
+    transition: transform var(--duration-quick) var(--ease-exit),
+                opacity var(--duration-quick) var(--ease-exit);
+  }
+  .sheet .handle {
+    width: 40px; height: 4px;
+    background: var(--text-muted);
+    opacity: 0.5;
+    border-radius: 2px;
+    margin: 0 auto 16px;
+  }
+  .sheet h3 {
+    color: var(--text-primary);
+    font-size: 20px;
+    margin-bottom: 8px;
+  }
+  .sheet p {
+    color: var(--text-secondary);
+    font-size: 14px;
+    margin-bottom: 20px;
+  }
+
+  /* Footer */
+  .footer {
+    margin-top: 64px;
+    padding-top: 24px;
+    border-top: 1px solid var(--border-subtle);
+    color: var(--text-muted);
+    font-size: 12px;
+  }
+  .footer .gate {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 8px;
+    margin: 16px 0;
+  }
+  .footer .gate div {
+    padding: 8px 12px;
+    background: rgba(132,204,22,0.08);
+    border: 1px solid rgba(132,204,22,0.3);
+    border-radius: 8px;
+    color: var(--neon-lime);
+    font-size: 12px;
+    font-weight: 600;
+  }
+
+  /* Reduce Motion 정합 */
+  @media (prefers-reduced-motion: reduce) {
+    .neon-btn:active { transform: none; opacity: 0.85; }
+    .choice:active { transform: none; opacity: 0.85; }
+    .choice.error { animation: none; opacity: 0.6; }
+    .pulse-ring.fire { animation: pulse-fade var(--reduce-fade) linear; }
+    @keyframes pulse-fade { from { opacity: 0.3; } to { opacity: 0; } }
+    .shimmer-row::after { animation: none; opacity: 0.3; }
+    .jelly .thumb.bouncing { animation: none; }
+    .page { transition: opacity var(--reduce-fade) linear; transform: none; }
+    .sheet { transition: opacity var(--reduce-fade) linear; transform: none; }
+  }
+</style>
+</head>
+<body>
+
+<!-- Haptic indicator overlay (web 진동 불가 → 시각 hint) -->
+<div class="haptic-pulse" id="hapticHint">🪨 Haptic · Light</div>
+
+<div class="wrap">
+
+  <!-- Hero -->
+  <div class="hero">
+    <div class="eyebrow">W16 PREMIUM MOTION</div>
+    <h1>모션이 손에<br/>닿는 순간.</h1>
+    <p>
+      dash2zero의 K-pop Bold 비주얼 위에 외부 Lead Designer와 함께 고도화한 <strong>v1.1+v1.2 Premium Motion</strong>을
+      웹에서 직접 클릭해 체험하세요. 실제 앱은 React Native + Expo의 native driver로 60fps/120fps + 물리 햅틱이 추가됩니다.
+    </p>
+    <div class="meta">
+      <span class="pill success">D-023 v1.1</span>
+      <span class="pill success">D-024 Pulse + Haptic toggle</span>
+      <span class="pill success">D-025 BottomSheet</span>
+      <span class="pill success">D-027 Sign-off</span>
+      <span class="pill haptic">🪨 햅틱: 실제 앱에서 진동</span>
+    </div>
+  </div>
+
+  <!-- 1) Button press -->
+  <section class="demo">
+    <h2>1 · Button Press (scale 0.96 + EASE_BOUNCE)</h2>
+    <p class="desc">
+      모든 primary CTA(<code>NeonButton</code>)와 옵션 카드는 누름 순간 <code>scale 1 → 0.96</code> +
+      그림자 0.6배 + Haptic Light. <code>180ms</code> + <code>cubic-bezier(0.34, 1.56, 0.64, 1)</code>.
+    </p>
+    <div class="stage">
+      <div class="controls">
+        <button class="neon-btn" data-haptic="light">Start →</button>
+        <button class="neon-btn secondary" data-haptic="light">Restore</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- 2) Quiz: pulse + shake -->
+  <section class="demo">
+    <h2>2 · Quiz Choice — Pulse Ripple (정답) + Shake (오답)</h2>
+    <p class="desc">
+      정답 시: <code>PulseOverlay</code> radial scale 0→2.2 + opacity 0.4→0, <code>450ms EASE_DECELERATE</code> + Haptic Success.<br/>
+      오답 시: <code>±6px</code> 5단 spring shake, <code>300ms</code> + Haptic Warning.<br/>
+      <strong>"안녕하세요" = "Hello"</strong> 정답입니다. 다른 옵션을 누르면 shake.
+    </p>
+    <div class="stage">
+      <div style="margin-bottom: 16px; font-size: 14px; color: var(--text-secondary);">
+        Which one is "Hello"?
+      </div>
+      <div class="quiz-grid" id="quizGrid">
+        <div class="choice" data-correct="true" data-haptic="success">
+          안녕하세요
+          <span class="pulse-ring"></span>
+        </div>
+        <div class="choice" data-correct="false" data-haptic="warning">
+          감사합니다
+        </div>
+        <div class="choice" data-correct="false" data-haptic="warning">
+          사랑해요
+        </div>
+        <div class="choice" data-correct="false" data-haptic="warning">
+          미안해요
+        </div>
+      </div>
+      <div class="controls">
+        <button class="neon-btn secondary" id="resetQuiz">Reset</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- 3) Skeleton shimmer -->
+  <section class="demo">
+    <h2>3 · Skeleton Shimmer (loading)</h2>
+    <p class="desc">
+      <code>Shimmer</code> 컴포넌트 — <code>expo-linear-gradient + Animated.View translateX -100%→100%</code>,
+      <code>1600ms</code> 무한 loop. Home/Lesson 로딩 시 ActivityIndicator 대신 표시 (Rule 4 정합).
+    </p>
+    <div class="stage">
+      <div class="shimmer-row" style="height: 14px; width: 60px; margin-bottom: 8px;"></div>
+      <div class="shimmer-row" style="height: 18px; width: 80%;"></div>
+      <div class="shimmer-row" style="height: 10px; width: 50%;"></div>
+      <div class="shimmer-row" style="height: 140px; border-radius: 24px; margin: 16px 0;"></div>
+      <div style="display: flex; gap: 12px;">
+        <div class="shimmer-row" style="height: 90px; border-radius: 18px; flex: 1; margin-bottom: 0;"></div>
+        <div class="shimmer-row" style="height: 90px; border-radius: 18px; flex: 1; margin-bottom: 0;"></div>
+      </div>
+      <div class="shimmer-row" style="height: 56px; border-radius: 14px; margin-top: 16px;"></div>
+    </div>
+  </section>
+
+  <!-- 4) JellySwitch -->
+  <section class="demo">
+    <h2>4 · Jelly Switch (Haptic Feedback toggle)</h2>
+    <p class="desc">
+      Settings의 Haptic Feedback toggle — 토글 순간 thumb이 <code>1 → 1.15 → 0.95 → 1.05 → 1</code> jelly bounce
+      (4 × 80ms). Apple HIG 접근성 정합. 실제 앱에선 SecureStore에 영구 저장.
+    </p>
+    <div class="stage">
+      <div class="jelly-row">
+        <div style="flex: 1;">
+          <div class="jelly-label">Haptic feedback</div>
+          <div class="jelly-sub" id="jellyHint">Vibrations on press, correct, and wrong answers.</div>
+        </div>
+        <div class="jelly on" id="jelly1" role="switch" aria-checked="true" tabindex="0">
+          <div class="thumb"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 5) Page transition -->
+  <section class="demo">
+    <h2>5 · Page Transition — slide_from_right</h2>
+    <p class="desc">
+      Expo Router 내장 <code>animation: "slide_from_right"</code>. 13 화면 모두 적용
+      (Q-MOTION-3 [a]). 새 페이지가 오른쪽에서 슬라이드 인, 이전 페이지는 왼쪽으로 빠짐. <code>300ms EASE_DECELERATE</code>.
+    </p>
+    <div class="stage">
+      <div class="pager" id="pager">
+        <div class="page p1 active" data-page="1">Home</div>
+        <div class="page p2" data-page="2">Lesson</div>
+        <div class="page p3" data-page="3">Paywall</div>
+      </div>
+      <div class="controls">
+        <button class="neon-btn secondary" id="prevPage" data-haptic="light">← Prev</button>
+        <button class="neon-btn" id="nextPage" data-haptic="light">Next →</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- 6) BottomSheet -->
+  <section class="demo">
+    <h2>6 · Modal Sheet — BottomSheet (translateY + scale + opacity)</h2>
+    <p class="desc">
+      Motion Spec §3 Category B — <code>translateY 24→0 + scale 0.96→1 + opacity 0→1</code>,
+      <code>300ms EASE_DECELERATE</code> enter. Exit 180ms EASE_EXIT. backdrop tap 또는 Cancel로 dismiss.
+      실 RN 코드는 <code>BottomSheet.tsx</code>의 Modal API + Animated.parallel.
+    </p>
+    <div class="stage">
+      <div class="controls">
+        <button class="neon-btn" id="openSheet" data-haptic="light">Open Sheet</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer: 4-rule + 문서 위치 -->
+  <div class="footer">
+    <div style="color: var(--text-primary); font-weight: 700; font-size: 14px; margin-bottom: 12px;">
+      4-rule Merge Gate (전 컴포넌트 cross-validate PASS)
+    </div>
+    <div class="gate">
+      <div>✓ Rule 1 GPU Acceleration — transform / opacity only, useNativeDriver:true</div>
+      <div>✓ Rule 2 Dynamic Lifecycle — Animated cleanup + listener.remove() + setMounted(false)</div>
+      <div>✓ Rule 3 Visual Timing Uniformity — MOTION_TOKENS 일관, raw 숫자 0건</div>
+      <div>✓ Rule 4 Skeletal Transition — Shimmer 컴포넌트 + home/lesson 적용</div>
+    </div>
+    <div style="margin-top: 20px; line-height: 1.7;">
+      📁 정적 D-022 13 화면 mockup: <code>docs/screens/v2-stunning/01~13.html</code> (디자이너 봉인 2026-05-18)<br/>
+      📁 본 motion showcase: <code>docs/screens/v2-stunning/14-motion-showcase.html</code> (2026-05-22)<br/>
+      📁 Motion SSOT: <code>docs/brand/MOTION_SYSTEM_SPEC.md</code> (v1.1, 외부 Lead Designer 봉인)<br/>
+      📁 Sign-off: <code>docs/brand/DESIGN_REVIEW_W16_MOTION.md</code> (APPROVED with High Honors)<br/>
+      📁 Decision: <code>docs/DECISION_LOG.md</code> D-023~D-027
+    </div>
+  </div>
+
+</div>
+
+<!-- BottomSheet markup -->
+<div class="sheet-backdrop" id="sheetBackdrop"></div>
+<div class="sheet" id="sheet" role="dialog" aria-modal="true" aria-labelledby="sheetTitle">
+  <div class="handle"></div>
+  <h3 id="sheetTitle">Delete your account?</h3>
+  <p>This will erase all your local progress and cancel future syncs. This action cannot be undone.</p>
+  <div style="display:flex; gap: 12px;">
+    <button class="neon-btn secondary" id="cancelSheet" style="flex: 1;" data-haptic="light">Cancel</button>
+    <button class="neon-btn" id="confirmSheet" style="flex: 1; background: linear-gradient(135deg, #F87171, #EC4899);" data-haptic="warning">Delete</button>
+  </div>
+</div>
+
+<script>
+  // Haptic indicator (web 진동 불가 → 화면 hint)
+  const hapticHint = document.getElementById('hapticHint');
+  let hapticTimer = null;
+  function flashHaptic(kind) {
+    const labels = {
+      light: '🪨 Haptic · Light',
+      success: '✨ Haptic · Success',
+      warning: '⚠️ Haptic · Warning',
+    };
+    hapticHint.textContent = labels[kind] || labels.light;
+    hapticHint.classList.add('visible');
+    clearTimeout(hapticTimer);
+    hapticTimer = setTimeout(() => hapticHint.classList.remove('visible'), 700);
+  }
+
+  // 모든 [data-haptic] click → 햅틱 표시
+  document.addEventListener('click', (e) => {
+    const el = e.target.closest('[data-haptic]');
+    if (el) flashHaptic(el.dataset.haptic);
+  });
+
+  // Quiz
+  const choices = document.querySelectorAll('#quizGrid .choice');
+  let quizLocked = false;
+  choices.forEach((c) => {
+    c.addEventListener('click', () => {
+      if (quizLocked) return;
+      const correct = c.dataset.correct === 'true';
+      if (correct) {
+        c.classList.add('correct');
+        c.innerHTML = c.innerHTML.replace(/<span class="check">.*?<\/span>/, '');
+        c.insertAdjacentHTML('beforeend', '<span class="check">✓</span>');
+        const pulse = c.querySelector('.pulse-ring');
+        if (pulse) {
+          pulse.classList.add('fire');
+          pulse.addEventListener('animationend', () => pulse.classList.remove('fire'), { once: true });
+        }
+        quizLocked = true;
+      } else {
+        c.classList.add('error');
+        c.addEventListener('animationend', () => c.classList.remove('error'), { once: true });
+      }
+    });
+  });
+
+  document.getElementById('resetQuiz').addEventListener('click', () => {
+    quizLocked = false;
+    choices.forEach((c) => {
+      c.classList.remove('correct', 'error', 'selected');
+      const check = c.querySelector('.check');
+      if (check) check.remove();
+    });
+  });
+
+  // JellySwitch
+  const jelly = document.getElementById('jelly1');
+  const jellyHint = document.getElementById('jellyHint');
+  jelly.addEventListener('click', () => {
+    jelly.classList.toggle('on');
+    const isOn = jelly.classList.contains('on');
+    jelly.setAttribute('aria-checked', String(isOn));
+    jellyHint.textContent = isOn
+      ? 'Vibrations on press, correct, and wrong answers.'
+      : 'All in-app vibrations off.';
+    flashHaptic('light');
+    // jelly bounce
+    const thumb = jelly.querySelector('.thumb');
+    thumb.classList.remove('bouncing');
+    // reflow trick for restart
+    void thumb.offsetWidth;
+    thumb.classList.add('bouncing');
+  });
+  jelly.addEventListener('keydown', (e) => {
+    if (e.key === ' ' || e.key === 'Enter') {
+      e.preventDefault();
+      jelly.click();
+    }
+  });
+
+  // Page transition
+  const pages = Array.from(document.querySelectorAll('#pager .page'));
+  let currentPage = 0;
+  function goToPage(next) {
+    if (next === currentPage) return;
+    const dir = next > currentPage ? 1 : -1;
+    const cur = pages[currentPage];
+    const nxt = pages[next];
+    // exit cur
+    cur.classList.remove('active');
+    cur.classList.add('exiting');
+    // prepare next (start position)
+    nxt.style.transform = dir > 0 ? 'translateX(100%)' : 'translateX(-100%)';
+    nxt.style.opacity = '0';
+    // force reflow
+    void nxt.offsetWidth;
+    // animate
+    nxt.classList.remove('exiting');
+    nxt.classList.add('active');
+    nxt.style.transform = '';
+    nxt.style.opacity = '';
+    currentPage = next;
+    setTimeout(() => cur.classList.remove('exiting'), 400);
+  }
+  document.getElementById('nextPage').addEventListener('click', () => {
+    goToPage((currentPage + 1) % pages.length);
+  });
+  document.getElementById('prevPage').addEventListener('click', () => {
+    goToPage((currentPage - 1 + pages.length) % pages.length);
+  });
+
+  // BottomSheet
+  const sheet = document.getElementById('sheet');
+  const backdrop = document.getElementById('sheetBackdrop');
+  function openSheet() {
+    sheet.classList.remove('exiting');
+    sheet.classList.add('visible');
+    backdrop.classList.add('visible');
+  }
+  function closeSheet() {
+    sheet.classList.remove('visible');
+    sheet.classList.add('exiting');
+    backdrop.classList.remove('visible');
+    setTimeout(() => sheet.classList.remove('exiting'), 250);
+  }
+  document.getElementById('openSheet').addEventListener('click', openSheet);
+  document.getElementById('cancelSheet').addEventListener('click', closeSheet);
+  document.getElementById('confirmSheet').addEventListener('click', closeSheet);
+  backdrop.addEventListener('click', closeSheet);
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && sheet.classList.contains('visible')) closeSheet();
+  });
+</script>
+
+</body>
+</html>

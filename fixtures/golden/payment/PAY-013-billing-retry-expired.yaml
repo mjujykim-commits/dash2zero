@@ -1,0 +1,9 @@
+id: PAY-013
+description: billing_retry status — 24시간 초과 시 isPremiumActive=false (CC2-08)
+category: billing_retry_window
+input:
+  status: billing_retry
+  last_synced_at: 2026-05-10T00:00:00Z
+  now: 2026-05-11T06:00:00Z  # 30시간 경과 (> 24h)
+expected:
+  is_premium: false

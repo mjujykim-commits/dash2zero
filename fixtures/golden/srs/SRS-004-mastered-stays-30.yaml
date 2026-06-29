@@ -1,0 +1,27 @@
+id: SRS-004
+description: stage 5 (Mastered) 정답 → stage 5 유지, mastered_at 보존, next_due +30
+category: stage_correct
+input:
+  user_id: u-test-004
+  word_id: w-004
+  current_state:
+    stage: 5
+    weak: false
+    correct_count: 4
+    incorrect_count: 0
+    last_attempt_at: 2026-04-08T17:00:00Z
+    last_attempt_correct: true
+    next_due_at: 2026-05-08T11:00:00Z
+    mastered_at: 2026-04-08T17:00:00Z
+  attempt:
+    correct: true
+    occurred_at: 2026-05-08T17:00:00Z
+    timezone: America/Los_Angeles
+expected:
+  stage: 5
+  weak: false
+  correct_count: 5
+  incorrect_count: 0
+  last_attempt_correct: true
+  mastered_at: 2026-04-08T17:00:00Z  # 보존
+  next_due_at_after_days: 30

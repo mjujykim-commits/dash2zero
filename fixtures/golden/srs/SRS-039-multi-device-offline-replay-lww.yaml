@@ -1,0 +1,31 @@
+id: SRS-039
+description: device B 오프라인 attempt를 1시간 후 replay — server는 last-write-wins by attempt.occurred_at. applySrs는 입력 그대로 적용 (라우팅 정책은 submit-attempt 영역).
+category: multi_device
+input:
+  user_id: u-test-039
+  word_id: w-039
+  current_state:
+    # device A가 17:30에 stage 2→3 정답 반영
+    stage: 3
+    weak: false
+    correct_count: 2
+    incorrect_count: 0
+    last_attempt_at: 2026-05-08T17:30:00Z   # device A 17:30 (server에 반영됨)
+    last_attempt_correct: true
+    next_due_at: 2026-05-15T11:00:00Z
+    mastered_at: null
+  attempt:
+    correct: false
+    occurred_at: 2026-05-08T17:00:00Z   # device B 17:00 (오프라인 후 18:30에 replay 도착)
+    timezone: America/Los_Angeles
+expected:
+  # applySrs: 단순 오답 적용 — sameCycle=true, last_attempt_correct=true → same-cycle 룰 미적용
+  # → 일반 강하 stage 3 → 2 (state.stage=3 기준)
+  # 정책: submit-attempt가 stale(replay older than current)을 거부 권고 (Q-BE-DOC-004 LWW + clock skew tolerance)
+  stage: 2
+  weak: false
+  correct_count: 2
+  incorrect_count: 1
+  last_attempt_correct: false
+  mastered_at: null
+  next_due_at_after_days: 3

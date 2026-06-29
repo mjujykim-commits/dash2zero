@@ -1,0 +1,8 @@
+id: PAY-012
+description: status=active → is_premium=true (CC2-08 isPremiumActive 기본 case)
+category: premium_active
+input:
+  status: active
+  now: 2026-05-11T00:00:00Z
+expected:
+  is_premium: true

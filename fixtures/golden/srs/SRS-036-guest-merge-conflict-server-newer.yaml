@@ -1,0 +1,31 @@
+id: SRS-036
+description: "guest_merge 충돌 — server last_attempt_at > guest last_attempt_at: server 측이 win"
+category: guest_merge
+input:
+  user_id: u-test-036
+  word_id: w-036
+  # merge-guest 정책 (CC2-04 + Q-BE-DOC-004):
+  #   if (server.last_attempt_at >= guest.last_attempt_at): server 유지, guest attempt들은 client_attempt_id UNIQUE로 idempotent 차단
+  #   else: guest state로 server replace
+  # 본 evaluator는 server-win 결과를 그대로 적용한 후 applySrs 동작만 검증
+  current_state:
+    stage: 4  # server는 stage 4까지 진행됨
+    weak: false
+    correct_count: 3
+    incorrect_count: 0
+    last_attempt_at: 2026-05-08T17:00:00Z  # server가 더 최근
+    last_attempt_correct: true
+    next_due_at: 2026-05-22T11:00:00Z
+    mastered_at: null
+  attempt:
+    correct: true
+    occurred_at: 2026-05-08T19:00:00Z
+    timezone: America/Los_Angeles
+expected:
+  stage: 5   # stage 4 정답 → Mastered 도달
+  weak: false
+  correct_count: 4
+  incorrect_count: 0
+  last_attempt_correct: true
+  mastered_at: 2026-05-08T19:00:00Z
+  next_due_at_after_days: 30

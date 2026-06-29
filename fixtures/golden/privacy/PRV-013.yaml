@@ -1,0 +1,26 @@
+id: PRV-013
+description: |
+  한국 만 14세 이상 미성년자(14~18세)가 부모 동의 없이 결제 후, 부모/법정대리인이
+  민법 §5(미성년자의 법률행위 취소권)에 근거 환불 청구 → 30일 내 처리 SLA + Apple/Google
+  refund 경로 안내. 한국 전자상거래법 §17 청약철회 7일 권리도 병행 적용 가능.
+  정합성: docs/13_payment_policy.md §9 환불 + CC3-06 "한국 7일 청약철회" + 운영 매뉴얼 §환불.
+category: minor_refund
+input:
+  user_age: 16
+  jurisdiction: KR
+  parental_consent_obtained: false
+  purchase_at: 2026-04-15T00:00:00Z
+  refund_request_at: 2026-04-20T00:00:00Z   # 구매 후 5일
+  now: 2026-05-11T00:00:00Z                  # 환불요청 후 21일 경과
+expected:
+  refund_eligible: true
+  refund_route: store_first_then_support       # Apple/Google 1차, 미해결 시 support
+  response_sla_days: 3                          # 1차 응답 영업일 3일 (docs/13 §9)
+  resolution_sla_days: 30                       # 최종 처리 30일 (KR 전자상거래법 §17 준용)
+  resolved_within_sla: true                     # now - refund_request_at = 21d < 30d
+notes:
+  - 만 14세 미만은 PRV-001 age_gate에서 이미 차단 (가입 자체 불가).
+  - 14~18세는 가입 가능하나 결제 시 부모 동의 필요 (KISA 가이드). 운영상 결제 자체를
+    막지 않고 사후 환불로 대응 (Apple/Google IAP 정책 한계).
+  - 'evaluator union 확장 필요: "minor_refund" 카테고리 추가, 단언은 SLA 산술만.'
+  - 한국 사용자 가시화 시점(M4) 진입 전 docs/20 §환불 챕터 한국 미성년자 절차 추가.

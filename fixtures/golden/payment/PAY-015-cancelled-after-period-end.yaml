@@ -1,0 +1,9 @@
+id: PAY-015
+description: cancelled status — period_ends_at 경과 후 isPremium=false (CC2-08)
+category: cancellation_until_period_end
+input:
+  status: cancelled
+  period_ends_at: 2026-04-01T00:00:00Z
+  now: 2026-05-11T00:00:00Z   # period_ends_at 경과
+expected:
+  is_premium: false

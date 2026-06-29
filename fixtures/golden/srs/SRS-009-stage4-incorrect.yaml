@@ -1,0 +1,27 @@
+id: SRS-009
+description: stage 4 오답 → stage 3 (max(1, stage-1)), weak 유지
+category: stage_incorrect
+input:
+  user_id: u-test-009
+  word_id: w-009
+  current_state:
+    stage: 4
+    weak: true   # 이전에 weak였던 단어
+    correct_count: 3
+    incorrect_count: 1
+    last_attempt_at: 2026-04-25T17:00:00Z
+    last_attempt_correct: true
+    next_due_at: 2026-05-08T11:00:00Z
+    mastered_at: null
+  attempt:
+    correct: false
+    occurred_at: 2026-05-08T17:00:00Z
+    timezone: America/Los_Angeles
+expected:
+  stage: 3
+  weak: true   # 일반 오답은 weak 유지 (clearing은 정답 시)
+  correct_count: 3
+  incorrect_count: 2
+  last_attempt_correct: false
+  mastered_at: null
+  next_due_at_after_days: 7

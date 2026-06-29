@@ -1,0 +1,7 @@
+id: PAY-006
+description: REFUND → refunded (CC2-08, Apple/Play 환불 즉시 강등)
+category: mapping
+input:
+  event_type: REFUND
+expected:
+  status: refunded

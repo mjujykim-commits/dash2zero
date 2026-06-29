@@ -1,0 +1,15 @@
+id: PRV-ADV-002
+description: ATT denied 상태에서도 native ad_id를 강제 읽어서 analytics로 송신 시도
+threat_model: LINDDUN/Linkability + Compliance/iOS ATT
+input:
+  attacker_role: app_developer_misuse
+  target:
+    endpoint: analytics.ts logEvent
+  payload:
+    att_status: denied
+    ad_id_supplied: 11111111-2222-3333-4444-555555555555
+    event: user_engagement
+expected:
+  blocked: true
+  ad_id_sent: false   # analytics.ts에서 ATT 상태 확인 후 stripping
+  audit_logged: false # client-side, audit_log 대신 firebase debug filter (M3 W15)

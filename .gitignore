@@ -1,0 +1,30 @@
+# 의존성
+node_modules/
+**/node_modules/
+
+# Expo / 네이티브 빌드 산출물 (prebuild로 생성 — Mac의 ios 서명 보존 위해 git 추적 제외)
+.expo/
+**/.expo/
+ios/
+android/
+**/ios/
+**/android/
+dist/
+web-build/
+*.orig.*
+
+# CC0 효과음 원본(번들 제외분) + 대용량
+assets-source/
+*.zip
+
+# 로그 / OS
+*.log
+.DS_Store
+npm-debug.*
+yarn-error.*
+
+# 비밀키 (service_role 등은 절대 커밋 금지 — anon 키는 공개라 app.json에 허용)
+*.pem
+.env.local
+google-services.json
+GoogleService-Info.plist

@@ -1,0 +1,17 @@
+# Security review note (W15): anon write 권한 상승 시도 — learning_attempts에 anon INSERT policy 부재 = default-deny. P1 alert. Edge Function 우회 정찰 신호.
+id: RLS-ADV-002
+description: anon이 attempts table에 row INSERT 시도 — Edge Function 우회
+threat_model: STRIDE/Elevation of Privilege
+input:
+  attacker_role: anon
+  target:
+    table: learning_attempts
+    endpoint: PostgREST POST /learning_attempts
+  payload:
+    user_id: null
+    word_id: w-st-001
+    correct: true
+expected:
+  blocked: true
+  http_status: 401  # anon은 INSERT WITH CHECK 정책 충족 불가
+  audit_logged: true

@@ -1,0 +1,27 @@
+id: SRS-033
+description: PT 02:00 — 04:00 이전이라 어제 cycle, 직전 attempt와 same-cycle 판정
+category: cycle_boundary
+input:
+  user_id: u-test-033
+  word_id: w-033
+  current_state:
+    stage: 2
+    weak: false
+    correct_count: 1
+    incorrect_count: 0
+    last_attempt_at: 2026-05-08T20:00:00Z   # PT 13:00 (2026-05-08 cycle)
+    last_attempt_correct: false
+    next_due_at: 2026-05-08T11:00:00Z
+    mastered_at: null
+  attempt:
+    correct: false
+    occurred_at: 2026-05-09T09:00:00Z   # PT 02:00 — 04:00 이전이므로 같은 day_key (2026-05-08)
+    timezone: America/Los_Angeles
+expected:
+  stage: 1   # same-cycle 2연속 오답
+  weak: true
+  correct_count: 1
+  incorrect_count: 1
+  last_attempt_correct: false
+  mastered_at: null
+  next_due_at_after_days: 1

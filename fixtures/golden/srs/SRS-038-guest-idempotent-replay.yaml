@@ -1,0 +1,30 @@
+id: SRS-038
+description: guest 측에서 동일 client_attempt_id 재전송 — idempotent (M3 W15 integration test 영역)
+category: guest_merge
+input:
+  user_id: u-test-038
+  word_id: w-038
+  # client_attempt_id UNIQUE 제약 (attempts table)이 중복 INSERT를 차단.
+  # 본 evaluator는 applySrs를 호출 — 중복 거부는 통합 test에서 검증.
+  # 여기서는 정상 신규 attempt 1건이 stage 1 → 2가 되는 결과만 가시화.
+  current_state:
+    stage: 1
+    weak: false
+    correct_count: 0
+    incorrect_count: 0
+    last_attempt_at: null
+    last_attempt_correct: null
+    next_due_at: 2026-05-08T11:00:00Z
+    mastered_at: null
+  attempt:
+    correct: true
+    occurred_at: 2026-05-08T17:00:00Z
+    timezone: America/Los_Angeles
+expected:
+  stage: 2
+  weak: false
+  correct_count: 1
+  incorrect_count: 0
+  last_attempt_correct: true
+  mastered_at: null
+  next_due_at_after_days: 3

@@ -1,0 +1,27 @@
+id: SRS-022
+description: 같은 due cycle 2연속 오답 → stage 1 + weak=true (CC3-05)
+category: same_cycle_double_wrong
+input:
+  user_id: u-test-022
+  word_id: w-022
+  current_state:
+    stage: 3
+    weak: false
+    correct_count: 2
+    incorrect_count: 1
+    last_attempt_at: 2026-05-08T15:00:00Z  # PT 08:00 same day
+    last_attempt_correct: false  # 직전 오답
+    next_due_at: 2026-05-08T11:00:00Z
+    mastered_at: null
+  attempt:
+    correct: false
+    occurred_at: 2026-05-08T17:00:00Z  # PT 10:00 — 같은 04:00 cycle
+    timezone: America/Los_Angeles
+expected:
+  stage: 1  # CC3-05: same-cycle 2연속 오답 → stage 1 + weak
+  weak: true
+  correct_count: 2
+  incorrect_count: 2
+  last_attempt_correct: false
+  mastered_at: null
+  next_due_at_after_days: 1

@@ -1,0 +1,27 @@
+id: SRS-032
+description: "Australia/Sydney AEDT 적용 (UTC+11, 1월 = 남반구 여름 DST) — 같은 cycle 2연속 오답"
+category: timezone
+input:
+  user_id: u-test-032
+  word_id: w-032
+  current_state:
+    stage: 3
+    weak: false
+    correct_count: 2
+    incorrect_count: 0
+    last_attempt_at: 2026-01-08T17:00:00Z  # AEDT 04:00 (UTC+11) — 1월 DST 시즌
+    last_attempt_correct: false
+    next_due_at: 2026-01-08T17:00:00Z
+    mastered_at: null
+  attempt:
+    correct: false
+    occurred_at: 2026-01-08T22:00:00Z  # AEDT 09:00 (같은 cycle)
+    timezone: Australia/Sydney
+expected:
+  stage: 1   # same-cycle 2연속 오답
+  weak: true
+  correct_count: 2
+  incorrect_count: 1
+  last_attempt_correct: false
+  mastered_at: null
+  next_due_at_after_days: 1

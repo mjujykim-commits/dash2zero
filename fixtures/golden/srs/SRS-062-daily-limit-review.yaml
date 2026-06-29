@@ -1,0 +1,35 @@
+id: SRS-062
+description: 무료 사용자 일일 review 30 한도 도달 후 추가 review 거부 (CC2-07)
+category: daily_limit
+input:
+  user_id: u-test-062-free
+  word_id: w-062   # 기존 학습 단어 (review)
+  current_state:
+    stage: 3
+    weak: false
+    correct_count: 2
+    incorrect_count: 0
+    last_attempt_at: 2026-05-01T17:00:00Z
+    last_attempt_correct: true
+    next_due_at: 2026-05-08T11:00:00Z
+    mastered_at: null
+  daily_usage_before:
+    new_words_started_count: 0
+    reviews_completed_count: 30  # 한도 도달
+    local_day: 2026-05-08
+    timezone: America/Los_Angeles
+  entitlement:
+    is_premium: false
+  attempt:
+    correct: true
+    occurred_at: 2026-05-08T17:00:00Z
+    timezone: America/Los_Angeles
+expected:
+  http_status: 429
+  error: daily_limit_reached
+  paywall_required: true
+  limit: review
+  state_changed: false
+  daily_usage_after:
+    new_words_started_count: 0
+renamed_from: "SRS-048 (M3 W15: ID 045~050이 i18n/a11y로 재배정)"

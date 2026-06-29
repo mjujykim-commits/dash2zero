@@ -1,0 +1,11 @@
+id: PRV-011
+description: 삭제 요청 29일 경과 — 아직 hard-delete 비대상 (취소 가능 window)
+category: dsr_delete
+input:
+  delete_request_at: 2026-04-12T00:00:00Z
+  now: 2026-05-11T00:00:00Z   # 29일 경과
+expected:
+  soft_deleted_at: 2026-04-12T00:00:00Z
+  scheduled_hard_delete_at: 2026-05-12T00:00:00Z
+  hard_delete_eligible: false
+  immediate_signout: true

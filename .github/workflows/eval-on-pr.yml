@@ -1,0 +1,83 @@
+name: Eval on PR
+
+# ADR-0003: Custom evaluation runner (Firebase + Crashlytics 측면 협력)
+# Triggers: PR가 fixtures/, scripts/eval/, apps/api/edge-functions/_shared/, apps/mobile/src/srs/ 를 건드릴 때
+# Strict mode: fail이 있거나 skip이 있으면 즉시 차단 (rls/payment_pending 분기는 별도 nightly로)
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - 'fixtures/**'
+      - 'scripts/eval/**'
+      - 'apps/api/edge-functions/_shared/**'
+      - 'apps/mobile/src/srs/**'
+
+concurrency:
+  group: eval-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  eval-srs:
+    name: Eval — SRS
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v3
+        with:
+          version: 9
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'pnpm'
+      - run: pnpm install --frozen-lockfile
+      - name: Run SRS evaluator (strict)
+        run: pnpm eval:srs -- --strict
+
+  eval-payment:
+    name: Eval — Payment (mapStatus + idempotent + signature)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v3
+        with:
+          version: 9
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'pnpm'
+      - run: pnpm install --frozen-lockfile
+      - name: Run Payment evaluator (strict)
+        run: pnpm eval:payment -- --strict
+
+  eval-privacy:
+    name: Eval — Privacy
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v3
+        with:
+          version: 9
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'pnpm'
+      - run: pnpm install --frozen-lockfile
+      - name: Run Privacy evaluator (strict)
+        run: pnpm eval:privacy -- --strict
+
+  eval-content:
+    name: Eval — Content
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v3
+        with:
+          version: 9
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'pnpm'
+      - run: pnpm install --frozen-lockfile
+      - name: Run Content evaluator (strict)
+        run: pnpm eval:content -- --strict

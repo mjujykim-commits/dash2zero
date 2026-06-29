@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="UTF-8"><title>08 · Lesson Retrieve — dash2zero (Stunning)</title>
+<link rel="stylesheet" href="assets/tokens-kpop-bold.css"></head>
+<body>
+<style>
+  .progress-bar { height:4px;background:var(--surface-elevated);border-radius:2px;overflow:hidden;}
+  .progress-fill { height:100%;background:var(--gradient-cta);box-shadow:var(--glow-pink);width:100%;border-radius:2px;}
+  .choice-card { padding:16px 20px;border-radius:14px;background:var(--surface-card);border:1px solid var(--border-subtle);cursor:pointer;transition:all 0.2s;}
+  .choice-card.correct { border-color:transparent;background:linear-gradient(var(--surface-card),var(--surface-card)) padding-box,var(--gradient-success) border-box;border:2px solid transparent;box-shadow:0 0 24px rgba(16,185,129,0.4);}
+  .choice-card .check { width:24px;height:24px;border-radius:12px;background:var(--gradient-success);display:flex;align-items:center;justify-content:center;color:white;font-weight:900;font-size:12px;box-shadow:0 0 16px rgba(16,185,129,0.6);}
+</style>
+<div class="device">
+  <div class="status-bar"><span>9:43</span><span class="right">●●●●●▮ 100%</span></div>
+  <div class="screen has-hero-bg" style="padding:24px 20px 0;position:relative;overflow:hidden;">
+    <div class="glow-orb cyan" style="top:-100px;left:-80px;opacity:0.3;"></div>
+
+    <div style="display:flex;justify-content:space-between;align-items:center;position:relative;z-index:1;">
+      <div>
+        <div class="t-label">Card 1 of 3</div>
+        <div class="t-caption mt-1" style="color:var(--neon-orange);">Retrieve</div>
+      </div>
+      <div class="badge-glass badge">✕ Close</div>
+    </div>
+    <div class="progress-bar mt-3" style="position:relative;z-index:1;"><div class="progress-fill"></div></div>
+
+    <!-- Prompt -->
+    <div class="mt-6" style="position:relative;z-index:1;">
+      <div class="t-label center" style="color:var(--neon-cyan);">Which one means</div>
+      <div class="t-display-en center mt-2" style="font-size:42px;">"apple"?</div>
+    </div>
+
+    <!-- Choices -->
+    <div class="mt-8" style="display:flex;flex-direction:column;gap:10px;position:relative;z-index:1;">
+      <div class="choice-card correct">
+        <div style="display:flex;justify-content:space-between;align-items:center;">
+          <div style="font-family:var(--font-korean);font-size:24px;font-weight:700;color:var(--text-primary);">사과</div>
+          <div class="check">✓</div>
+        </div>
+      </div>
+      <div class="choice-card">
+        <div style="font-family:var(--font-korean);font-size:24px;font-weight:700;color:var(--text-primary);">고양이</div>
+      </div>
+      <div class="choice-card">
+        <div style="font-family:var(--font-korean);font-size:24px;font-weight:700;color:var(--text-primary);">학교</div>
+      </div>
+      <div class="choice-card">
+        <div style="font-family:var(--font-korean);font-size:24px;font-weight:700;color:var(--text-primary);">물</div>
+      </div>
+    </div>
+  </div>
+  <div class="cta-fixed">
+    <button class="btn-primary">Next card →</button>
+  </div>
+</div>
+<p style="text-align:center;color:#666;font-size:13px;margin-top:16px;font-family:var(--font-latin);">apps/mobile/app/lesson/[wordId].tsx Stage 4 · D-022 · 정답 표시</p>
+</body></html>

@@ -1,0 +1,37 @@
+id: SRS-047
+description: |
+  i18n/timezone — KST(UTC+9) 기준 04:00 reset이 UTC 기준이 아닌 사용자 로컬 04:00에 발생.
+  UTC 19:00 = KST 04:00 다음날. 같은 한국 사용자가 UTC 18:59 attempt 직후 UTC 19:01 attempt 시
+  로컬 day boundary를 넘으므로 새 cycle로 분리되어야 한다 (same-cycle 판정 false).
+  SRS-031(KST 일반)/SRS-032(Sydney DST) 보강 — 04:00 KST 정확 경계.
+category: i18n
+input:
+  user_id: u-test-047-i18n-tz
+  word_id: w-047
+  current_state:
+    stage: 2
+    weak: false
+    correct_count: 1
+    incorrect_count: 1                       # 직전 cycle 오답 1
+    last_attempt_at: 2026-05-08T18:59:00Z    # KST 03:59 (cycle N)
+    last_attempt_correct: false
+    next_due_at: 2026-05-08T19:00:00Z        # KST 04:00 reset
+    mastered_at: null
+  attempt:
+    correct: false
+    occurred_at: 2026-05-08T19:01:00Z        # KST 04:01 (cycle N+1) — 새 cycle
+    timezone: Asia/Seoul
+expected:
+  # 새 cycle이므로 same-cycle 2연속 오답 분기에 진입하지 말 것 → stage 2 → 1 (일반 오답)
+  stage: 1
+  weak: false                                # weak=true는 same-cycle 2연속 오답에만
+  correct_count: 1
+  incorrect_count: 2
+  last_attempt_correct: false
+  mastered_at: null
+  next_due_at_after_days: 1
+i18n_assertions:
+  - reset_uses_local_04_not_utc_04
+  - cycle_boundary_respects_iana_tz
+  - kst_03_59_to_04_01_creates_new_cycle
+e2e_followup: M4 E2E-TZ-001 — DST 진입/이탈 + 출장 (KST → PST 비행 중)

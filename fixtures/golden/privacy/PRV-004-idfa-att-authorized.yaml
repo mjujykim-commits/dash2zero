@@ -1,0 +1,8 @@
+id: PRV-004
+description: ATT authorized 시에도 dash2zero는 IDFA 미수집 (CC3-04 정책)
+category: idfa
+input:
+  att_status: authorized
+  requested_ad_id: false  # 클라이언트가 처음부터 요청 안 함
+expected:
+  ad_id_collected: false
