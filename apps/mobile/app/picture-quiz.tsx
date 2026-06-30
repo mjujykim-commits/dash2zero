@@ -1,12 +1,12 @@
 /**
- * Picture Quiz — 한글 제시 → 4개 이모지(그림) 중 정답 선택 (개인 빌드 기능, 2026-06-30)
+ * Picture Quiz — 이모지(그림) 제시 → 한글 4지선다. Picture Quiz 전용 앱.
  *
- * 자체 완결형: src/lib/emojiWords.ts의 구체 명사 한글↔이모지 사용 (백엔드 무관).
- * 한 라운드: 한글 단어 1개 + 이모지 보기 4개(정답 + 같은 카테고리 distractor 3). 10라운드.
+ * 흐름: 카테고리 선택 → 퀴즈(최대 10라운드) → 결과 → Play again / Change category.
+ * 카테고리 선택 시 그 주제 단어만 출제(distractor도 같은 주제 → 적정 난이도).
  */
 
 import { useMemo, useRef, useState } from "react";
-import { Pressable, StyleSheet, Text, View } from "react-native";
+import { Pressable, ScrollView, StyleSheet, Text, View } from "react-native";
 
 import { lightColors, spacing, typeScale } from "@dash2zero/design-tokens";
 
@@ -15,7 +15,24 @@ import { hapticNotification } from "@/src/lib/haptics";
 import { playSfx } from "@/src/lib/sound";
 import { GradientBackground, GlassCard, GlowOrb, NeonButton } from "@/src/components/d022";
 
-const ROUNDS = 10;
+const MAX_ROUNDS = 10;
+
+type CatKey = EmojiWord["category"] | "all";
+
+const CATEGORIES: { key: CatKey; label: string; emoji: string }[] = [
+  { key: "all", label: "All", emoji: "🎲" },
+  { key: "food", label: "Food", emoji: "🍔" },
+  { key: "animal", label: "Animals", emoji: "🐶" },
+  { key: "object", label: "Objects", emoji: "💻" },
+  { key: "nature", label: "Nature", emoji: "🌋" },
+  { key: "vehicle", label: "Vehicles", emoji: "🚗" },
+  { key: "place", label: "Places", emoji: "🏥" },
+  { key: "activity", label: "Sports", emoji: "⚽" },
+  { key: "clothing", label: "Clothing", emoji: "👗" },
+  { key: "music", label: "Music", emoji: "🎸" },
+  { key: "plant", label: "Plants", emoji: "🌱" },
+  { key: "body", label: "Body", emoji: "✋" },
+];
 
 function shuffle<T>(arr: T[]): T[] {
   const a = [...arr];
@@ -28,31 +45,46 @@ function shuffle<T>(arr: T[]): T[] {
 
 interface Question {
   target: EmojiWord;
-  options: EmojiWord[]; // 4개, shuffle됨
+  options: EmojiWord[];
 }
 
-function buildQuestions(): Question[] {
-  const targets = shuffle(EMOJI_WORDS).slice(0, ROUNDS);
+function buildQuestions(cat: CatKey): Question[] {
+  const pool = cat === "all" ? EMOJI_WORDS : EMOJI_WORDS.filter((w) => w.category === cat);
+  const targets = shuffle(pool).slice(0, Math.min(MAX_ROUNDS, pool.length));
   return targets.map((target) => {
-    // distractor: 같은 카테고리 우선, 부족하면 전체에서
-    const sameCat = EMOJI_WORDS.filter((w) => w.category === target.category && w.korean !== target.korean);
-    const others = EMOJI_WORDS.filter((w) => w.korean !== target.korean);
-    const pool = sameCat.length >= 3 ? sameCat : others;
-    const distractors = shuffle(pool).slice(0, 3);
+    const distractors = shuffle(pool.filter((w) => w.korean !== target.korean)).slice(0, 3);
     return { target, options: shuffle([target, ...distractors]) };
   });
 }
 
 export default function PictureQuiz() {
+  const [category, setCategory] = useState<CatKey | null>(null);
   const [seed, setSeed] = useState(0);
-  const questions = useMemo(() => buildQuestions(), [seed]);
+  const questions = useMemo(() => (category ? buildQuestions(category) : []), [seed, category]);
   const [round, setRound] = useState(0);
   const [score, setScore] = useState(0);
-  const [picked, setPicked] = useState<string | null>(null); // 선택된 korean
+  const [picked, setPicked] = useState<string | null>(null);
   const [done, setDone] = useState(false);
   const lockRef = useRef(false);
 
+  const counts = useMemo(() => {
+    const c: Record<string, number> = { all: EMOJI_WORDS.length };
+    EMOJI_WORDS.forEach((w) => (c[w.category] = (c[w.category] || 0) + 1));
+    return c;
+  }, []);
+
+  const total = questions.length;
   const q = questions[round];
+
+  function start(cat: CatKey) {
+    setCategory(cat);
+    setSeed((s) => s + 1);
+    setRound(0);
+    setScore(0);
+    setPicked(null);
+    setDone(false);
+    lockRef.current = false;
+  }
 
   function choose(opt: EmojiWord) {
     if (lockRef.current || !q) return;
@@ -70,7 +102,7 @@ export default function PictureQuiz() {
     setTimeout(() => {
       lockRef.current = false;
       setPicked(null);
-      if (round + 1 >= ROUNDS) {
+      if (round + 1 >= total) {
         setDone(true);
         void playSfx("complete");
       } else {
@@ -79,43 +111,67 @@ export default function PictureQuiz() {
     }, 1100);
   }
 
-  function restart() {
-    setSeed((s) => s + 1);
-    setRound(0);
-    setScore(0);
-    setPicked(null);
-    setDone(false);
-    lockRef.current = false;
-  }
-
-  if (done) {
+  // 1) 카테고리 선택 화면
+  if (!category) {
     return (
       <GradientBackground variant="dark" direction="vertical" style={{ flex: 1 }}>
-        <GlowOrb color="neon.lime" size={280} opacity={0.35} style={{ top: -60, right: -60 }} />
-        <View style={[styles.content, { justifyContent: "center", alignItems: "center" }]}>
-          <Text style={styles.resultEmoji}>{score >= ROUNDS - 2 ? "🎉" : "👍"}</Text>
-          <Text style={styles.resultScore}>
-            {score} / {ROUNDS}
-          </Text>
-          <Text style={styles.resultLabel}>correct</Text>
-          <View style={{ height: spacing["space.8"] }} />
-          <View style={{ width: "100%" }}>
-            <NeonButton label="Play again" onPress={restart} />
-          </View>
+        <GlowOrb color="neon.pink" size={260} opacity={0.3} style={{ top: -60, right: -60 }} />
+        <View style={styles.content}>
+          <Text style={styles.bigTitle}>Picture Quiz</Text>
+          <Text style={styles.sub}>Pick a topic.</Text>
+          <ScrollView style={{ flex: 1, marginTop: spacing["space.5"] }} showsVerticalScrollIndicator={false}>
+            <View style={styles.catGrid}>
+              {CATEGORIES.map((c) => (
+                <Pressable key={c.key} onPress={() => start(c.key)} style={styles.catCellWrap}>
+                  <GlassCard style={styles.catCell}>
+                    <Text style={styles.catEmoji}>{c.emoji}</Text>
+                    <Text style={styles.catLabel}>{c.label}</Text>
+                    <Text style={styles.catCount}>{counts[c.key] ?? 0}</Text>
+                  </GlassCard>
+                </Pressable>
+              ))}
+            </View>
+            <View style={{ height: spacing["space.8"] }} />
+          </ScrollView>
         </View>
       </GradientBackground>
     );
   }
 
+  // 2) 결과 화면
+  if (done) {
+    return (
+      <GradientBackground variant="dark" direction="vertical" style={{ flex: 1 }}>
+        <GlowOrb color="neon.lime" size={280} opacity={0.35} style={{ top: -60, right: -60 }} />
+        <View style={[styles.content, { justifyContent: "center", alignItems: "center" }]}>
+          <Text style={styles.resultEmoji}>{score >= total - 1 ? "🎉" : "👍"}</Text>
+          <Text style={styles.resultScore}>
+            {score} / {total}
+          </Text>
+          <Text style={styles.sub}>correct</Text>
+          <View style={{ height: spacing["space.8"] }} />
+          <View style={{ width: "100%" }}>
+            <NeonButton label="Play again" onPress={() => start(category)} />
+          </View>
+          <Pressable onPress={() => setCategory(null)} hitSlop={10} style={{ marginTop: spacing["space.4"] }}>
+            <Text style={styles.link}>Change topic</Text>
+          </Pressable>
+        </View>
+      </GradientBackground>
+    );
+  }
+
+  // 3) 퀴즈 화면
   return (
     <GradientBackground variant="dark" direction="vertical" style={{ flex: 1 }}>
       <GlowOrb color="neon.pink" size={240} opacity={0.3} style={{ top: -60, left: -60 }} />
-
       <View style={styles.content}>
         <View style={styles.topRow}>
-          <Text style={styles.title}>Picture Quiz</Text>
+          <Pressable onPress={() => setCategory(null)} hitSlop={12}>
+            <Text style={styles.link}>‹ Topics</Text>
+          </Pressable>
           <Text style={styles.progress}>
-            {round + 1} / {ROUNDS} · score {score}
+            {round + 1} / {total} · score {score}
           </Text>
         </View>
 
@@ -161,38 +217,26 @@ const styles = StyleSheet.create({
     paddingBottom: spacing["space.6"],
   },
   topRow: { flexDirection: "row", justifyContent: "space-between", alignItems: "center" },
-  title: { color: lightColors["text.primary"], fontSize: 20, fontWeight: "900" },
   link: { color: lightColors["neon.cyan"], fontSize: 16, fontWeight: "700" },
   progress: { color: lightColors["text.muted"], fontSize: typeScale["text.caption"].fontSize, fontWeight: "700" },
+  bigTitle: { color: lightColors["text.primary"], fontSize: 32, fontWeight: "900" },
+  sub: { color: lightColors["text.secondary"], fontSize: typeScale["text.body"].fontSize, marginTop: spacing["space.1"] },
+  catGrid: { flexDirection: "row", flexWrap: "wrap", justifyContent: "space-between" },
+  catCellWrap: { width: "31%", marginBottom: spacing["space.3"] },
+  catCell: { alignItems: "center", justifyContent: "center", paddingVertical: spacing["space.4"] },
+  catEmoji: { fontSize: 36 },
+  catLabel: { color: lightColors["text.primary"], fontSize: 13, fontWeight: "800", marginTop: spacing["space.1"] },
+  catCount: { color: lightColors["text.muted"], fontSize: 11, marginTop: 2 },
   prompt: {
     color: lightColors["text.secondary"],
     fontSize: typeScale["text.body"].fontSize,
     marginTop: spacing["space.8"],
     textAlign: "center",
   },
-  promptEmoji: {
-    fontSize: 110,
-    textAlign: "center",
-    marginTop: spacing["space.3"],
-    marginBottom: spacing["space.8"],
-  },
-  grid: {
-    flexDirection: "row",
-    flexWrap: "wrap",
-    justifyContent: "space-between",
-  },
-  optionCard: {
-    height: 120,
-    alignItems: "center",
-    justifyContent: "center",
-    padding: spacing["space.3"],
-  },
-  optionKorean: {
-    color: lightColors["korean.glyph"],
-    fontSize: 26,
-    fontWeight: "800",
-    textAlign: "center",
-  },
+  promptEmoji: { fontSize: 110, textAlign: "center", marginTop: spacing["space.3"], marginBottom: spacing["space.8"] },
+  grid: { flexDirection: "row", flexWrap: "wrap", justifyContent: "space-between" },
+  optionCard: { height: 120, alignItems: "center", justifyContent: "center", padding: spacing["space.3"] },
+  optionKorean: { color: lightColors["korean.glyph"], fontSize: 26, fontWeight: "800", textAlign: "center" },
   optionGloss: {
     color: lightColors["semantic.success"],
     fontSize: typeScale["text.caption"].fontSize,
@@ -201,5 +245,4 @@ const styles = StyleSheet.create({
   },
   resultEmoji: { fontSize: 72 },
   resultScore: { color: lightColors["text.primary"], fontSize: 64, fontWeight: "900", marginTop: spacing["space.3"] },
-  resultLabel: { color: lightColors["text.secondary"], fontSize: typeScale["text.body"].fontSize },
 });
