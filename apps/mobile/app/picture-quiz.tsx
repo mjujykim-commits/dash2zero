@@ -5,7 +5,6 @@
  * 한 라운드: 한글 단어 1개 + 이모지 보기 4개(정답 + 같은 카테고리 distractor 3). 10라운드.
  */
 
-import { router } from "expo-router";
 import { useMemo, useRef, useState } from "react";
 import { Pressable, StyleSheet, Text, View } from "react-native";
 
@@ -103,9 +102,6 @@ export default function PictureQuiz() {
           <View style={{ width: "100%" }}>
             <NeonButton label="Play again" onPress={restart} />
           </View>
-          <Pressable onPress={() => router.back()} hitSlop={10} style={{ marginTop: spacing["space.4"] }}>
-            <Text style={styles.link}>Done</Text>
-          </Pressable>
         </View>
       </GradientBackground>
     );
@@ -117,9 +113,7 @@ export default function PictureQuiz() {
 
       <View style={styles.content}>
         <View style={styles.topRow}>
-          <Pressable onPress={() => router.back()} hitSlop={12}>
-            <Text style={styles.link}>‹ Back</Text>
-          </Pressable>
+          <Text style={styles.title}>Picture Quiz</Text>
           <Text style={styles.progress}>
             {round + 1} / {ROUNDS} · score {score}
           </Text>
@@ -167,6 +161,7 @@ const styles = StyleSheet.create({
     paddingBottom: spacing["space.6"],
   },
   topRow: { flexDirection: "row", justifyContent: "space-between", alignItems: "center" },
+  title: { color: lightColors["text.primary"], fontSize: 20, fontWeight: "900" },
   link: { color: lightColors["neon.cyan"], fontSize: 16, fontWeight: "700" },
   progress: { color: lightColors["text.muted"], fontSize: typeScale["text.caption"].fontSize, fontWeight: "700" },
   prompt: {

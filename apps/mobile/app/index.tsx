@@ -1,14 +1,13 @@
 /**
- * 앱 진입점 — 개인 빌드: 첫 진입 온보딩(welcome / age-gate / privacy-choices / 관심사 onboarding)
- * 을 생략하고 바로 학습 화면(home)으로 이동한다.
+ * 앱 진입점 — Picture Quiz 전용 앱.
+ * 모든 학습 기능(레슨/카테고리/복습/온보딩)을 제거하고 그림 퀴즈로 바로 진입한다.
  *
- * 주의(정식 출시): age gate는 App Store 13세 미만 차단 요건이라 GA 전 복원 필요.
- * 온보딩 화면들(welcome/age-gate/privacy-choices/onboarding)은 파일로 보존되어 있어
- * settings 등에서 여전히 접근 가능하며, 본 리디렉트만 되돌리면 원래 플로우로 복귀한다.
+ * 다른 화면 파일들(home/lesson/categories/onboarding 등)은 보존되어 있으나 진입점에서
+ * 연결하지 않는다. 되돌리려면 본 리디렉트만 /home 등으로 변경.
  */
 
 import { Redirect } from "expo-router";
 
 export default function Index() {
-  return <Redirect href="/home" />;
+  return <Redirect href="/picture-quiz" />;
 }
