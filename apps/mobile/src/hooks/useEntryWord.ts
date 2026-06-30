@@ -41,9 +41,13 @@ export function useEntryWord(): UseEntryWordResult {
         const manifest = manifestCache ?? (await fetchContentManifest(0));
         if (manifest) manifestCache = manifest;
 
-        // 신규 사용자 (M3 MVP): free pack(tier=starter) 첫 단어
-        const freePack = (manifest?.packs ?? []).find((p) => p.tier === "starter");
-        const words = freePack?.words ?? [];
+        // 개인 빌드: 전체 팩을 순차 진행(starter 먼저). 원래 MVP는 starter 60단어만 봤으나
+        // 콘텐츠 전체 잠금해제 정합 — 590단어를 last_completed 기준으로 끝까지 학습.
+        const packs = manifest?.packs ?? [];
+        const ordered = [...packs].sort((a, b) =>
+          a.tier === "starter" ? -1 : b.tier === "starter" ? 1 : 0,
+        );
+        const words = ordered.flatMap((p) => p.words);
 
         // SecureStore의 last_completed_word_id 다음 단어로 시작 (Task #82-c)
         const lastId = await getLastCompletedWordId();

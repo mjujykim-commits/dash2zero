@@ -14,8 +14,10 @@ import { fetchTodaySummary, type TodaySummary } from "@/src/lib/api";
 import { supabase } from "@/src/lib/supabase";
 import { computeGuestTodaySummary } from "@/src/lib/guestStore";
 
-/** D-018 / authenticated_free 정합 — 게스트는 free 한도 동일. */
-const GUEST_FREE_DAILY_NEW = 3;
+/** D-018 / authenticated_free 정합 — 원래 게스트 free 한도는 3.
+ *  개인 빌드 오버라이드: 일일 한도를 사실상 무제한으로(개인 사용 — 콘텐츠 전체 잠금해제 정합).
+ *  정식 출시 시 3으로 되돌릴 것. */
+const GUEST_FREE_DAILY_NEW = 500;
 
 export interface UseTodaySummaryResult {
   data: TodaySummary | null;

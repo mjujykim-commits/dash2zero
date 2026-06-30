@@ -527,22 +527,24 @@ export default function WordLesson() {
         )}
 
         {/* 한글 hero — Work Order P0-1 (D-029): MorphingKoreanWord
-           * Notice/Hear: tier="hero" (원본 크기)
-           * Meaning/Retrieve: tier="tier-1-5" (scale 0.875, translateY -16 — 위쪽 후퇴) */}
-        <MorphingKoreanWord
-          tier={stage === "notice" || stage === "hear" ? "hero" : "tier-1-5"}
-          style={{
-            fontSize: scale.word,
-            lineHeight: scale.word,
-            fontWeight: typeScale["text.word"].weight,
-            fontFamily: typeScale["text.word"].family,
-            color: lightColors["korean.glyph"],
-            textAlign: "center",
-            marginBottom: spacing["space.4"],
-          }}
-        >
-          {word.korean}
-        </MorphingKoreanWord>
+           * Notice/Hear: tier="hero" (원본 크기) / Meaning: tier="tier-1-5"
+           * Retrieve: 숨김 — 한글이 보이면 정답(=한글 보기)이 노출되므로 회상 과제가 무력화됨 */}
+        {stage !== "retrieve" && (
+          <MorphingKoreanWord
+            tier={stage === "notice" || stage === "hear" ? "hero" : "tier-1-5"}
+            style={{
+              fontSize: scale.word,
+              lineHeight: scale.word,
+              fontWeight: typeScale["text.word"].weight,
+              fontFamily: typeScale["text.word"].family,
+              color: lightColors["korean.glyph"],
+              textAlign: "center",
+              marginBottom: spacing["space.4"],
+            }}
+          >
+            {word.korean}
+          </MorphingKoreanWord>
+        )}
 
         {/* Audio button — Work Order P0-5 (D-028): AudioButton 컴포넌트 + ring expansion + pulse */}
         {(stage === "notice" || stage === "hear" || stage === "meaning") && (
@@ -559,18 +561,36 @@ export default function WordLesson() {
            * 60ms × delayIndex 지연으로 fade-up 등장. stageKey는 cursor 변경 시 새 카드 entrance 재실행 */}
         {(stage === "meaning" || stage === "retrieve") && (
           <View style={{ alignItems: "center" }}>
-            <StageReveal stageKey={`${cursor}-rr`} delayIndex={0}>
+            {/* Retrieve: 영어 뜻을 회상 프롬프트로 — 로마자/한글 예문은 숨김(정답 노출 방지) */}
+            {stage === "retrieve" && (
               <Text
                 style={{
-                  fontSize: typeScale["text.romanization"].fontSize,
-                  color: lightColors["text.muted"],
-                  marginBottom: spacing["space.3"],
+                  fontSize: 13,
+                  fontWeight: "700",
+                  letterSpacing: 1,
+                  textTransform: "uppercase",
+                  color: lightColors["neon.cyan"],
+                  marginBottom: spacing["space.2"],
                   textAlign: "center",
                 }}
               >
-                {word.romanization}
+                Pick the Korean word for
               </Text>
-            </StageReveal>
+            )}
+            {stage === "meaning" && (
+              <StageReveal stageKey={`${cursor}-rr`} delayIndex={0}>
+                <Text
+                  style={{
+                    fontSize: typeScale["text.romanization"].fontSize,
+                    color: lightColors["text.muted"],
+                    marginBottom: spacing["space.3"],
+                    textAlign: "center",
+                  }}
+                >
+                  {word.romanization}
+                </Text>
+              </StageReveal>
+            )}
             <StageReveal stageKey={`${cursor}-gloss`} delayIndex={1}>
               <Text
                 style={{
@@ -579,12 +599,13 @@ export default function WordLesson() {
                   color: lightColors["text.primary"],
                   marginBottom: spacing["space.6"],
                   textAlign: "center",
+                  fontWeight: stage === "retrieve" ? "800" : "400",
                 }}
               >
                 {word.gloss}
               </Text>
             </StageReveal>
-            {word.example_ko && (
+            {stage === "meaning" && word.example_ko && (
               <StageReveal stageKey={`${cursor}-ex-ko`} delayIndex={2}>
                 <Text
                   accessibilityLanguage="ko"
@@ -594,7 +615,7 @@ export default function WordLesson() {
                 </Text>
               </StageReveal>
             )}
-            {word.example_en && (
+            {stage === "meaning" && word.example_en && (
               <StageReveal stageKey={`${cursor}-ex-en`} delayIndex={3}>
                 <Text
                   style={{
