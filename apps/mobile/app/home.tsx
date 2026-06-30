@@ -208,8 +208,11 @@ export default function Home() {
           <Pressable onPress={() => router.push("/categories")} hitSlop={8}>
             <Text style={styles.secondaryLink}>📚 Categories</Text>
           </Pressable>
+          <Pressable onPress={() => router.push("/picture-quiz")} hitSlop={8}>
+            <Text style={styles.secondaryLink}>🖼️ Picture quiz</Text>
+          </Pressable>
           <Pressable onPress={handleReview} hitSlop={8}>
-            <Text style={styles.secondaryLink}>🔁 Review mistakes</Text>
+            <Text style={styles.secondaryLink}>🔁 Review</Text>
           </Pressable>
         </View>
       </View>
