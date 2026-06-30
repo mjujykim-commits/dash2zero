@@ -125,9 +125,8 @@ export default function PictureQuiz() {
           </Text>
         </View>
 
-        <Text style={styles.prompt}>Which picture is</Text>
-        <Text style={styles.korean}>{q?.target.korean}</Text>
-        <Text style={styles.romanHint}>?</Text>
+        <Text style={styles.prompt}>Which word is this?</Text>
+        <Text style={styles.promptEmoji}>{q?.target.emoji}</Text>
 
         <View style={styles.grid}>
           {q?.options.map((opt) => {
@@ -148,7 +147,7 @@ export default function PictureQuiz() {
                 style={{ width: "48%", marginBottom: spacing["space.3"] }}
               >
                 <GlassCard style={[styles.optionCard, { borderColor, borderWidth: showState ? 2 : 0 }]}>
-                  <Text style={styles.optionEmoji}>{opt.emoji}</Text>
+                  <Text style={styles.optionKorean}>{opt.korean}</Text>
                   {showState && isCorrect && <Text style={styles.optionGloss}>{opt.gloss}</Text>}
                 </GlassCard>
               </Pressable>
@@ -176,14 +175,12 @@ const styles = StyleSheet.create({
     marginTop: spacing["space.8"],
     textAlign: "center",
   },
-  korean: {
-    color: lightColors["korean.glyph"],
-    fontSize: 56,
-    fontWeight: "900",
+  promptEmoji: {
+    fontSize: 110,
     textAlign: "center",
-    marginTop: spacing["space.2"],
+    marginTop: spacing["space.3"],
+    marginBottom: spacing["space.8"],
   },
-  romanHint: { color: lightColors["text.secondary"], fontSize: 24, textAlign: "center", marginBottom: spacing["space.8"] },
   grid: {
     flexDirection: "row",
     flexWrap: "wrap",
@@ -195,7 +192,12 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     padding: spacing["space.3"],
   },
-  optionEmoji: { fontSize: 56 },
+  optionKorean: {
+    color: lightColors["korean.glyph"],
+    fontSize: 26,
+    fontWeight: "800",
+    textAlign: "center",
+  },
   optionGloss: {
     color: lightColors["semantic.success"],
     fontSize: typeScale["text.caption"].fontSize,
