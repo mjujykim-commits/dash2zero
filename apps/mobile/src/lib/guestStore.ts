@@ -246,6 +246,22 @@ export async function computeGuestTodaySummary(
 }
 
 /**
+ * 오답 복습용 — 한 번 이상 틀렸고 아직 마스터(stage 5)하지 않은 단어들.
+ * 많이 틀린 순 + 최근 시도 순. 게스트 로컬 SQLite 기준.
+ */
+export async function getIncorrectWordIds(limit = 30): Promise<string[]> {
+  if (!db) await initGuestDb();
+  const rows = await db!.getAllAsync<{ word_id: string }>(
+    `SELECT word_id FROM guest_uws
+     WHERE incorrect_count > 0 AND (stage IS NULL OR stage < 5)
+     ORDER BY incorrect_count DESC, last_attempt_at DESC
+     LIMIT ?`,
+    [limit],
+  );
+  return rows.map((r) => r.word_id);
+}
+
+/**
  * localDay04 정렬된 day 배열에서 연속 streak 계산.
  * - 오늘이 포함되어 있으면 오늘부터, 아니면 어제부터 끊김 여부 확인 (오늘 학습 안 했어도 어제까지 streak 유지).
  * - 단순 시간차 비교가 아니라 calendar day step 비교 (DST 영향 회피).

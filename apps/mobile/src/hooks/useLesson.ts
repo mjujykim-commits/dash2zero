@@ -60,7 +60,12 @@ let manifestCache: ContentManifestResponse | null = null;
 const DEFAULT_CHAIN_LENGTH = 3; // PRD §4 "신규 3단어 루프" 기본
 const MAX_CHAIN_LENGTH = 15; // PRD: 무료 10 / premium up to 15 — 안전 상한
 
-export function useLesson(wordId: string | undefined, chainLength: number = DEFAULT_CHAIN_LENGTH): UseLessonResult {
+export function useLesson(
+  wordId: string | undefined,
+  chainLength: number = DEFAULT_CHAIN_LENGTH,
+  /** 명시적 word_id 목록 (오답 복습 등) — 주어지면 pack slice 대신 이 목록으로 chain 구성. */
+  explicitWordIds?: string[],
+): UseLessonResult {
   const [chain, setChain] = useState<LessonWord[]>([]);
   const [cursor, setCursor] = useState(0);
   const [isLoading, setLoading] = useState(true);
@@ -84,35 +89,46 @@ export function useLesson(wordId: string | undefined, chainLength: number = DEFA
           manifestCache ?? (await fetchContentManifest(0));
         if (manifest) manifestCache = manifest;
 
-        // entry word가 속한 pack 찾기 + chain 구성
-        let entryPack: ContentManifestResponse["packs"][number] | null = null;
-        let entryIdx = -1;
+        type MW = ContentManifestResponse["packs"][number]["words"][number];
+        const allPacks = manifest?.packs ?? [];
 
-        for (const pack of manifest?.packs ?? []) {
-          const idx = pack.words.findIndex((w) => w.word_id === wordId);
-          if (idx >= 0) {
-            entryPack = pack;
-            entryIdx = idx;
-            break;
+        // chain slice(단어 + 소속 pack_id) + distractor pool 구성
+        let slice: Array<{ w: MW; packId: string }> = [];
+        let distractorPool: MW[] = [];
+
+        if (explicitWordIds && explicitWordIds.length > 0) {
+          // 명시적 목록 (오답 복습 등) — 전체 팩에서 word_id로 조회, distractor는 전체 풀에서
+          const byId = new Map<string, { w: MW; packId: string }>();
+          for (const p of allPacks) for (const w of p.words) byId.set(w.word_id, { w, packId: p.pack_id });
+          slice = explicitWordIds
+            .map((id) => byId.get(id))
+            .filter((x): x is { w: MW; packId: string } => !!x)
+            .slice(0, MAX_CHAIN_LENGTH);
+          if (slice.length === 0) throw new Error("word_not_found");
+          const chainIds = new Set(slice.map((s) => s.w.word_id));
+          distractorPool = allPacks.flatMap((p) => p.words).filter((w) => !chainIds.has(w.word_id));
+        } else {
+          // entry word가 속한 pack에서 순서대로 N개 (pack 끝이면 wrap 안 함, 짧아도 OK)
+          let entryPack: ContentManifestResponse["packs"][number] | null = null;
+          let entryIdx = -1;
+          for (const pack of allPacks) {
+            const idx = pack.words.findIndex((w) => w.word_id === wordId);
+            if (idx >= 0) { entryPack = pack; entryIdx = idx; break; }
           }
+          if (!entryPack || entryIdx < 0) throw new Error("word_not_found");
+          const desired = Math.min(Math.max(1, chainLength), MAX_CHAIN_LENGTH);
+          slice = entryPack.words
+            .slice(entryIdx, entryIdx + desired)
+            .map((w) => ({ w, packId: entryPack!.pack_id }));
+          const chainIds = new Set(slice.map((s) => s.w.word_id));
+          distractorPool = entryPack.words.filter((w) => !chainIds.has(w.word_id));
         }
 
-        if (!entryPack || entryIdx < 0) throw new Error("word_not_found");
-
-        // chain = entry word부터 같은 pack에서 순서대로 N개 (pack 끝이면 wrap 안 함, 짧아도 OK)
-        const desired = Math.min(Math.max(1, chainLength), MAX_CHAIN_LENGTH);
-        const slice = entryPack.words.slice(entryIdx, entryIdx + desired);
-
-        // distractor pool — chain 외 같은 pack 단어들 (chain 내부 단어로 distractor 만들지 않음)
-        const distractorPool = entryPack.words.filter(
-          (w) => !slice.some((s) => s.word_id === w.word_id)
-        );
-
-        const built: LessonWord[] = slice.map((found) => {
+        const built: LessonWord[] = slice.map(({ w: found, packId }) => {
           const shuffled = [...distractorPool].sort(() => Math.random() - 0.5).slice(0, 3);
           return {
             word_id: found.word_id,
-            pack_id: entryPack!.pack_id,
+            pack_id: packId,
             korean: found.korean,
             romanization: found.romanization,
             gloss: found.gloss,
@@ -120,7 +136,7 @@ export function useLesson(wordId: string | undefined, chainLength: number = DEFA
             example_en: found.example_en,
             audio_url_word: null,
             audio_url_example: null,
-            options_for_quiz: [found.korean, ...shuffled.map((w) => w.korean)],
+            options_for_quiz: [found.korean, ...shuffled.map((d) => d.korean)],
             is_new_word: true,
           };
         });
@@ -153,7 +169,8 @@ export function useLesson(wordId: string | undefined, chainLength: number = DEFA
     return () => {
       cancelled = true;
     };
-  }, [wordId, chainLength]);
+    // explicitWordIds는 배열이라 join 키로 안정화 (참조 변경에 의한 무한 재실행 방지)
+  }, [wordId, chainLength, (explicitWordIds ?? []).join(",")]);
 
   const word = chain[cursor] ?? null;
   const total = chain.length;

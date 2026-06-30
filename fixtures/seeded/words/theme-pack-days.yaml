@@ -1,0 +1,25 @@
+pack_id: "theme-days-001"
+pack_name: "Theme — Days & Time"
+tier: core
+target_count: 18
+content_version: 1
+license: "tts-google-neural2"
+words:
+  - { word_id: "w-day-001", korean: "월요일", romanization: "wo-ryo-il", gloss: "Monday", example_ko: "오늘은 월요일이에요.", example_en: "Today is Monday.", distractors_candidate: ["화요일","수요일","목요일"] }
+  - { word_id: "w-day-002", korean: "화요일", romanization: "hwa-yo-il", gloss: "Tuesday", example_ko: "내일은 화요일이에요.", example_en: "Tomorrow is Tuesday.", distractors_candidate: ["월요일","수요일","금요일"] }
+  - { word_id: "w-day-003", korean: "수요일", romanization: "su-yo-il", gloss: "Wednesday", example_ko: "수요일에 만나요.", example_en: "Let's meet on Wednesday.", distractors_candidate: ["화요일","목요일","월요일"] }
+  - { word_id: "w-day-004", korean: "목요일", romanization: "mo-gyo-il", gloss: "Thursday", example_ko: "목요일은 바빠요.", example_en: "Thursday is busy.", distractors_candidate: ["수요일","금요일","화요일"] }
+  - { word_id: "w-day-005", korean: "금요일", romanization: "geu-myo-il", gloss: "Friday", example_ko: "금요일이 좋아요.", example_en: "I like Friday.", distractors_candidate: ["목요일","토요일","수요일"] }
+  - { word_id: "w-day-006", korean: "토요일", romanization: "to-yo-il", gloss: "Saturday", example_ko: "토요일에 쉬어요.", example_en: "I rest on Saturday.", distractors_candidate: ["금요일","일요일","월요일"] }
+  - { word_id: "w-day-007", korean: "일요일", romanization: "i-ryo-il", gloss: "Sunday", example_ko: "일요일에 자요.", example_en: "I sleep on Sunday.", distractors_candidate: ["토요일","월요일","화요일"] }
+  - { word_id: "w-day-008", korean: "오늘", romanization: "o-neul", gloss: "today", example_ko: "오늘은 더워요.", example_en: "Today is hot.", distractors_candidate: ["내일","어제","모레"] }
+  - { word_id: "w-day-009", korean: "내일", romanization: "nae-il", gloss: "tomorrow", example_ko: "내일 학교에 가요.", example_en: "I go to school tomorrow.", distractors_candidate: ["오늘","어제","모레"] }
+  - { word_id: "w-day-010", korean: "어제", romanization: "eo-je", gloss: "yesterday", example_ko: "어제는 추웠어요.", example_en: "Yesterday was cold.", distractors_candidate: ["오늘","내일","모레"] }
+  - { word_id: "w-day-011", korean: "모레", romanization: "mo-re", gloss: "the day after tomorrow", example_ko: "모레 봐요.", example_en: "See you the day after tomorrow.", distractors_candidate: ["오늘","내일","어제"] }
+  - { word_id: "w-day-012", korean: "주말", romanization: "ju-mal", gloss: "weekend", example_ko: "주말에 놀아요.", example_en: "I play on the weekend.", distractors_candidate: ["평일","일주일","매일"] }
+  - { word_id: "w-day-013", korean: "평일", romanization: "pyeong-il", gloss: "weekday", example_ko: "평일에 일해요.", example_en: "I work on weekdays.", distractors_candidate: ["주말","일주일","매일"] }
+  - { word_id: "w-day-014", korean: "일주일", romanization: "il-ju-il", gloss: "one week", example_ko: "일주일은 짧아요.", example_en: "A week is short.", distractors_candidate: ["주말","평일","매일"] }
+  - { word_id: "w-day-015", korean: "매일", romanization: "mae-il", gloss: "every day", example_ko: "매일 운동해요.", example_en: "I exercise every day.", distractors_candidate: ["평일","주말","일주일"] }
+  - { word_id: "w-day-016", korean: "아침", romanization: "a-chim", gloss: "morning", example_ko: "아침을 먹어요.", example_en: "I eat breakfast in the morning.", distractors_candidate: ["점심","저녁","오늘"] }
+  - { word_id: "w-day-017", korean: "점심", romanization: "jeom-sim", gloss: "lunch / noon", example_ko: "점심을 먹어요.", example_en: "I eat lunch.", distractors_candidate: ["아침","저녁","내일"] }
+  - { word_id: "w-day-018", korean: "저녁", romanization: "jeo-nyeok", gloss: "evening / dinner", example_ko: "저녁에 쉬어요.", example_en: "I rest in the evening.", distractors_candidate: ["아침","점심","어제"] }

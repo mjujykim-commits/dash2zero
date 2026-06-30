@@ -69,12 +69,18 @@ const INITIAL_SNAPSHOT: ClientSnapshot = {
 };
 
 export default function WordLesson() {
-  const params = useLocalSearchParams<{ wordId: string; chain?: string }>();
+  const params = useLocalSearchParams<{ wordId: string; chain?: string; words?: string }>();
   const entryWordId = params.wordId;
   const chainLengthParam = params.chain ? Math.max(1, Math.min(15, Number(params.chain) || 3)) : undefined;
+  // 오답 복습 등 — ?words=id1,id2,... 명시 목록. 있으면 그 목록으로 chain 구성.
+  const explicitWordIds = params.words ? params.words.split(",").filter(Boolean) : undefined;
   const scale = useResponsiveScale();
 
-  const { word, chain, cursor, total, advance, isLast, isLoading, error } = useLesson(entryWordId, chainLengthParam);
+  const { word, chain, cursor, total, advance, isLast, isLoading, error } = useLesson(
+    entryWordId,
+    chainLengthParam,
+    explicitWordIds,
+  );
 
   const [stage, setStage] = useState<Stage>("notice");
   const [selected, setSelected] = useState<string | null>(null);

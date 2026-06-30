@@ -1,0 +1,27 @@
+pack_id: "theme-calendar-001"
+pack_name: "Theme — Calendar & Months"
+tier: core
+target_count: 20
+content_version: 1
+license: "tts-google-neural2"
+words:
+  - { word_id: "w-cal-001", korean: "일월", romanization: "i-rwol", gloss: "January", example_ko: "일월은 추워요.", example_en: "January is cold.", distractors_candidate: ["이월","삼월","십이월"] }
+  - { word_id: "w-cal-002", korean: "이월", romanization: "i-wol", gloss: "February", example_ko: "이월에 눈이 와요.", example_en: "It snows in February.", distractors_candidate: ["일월","삼월","시월"] }
+  - { word_id: "w-cal-003", korean: "삼월", romanization: "sa-mwol", gloss: "March", example_ko: "삼월에 학교에 가요.", example_en: "I go to school in March.", distractors_candidate: ["사월","이월","오월"] }
+  - { word_id: "w-cal-004", korean: "사월", romanization: "sa-wol", gloss: "April", example_ko: "사월은 따뜻해요.", example_en: "April is warm.", distractors_candidate: ["삼월","오월","유월"] }
+  - { word_id: "w-cal-005", korean: "오월", romanization: "o-wol", gloss: "May", example_ko: "오월은 좋아요.", example_en: "May is nice.", distractors_candidate: ["사월","유월","삼월"] }
+  - { word_id: "w-cal-006", korean: "유월", romanization: "yu-wol", gloss: "June", example_ko: "유월에 비가 와요.", example_en: "It rains in June.", distractors_candidate: ["오월","칠월","시월"] }
+  - { word_id: "w-cal-007", korean: "칠월", romanization: "chi-rwol", gloss: "July", example_ko: "칠월은 더워요.", example_en: "July is hot.", distractors_candidate: ["팔월","유월","구월"] }
+  - { word_id: "w-cal-008", korean: "팔월", romanization: "pa-rwol", gloss: "August", example_ko: "팔월에 바다에 가요.", example_en: "I go to the sea in August.", distractors_candidate: ["칠월","구월","시월"] }
+  - { word_id: "w-cal-009", korean: "구월", romanization: "gu-wol", gloss: "September", example_ko: "구월은 시원해요.", example_en: "September is cool.", distractors_candidate: ["팔월","시월","십일월"] }
+  - { word_id: "w-cal-010", korean: "시월", romanization: "si-wol", gloss: "October", example_ko: "시월에 여행을 가요.", example_en: "I travel in October.", distractors_candidate: ["구월","십일월","십이월"] }
+  - { word_id: "w-cal-011", korean: "십일월", romanization: "si-bi-rwol", gloss: "November", example_ko: "십일월은 추워요.", example_en: "November is cold.", distractors_candidate: ["십이월","시월","구월"] }
+  - { word_id: "w-cal-012", korean: "십이월", romanization: "si-bi-wol", gloss: "December", example_ko: "십이월에 눈이 와요.", example_en: "It snows in December.", distractors_candidate: ["십일월","일월","시월"] }
+  - { word_id: "w-cal-013", korean: "달력", romanization: "dal-lyeok", gloss: "calendar", example_ko: "달력을 봐요.", example_en: "I look at the calendar.", distractors_candidate: ["날짜","요일","생일"] }
+  - { word_id: "w-cal-014", korean: "날짜", romanization: "nal-jja", gloss: "date", example_ko: "오늘 날짜가 뭐예요?", example_en: "What is today's date?", distractors_candidate: ["요일","며칠","달력"] }
+  - { word_id: "w-cal-015", korean: "요일", romanization: "yo-il", gloss: "day of the week", example_ko: "오늘은 무슨 요일이에요?", example_en: "What day of the week is it today?", distractors_candidate: ["날짜","주","달력"] }
+  - { word_id: "w-cal-016", korean: "월", romanization: "wol", gloss: "month", example_ko: "지금은 몇 월이에요?", example_en: "What month is it now?", distractors_candidate: ["년","주","요일"] }
+  - { word_id: "w-cal-017", korean: "년", romanization: "nyeon", gloss: "year", example_ko: "이천 년에 태어났어요.", example_en: "I was born in the year 2000.", distractors_candidate: ["월","주","날짜"] }
+  - { word_id: "w-cal-018", korean: "주", romanization: "ju", gloss: "week", example_ko: "한 주는 칠 일이에요.", example_en: "One week is seven days.", distractors_candidate: ["월","년","요일"] }
+  - { word_id: "w-cal-019", korean: "며칠", romanization: "myeo-chil", gloss: "how many days / what date", example_ko: "오늘이 며칠이에요?", example_en: "What is today's date?", distractors_candidate: ["날짜","요일","생일"] }
+  - { word_id: "w-cal-020", korean: "생일", romanization: "saeng-il", gloss: "birthday", example_ko: "생일 축하해요!", example_en: "Happy birthday!", distractors_candidate: ["날짜","며칠","달력"] }

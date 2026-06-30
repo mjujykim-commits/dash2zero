@@ -1,0 +1,29 @@
+pack_id: "theme-numbers-001"
+pack_name: "Theme — Numbers"
+tier: core
+target_count: 22
+content_version: 1
+license: "tts-google-neural2"
+words:
+  - { word_id: "w-num-001", korean: "하나", romanization: "ha-na", gloss: "one (native)", example_ko: "빵 하나 주세요.", example_en: "One bread, please.", distractors_candidate: ["둘","셋","넷"] }
+  - { word_id: "w-num-002", korean: "둘", romanization: "dul", gloss: "two (native)", example_ko: "둘 다 좋아요.", example_en: "Both are good.", distractors_candidate: ["하나","셋","다섯"] }
+  - { word_id: "w-num-003", korean: "셋", romanization: "set", gloss: "three (native)", example_ko: "하나, 둘, 셋!", example_en: "One, two, three!", distractors_candidate: ["둘","넷","다섯"] }
+  - { word_id: "w-num-004", korean: "넷", romanization: "net", gloss: "four (native)", example_ko: "넷이 와요.", example_en: "Four people are coming.", distractors_candidate: ["셋","다섯","여섯"] }
+  - { word_id: "w-num-005", korean: "다섯", romanization: "da-seot", gloss: "five (native)", example_ko: "다섯 시예요.", example_en: "It is five o'clock.", distractors_candidate: ["넷","여섯","일곱"] }
+  - { word_id: "w-num-006", korean: "여섯", romanization: "yeo-seot", gloss: "six (native)", example_ko: "여섯 시에 만나요.", example_en: "Let's meet at six.", distractors_candidate: ["다섯","일곱","여덟"] }
+  - { word_id: "w-num-007", korean: "일곱", romanization: "il-gop", gloss: "seven (native)", example_ko: "일곱 시에 일어나요.", example_en: "I get up at seven.", distractors_candidate: ["여섯","여덟","아홉"] }
+  - { word_id: "w-num-008", korean: "여덟", romanization: "yeo-deol", gloss: "eight (native)", example_ko: "여덟 시에 자요.", example_en: "I sleep at eight.", distractors_candidate: ["일곱","아홉","열"] }
+  - { word_id: "w-num-009", korean: "아홉", romanization: "a-hop", gloss: "nine (native)", example_ko: "아홉 시예요.", example_en: "It is nine o'clock.", distractors_candidate: ["여덟","열","일곱"] }
+  - { word_id: "w-num-010", korean: "열", romanization: "yeol", gloss: "ten (native)", example_ko: "열 개 있어요.", example_en: "There are ten.", distractors_candidate: ["아홉","여덟","여섯"] }
+  - { word_id: "w-num-011", korean: "일", romanization: "il", gloss: "one (Sino)", example_ko: "일 번이에요.", example_en: "It is number one.", distractors_candidate: ["이","삼","사"] }
+  - { word_id: "w-num-012", korean: "이", romanization: "i", gloss: "two (Sino)", example_ko: "이 층에 있어요.", example_en: "It is on the second floor.", distractors_candidate: ["일","삼","오"] }
+  - { word_id: "w-num-013", korean: "삼", romanization: "sam", gloss: "three (Sino)", example_ko: "삼 월이에요.", example_en: "It is March.", distractors_candidate: ["이","사","오"] }
+  - { word_id: "w-num-014", korean: "사", romanization: "sa", gloss: "four (Sino)", example_ko: "사 월이에요.", example_en: "It is April.", distractors_candidate: ["삼","오","육"] }
+  - { word_id: "w-num-015", korean: "오", romanization: "o", gloss: "five (Sino)", example_ko: "오 월이에요.", example_en: "It is May.", distractors_candidate: ["사","육","칠"] }
+  - { word_id: "w-num-016", korean: "육", romanization: "yuk", gloss: "six (Sino)", example_ko: "육 번이에요.", example_en: "It is number six.", distractors_candidate: ["오","칠","팔"] }
+  - { word_id: "w-num-017", korean: "칠", romanization: "chil", gloss: "seven (Sino)", example_ko: "칠 번이에요.", example_en: "It is number seven.", distractors_candidate: ["육","팔","구"] }
+  - { word_id: "w-num-018", korean: "팔", romanization: "pal", gloss: "eight (Sino)", example_ko: "팔 번이에요.", example_en: "It is number eight.", distractors_candidate: ["칠","구","십"] }
+  - { word_id: "w-num-019", korean: "구", romanization: "gu", gloss: "nine (Sino)", example_ko: "구 번이에요.", example_en: "It is number nine.", distractors_candidate: ["팔","십","칠"] }
+  - { word_id: "w-num-020", korean: "십", romanization: "sip", gloss: "ten (Sino)", example_ko: "십 번이에요.", example_en: "It is number ten.", distractors_candidate: ["구","팔","백"] }
+  - { word_id: "w-num-021", korean: "백", romanization: "baek", gloss: "hundred (Sino)", example_ko: "백 원이에요.", example_en: "It is one hundred won.", distractors_candidate: ["천","십","구"] }
+  - { word_id: "w-num-022", korean: "천", romanization: "cheon", gloss: "thousand (Sino)", example_ko: "천 원이에요.", example_en: "It is one thousand won.", distractors_candidate: ["백","십","구"] }

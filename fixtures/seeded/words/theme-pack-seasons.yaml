@@ -1,0 +1,27 @@
+pack_id: "theme-seasons-001"
+pack_name: "Theme — Seasons & Weather"
+tier: core
+target_count: 20
+content_version: 1
+license: "tts-google-neural2"
+words:
+  - { word_id: "w-sea-001", korean: "봄", romanization: "bom", gloss: "spring", example_ko: "봄이 좋아요.", example_en: "I like spring.", distractors_candidate: ["여름","가을","겨울"] }
+  - { word_id: "w-sea-002", korean: "여름", romanization: "yeo-reum", gloss: "summer", example_ko: "여름은 더워요.", example_en: "Summer is hot.", distractors_candidate: ["봄","가을","겨울"] }
+  - { word_id: "w-sea-003", korean: "가을", romanization: "ga-eul", gloss: "autumn", example_ko: "가을은 시원해요.", example_en: "Autumn is cool.", distractors_candidate: ["봄","여름","겨울"] }
+  - { word_id: "w-sea-004", korean: "겨울", romanization: "gyeo-ul", gloss: "winter", example_ko: "겨울은 추워요.", example_en: "Winter is cold.", distractors_candidate: ["봄","여름","가을"] }
+  - { word_id: "w-sea-005", korean: "날씨", romanization: "nal-ssi", gloss: "weather", example_ko: "오늘 날씨가 좋아요.", example_en: "The weather is nice today.", distractors_candidate: ["바람","구름","비"] }
+  - { word_id: "w-sea-006", korean: "덥다", romanization: "deop-da", gloss: "to be hot", example_ko: "오늘은 더워요.", example_en: "It is hot today.", distractors_candidate: ["춥다","따뜻하다","시원하다"] }
+  - { word_id: "w-sea-007", korean: "춥다", romanization: "chup-da", gloss: "to be cold", example_ko: "밖이 추워요.", example_en: "It is cold outside.", distractors_candidate: ["덥다","따뜻하다","시원하다"] }
+  - { word_id: "w-sea-008", korean: "따뜻하다", romanization: "tta-tteu-ta-da", gloss: "to be warm", example_ko: "봄은 따뜻해요.", example_en: "Spring is warm.", distractors_candidate: ["덥다","춥다","시원하다"] }
+  - { word_id: "w-sea-009", korean: "시원하다", romanization: "si-won-ha-da", gloss: "to be cool", example_ko: "바람이 시원해요.", example_en: "The wind is cool.", distractors_candidate: ["덥다","춥다","따뜻하다"] }
+  - { word_id: "w-sea-010", korean: "맑다", romanization: "mak-da", gloss: "to be clear", example_ko: "하늘이 맑아요.", example_en: "The sky is clear.", distractors_candidate: ["흐리다","따뜻하다","시원하다"] }
+  - { word_id: "w-sea-011", korean: "흐리다", romanization: "heu-ri-da", gloss: "to be cloudy", example_ko: "오늘 하늘이 흐려요.", example_en: "The sky is cloudy today.", distractors_candidate: ["맑다","덥다","춥다"] }
+  - { word_id: "w-sea-012", korean: "비", romanization: "bi", gloss: "rain", example_ko: "비가 와요.", example_en: "It is raining.", distractors_candidate: ["눈","바람","구름"] }
+  - { word_id: "w-sea-013", korean: "눈", romanization: "nun", gloss: "snow", example_ko: "눈이 와요.", example_en: "It is snowing.", distractors_candidate: ["비","바람","구름"] }
+  - { word_id: "w-sea-014", korean: "바람", romanization: "ba-ram", gloss: "wind", example_ko: "바람이 불어요.", example_en: "The wind blows.", distractors_candidate: ["비","눈","구름"] }
+  - { word_id: "w-sea-015", korean: "구름", romanization: "gu-reum", gloss: "cloud", example_ko: "구름이 많아요.", example_en: "There are many clouds.", distractors_candidate: ["비","눈","바람"] }
+  - { word_id: "w-sea-016", korean: "해", romanization: "hae", gloss: "sun", example_ko: "해가 떠요.", example_en: "The sun rises.", distractors_candidate: ["구름","바람","무지개"] }
+  - { word_id: "w-sea-017", korean: "비가 오다", romanization: "bi-ga o-da", gloss: "to rain", example_ko: "오후에 비가 와요.", example_en: "It rains in the afternoon.", distractors_candidate: ["눈이 오다","비","눈"] }
+  - { word_id: "w-sea-018", korean: "눈이 오다", romanization: "nu-ni o-da", gloss: "to snow", example_ko: "겨울에 눈이 와요.", example_en: "It snows in winter.", distractors_candidate: ["비가 오다","눈","비"] }
+  - { word_id: "w-sea-019", korean: "무지개", romanization: "mu-ji-gae", gloss: "rainbow", example_ko: "무지개가 예뻐요.", example_en: "The rainbow is pretty.", distractors_candidate: ["해","구름","안개"] }
+  - { word_id: "w-sea-020", korean: "안개", romanization: "an-gae", gloss: "fog", example_ko: "안개가 많아요.", example_en: "There is a lot of fog.", distractors_candidate: ["구름","무지개","해"] }

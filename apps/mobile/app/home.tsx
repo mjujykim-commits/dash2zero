@@ -13,7 +13,9 @@
 import { LinearGradient } from "expo-linear-gradient";
 import { router, useFocusEffect } from "expo-router";
 import { useCallback, useEffect, useRef } from "react";
-import { StyleSheet, Text, View } from "react-native";
+import { Alert, Pressable, StyleSheet, Text, View } from "react-native";
+
+import { getIncorrectWordIds } from "@/src/lib/guestStore";
 
 import { lightColors, spacing, typeScale } from "@dash2zero/design-tokens";
 
@@ -67,6 +69,16 @@ export default function Home() {
     const requested = Math.max(3, (today?.new_words_remaining ?? 0) + (today?.reviews_due ?? 0));
     const chainLength = Math.min(requested, maxChain);
     router.push(`/lesson/${entry.wordId}?chain=${chainLength}`);
+  }
+
+  // 오답 복습 — 틀린 단어들만 모아 lesson chain 시작
+  async function handleReview() {
+    const ids = await getIncorrectWordIds(15);
+    if (ids.length === 0) {
+      Alert.alert("No mistakes yet", "Words you get wrong will show up here to review.");
+      return;
+    }
+    router.push(`/lesson/${ids[0]}?words=${ids.join(",")}`);
   }
 
   // 로딩 상태 — Work Order P0-4 (D-028) 정합
@@ -191,6 +203,15 @@ export default function Home() {
           onPress={handleStart}
           disabled={!canStart}
         />
+
+        <View style={styles.secondaryRow}>
+          <Pressable onPress={() => router.push("/categories")} hitSlop={8}>
+            <Text style={styles.secondaryLink}>📚 Categories</Text>
+          </Pressable>
+          <Pressable onPress={handleReview} hitSlop={8}>
+            <Text style={styles.secondaryLink}>🔁 Review mistakes</Text>
+          </Pressable>
+        </View>
       </View>
     </GradientBackground>
   );
@@ -300,5 +321,15 @@ const styles = StyleSheet.create({
     fontSize: typeScale["text.caption"].fontSize,
     color: lightColors["semantic.warning"],
     marginTop: spacing["space.3"],
+  },
+  secondaryRow: {
+    flexDirection: "row",
+    justifyContent: "space-around",
+    marginTop: spacing["space.4"],
+  },
+  secondaryLink: {
+    fontSize: 14,
+    fontWeight: "700",
+    color: lightColors["neon.cyan"],
   },
 });
