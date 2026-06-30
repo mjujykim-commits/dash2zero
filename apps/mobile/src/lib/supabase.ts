@@ -10,8 +10,8 @@ import Constants from "expo-constants";
 import * as SecureStore from "expo-secure-store";
 import type { AuthClient, Session as ContractSession, User as ContractUser } from "@dash2zero/contracts";
 
-const SUPABASE_URL = Constants.expoConfig?.extra?.SUPABASE_URL ?? process.env.EXPO_PUBLIC_SUPABASE_URL ?? "";
-const SUPABASE_ANON_KEY = Constants.expoConfig?.extra?.SUPABASE_ANON_KEY ?? process.env.EXPO_PUBLIC_SUPABASE_ANON_KEY ?? "";
+export const SUPABASE_URL = Constants.expoConfig?.extra?.SUPABASE_URL ?? process.env.EXPO_PUBLIC_SUPABASE_URL ?? "";
+export const SUPABASE_ANON_KEY = Constants.expoConfig?.extra?.SUPABASE_ANON_KEY ?? process.env.EXPO_PUBLIC_SUPABASE_ANON_KEY ?? "";
 
 if (!SUPABASE_URL || !SUPABASE_ANON_KEY) {
   // M2-S5: dev/staging/prod 별 EAS Secrets 주입 후 제거 (D-009)

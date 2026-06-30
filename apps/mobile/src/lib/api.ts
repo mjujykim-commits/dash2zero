@@ -7,7 +7,7 @@
  * 책임 agent: frontend + backend (양쪽 인터페이스 정합)
  */
 
-import { supabase } from "./supabase";
+import { supabase, SUPABASE_URL, SUPABASE_ANON_KEY } from "./supabase";
 import type {
   AnalyticsEventName,
   AudioAsset,
@@ -85,12 +85,25 @@ export interface ContentManifestResponse {
 }
 
 export async function fetchContentManifest(since: number = 0): Promise<ContentManifestResponse | null> {
-  const { data, error } = await supabase.functions.invoke<ContentManifestResponse>("content-manifest", {
-    method: "GET" as any,
-    body: { since } as any, // Edge Function이 query string도 지원하도록 처리
+  // content-manifest는 GET 전용 Edge Function. supabase.functions.invoke에 method:"GET"+body를 주면
+  // "Request with GET method cannot have body"로 fetch가 실패한다 → 직접 GET fetch로 호출.
+  // 인증 사용자는 access_token, 게스트는 anon key로 Authorization 헤더 구성(verify_jwt=false).
+  const {
+    data: { session },
+  } = await supabase.auth.getSession();
+  const token = session?.access_token ?? SUPABASE_ANON_KEY;
+
+  const res = await fetch(`${SUPABASE_URL}/functions/v1/content-manifest?since=${since}`, {
+    method: "GET",
+    headers: {
+      apikey: SUPABASE_ANON_KEY,
+      Authorization: `Bearer ${token}`,
+    },
   });
-  if (error) throw error;
-  return data;
+
+  if (res.status === 304) return null;
+  if (!res.ok) throw new Error(`content-manifest ${res.status}`);
+  return (await res.json()) as ContentManifestResponse;
 }
 
 // ============================================================================

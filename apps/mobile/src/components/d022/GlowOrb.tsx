@@ -24,6 +24,7 @@ export function GlowOrb({ size = 240, color, opacity = 0.5, style }: Props) {
   if (Platform.OS === "ios") {
     return (
       <View
+        pointerEvents="none"
         style={[
           {
             position: "absolute",
@@ -45,6 +46,7 @@ export function GlowOrb({ size = 240, color, opacity = 0.5, style }: Props) {
   // Android: blur 미지원 → 색 그대로, opacity로 fade
   return (
     <View
+      pointerEvents="none"
       style={[
         {
           position: "absolute",
