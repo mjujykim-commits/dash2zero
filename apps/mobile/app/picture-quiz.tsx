@@ -46,6 +46,8 @@ function shuffle<T>(arr: T[]): T[] {
 interface Question {
   target: EmojiWord;
   options: EmojiWord[];
+  /** emoji: 이모지 보고 한글 선택 / korean: 한글 보고 이모지 선택 (라운드마다 랜덤 → 문제 유형 x2) */
+  direction: "emoji" | "korean";
 }
 
 function buildQuestions(cat: CatKey): Question[] {
@@ -53,7 +55,11 @@ function buildQuestions(cat: CatKey): Question[] {
   const targets = shuffle(pool).slice(0, Math.min(MAX_ROUNDS, pool.length));
   return targets.map((target) => {
     const distractors = shuffle(pool.filter((w) => w.korean !== target.korean)).slice(0, 3);
-    return { target, options: shuffle([target, ...distractors]) };
+    return {
+      target,
+      options: shuffle([target, ...distractors]),
+      direction: Math.random() < 0.5 ? "emoji" : "korean",
+    };
   });
 }
 
@@ -175,8 +181,17 @@ export default function PictureQuiz() {
           </Text>
         </View>
 
-        <Text style={styles.prompt}>Which word is this?</Text>
-        <Text style={styles.promptEmoji}>{q?.target.emoji}</Text>
+        {q?.direction === "korean" ? (
+          <>
+            <Text style={styles.prompt}>Which picture is this?</Text>
+            <Text style={styles.promptKorean}>{q?.target.korean}</Text>
+          </>
+        ) : (
+          <>
+            <Text style={styles.prompt}>Which word is this?</Text>
+            <Text style={styles.promptEmoji}>{q?.target.emoji}</Text>
+          </>
+        )}
 
         <View style={styles.grid}>
           {q?.options.map((opt) => {
@@ -190,6 +205,7 @@ export default function PictureQuiz() {
                   ? lightColors["semantic.danger"]
                   : "transparent"
               : "transparent";
+            const isKoreanMode = q.direction === "korean";
             return (
               <Pressable
                 key={opt.korean}
@@ -197,7 +213,9 @@ export default function PictureQuiz() {
                 style={{ width: "48%", marginBottom: spacing["space.3"] }}
               >
                 <GlassCard style={[styles.optionCard, { borderColor, borderWidth: showState ? 2 : 0 }]}>
-                  <Text style={styles.optionKorean}>{opt.korean}</Text>
+                  <Text style={isKoreanMode ? styles.optionEmoji : styles.optionKorean}>
+                    {isKoreanMode ? opt.emoji : opt.korean}
+                  </Text>
                   {showState && isCorrect && <Text style={styles.optionGloss}>{opt.gloss}</Text>}
                 </GlassCard>
               </Pressable>
@@ -234,9 +252,18 @@ const styles = StyleSheet.create({
     textAlign: "center",
   },
   promptEmoji: { fontSize: 110, textAlign: "center", marginTop: spacing["space.3"], marginBottom: spacing["space.8"] },
+  promptKorean: {
+    color: lightColors["korean.glyph"],
+    fontSize: 56,
+    fontWeight: "900",
+    textAlign: "center",
+    marginTop: spacing["space.3"],
+    marginBottom: spacing["space.8"],
+  },
   grid: { flexDirection: "row", flexWrap: "wrap", justifyContent: "space-between" },
   optionCard: { height: 120, alignItems: "center", justifyContent: "center", padding: spacing["space.3"] },
   optionKorean: { color: lightColors["korean.glyph"], fontSize: 26, fontWeight: "800", textAlign: "center" },
+  optionEmoji: { fontSize: 56, textAlign: "center" },
   optionGloss: {
     color: lightColors["semantic.success"],
     fontSize: typeScale["text.caption"].fontSize,
