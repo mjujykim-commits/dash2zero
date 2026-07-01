@@ -6,7 +6,7 @@
  */
 
 import { useMemo, useRef, useState } from "react";
-import { Pressable, ScrollView, StyleSheet, Text, View } from "react-native";
+import { Alert, Pressable, ScrollView, StyleSheet, Text, View } from "react-native";
 
 import { lightColors, spacing, typeScale } from "@dash2zero/design-tokens";
 
@@ -15,7 +15,7 @@ import { hapticNotification } from "@/src/lib/haptics";
 import { playSfx } from "@/src/lib/sound";
 import { GradientBackground, GlassCard, GlowOrb, NeonButton } from "@/src/components/d022";
 
-const MAX_ROUNDS = 10;
+const DEFAULT_ROUNDS = 10;
 
 type CatKey = EmojiWord["category"] | "all";
 
@@ -50,9 +50,9 @@ interface Question {
   direction: "emoji" | "korean";
 }
 
-function buildQuestions(cat: CatKey): Question[] {
+function buildQuestions(cat: CatKey, rounds: number): Question[] {
   const pool = cat === "all" ? EMOJI_WORDS : EMOJI_WORDS.filter((w) => w.category === cat);
-  const targets = shuffle(pool).slice(0, Math.min(MAX_ROUNDS, pool.length));
+  const targets = shuffle(pool).slice(0, Math.min(rounds, pool.length));
   return targets.map((target) => {
     const distractors = shuffle(pool.filter((w) => w.korean !== target.korean)).slice(0, 3);
     return {
@@ -65,8 +65,9 @@ function buildQuestions(cat: CatKey): Question[] {
 
 export default function PictureQuiz() {
   const [category, setCategory] = useState<CatKey | null>(null);
+  const [rounds, setRounds] = useState(DEFAULT_ROUNDS);
   const [seed, setSeed] = useState(0);
-  const questions = useMemo(() => (category ? buildQuestions(category) : []), [seed, category]);
+  const questions = useMemo(() => (category ? buildQuestions(category, rounds) : []), [seed, category, rounds]);
   const [round, setRound] = useState(0);
   const [score, setScore] = useState(0);
   const [picked, setPicked] = useState<string | null>(null);
@@ -82,14 +83,39 @@ export default function PictureQuiz() {
   const total = questions.length;
   const q = questions[round];
 
-  function start(cat: CatKey) {
+  function start(cat: CatKey, r: number) {
     setCategory(cat);
+    setRounds(r);
     setSeed((s) => s + 1);
     setRound(0);
     setScore(0);
     setPicked(null);
     setDone(false);
     lockRef.current = false;
+  }
+
+  // Start 시 문제 개수 입력 팝업 (iOS Alert.prompt) → 확인 시 start
+  function promptRounds(cat: CatKey) {
+    const max = cat === "all" ? EMOJI_WORDS.length : counts[cat] ?? 0;
+    Alert.prompt(
+      "How many questions?",
+      `Enter 1 – ${max}`,
+      [
+        { text: "Cancel", style: "cancel" },
+        {
+          text: "Start",
+          onPress: (value) => {
+            let n = parseInt((value ?? "").trim(), 10);
+            if (!Number.isFinite(n) || n < 1) n = Math.min(DEFAULT_ROUNDS, max);
+            n = Math.min(Math.max(1, n), max);
+            start(cat, n);
+          },
+        },
+      ],
+      "plain-text",
+      String(Math.min(DEFAULT_ROUNDS, max)),
+      "number-pad",
+    );
   }
 
   function choose(opt: EmojiWord) {
@@ -128,7 +154,7 @@ export default function PictureQuiz() {
           <ScrollView style={{ flex: 1, marginTop: spacing["space.5"] }} showsVerticalScrollIndicator={false}>
             <View style={styles.catGrid}>
               {CATEGORIES.map((c) => (
-                <Pressable key={c.key} onPress={() => start(c.key)} style={styles.catCellWrap}>
+                <Pressable key={c.key} onPress={() => promptRounds(c.key)} style={styles.catCellWrap}>
                   <GlassCard style={styles.catCell}>
                     <Text style={styles.catEmoji}>{c.emoji}</Text>
                     <Text style={styles.catLabel}>{c.label}</Text>
@@ -157,7 +183,7 @@ export default function PictureQuiz() {
           <Text style={styles.sub}>correct</Text>
           <View style={{ height: spacing["space.8"] }} />
           <View style={{ width: "100%" }}>
-            <NeonButton label="Play again" onPress={() => start(category)} />
+            <NeonButton label="Play again" onPress={() => start(category, rounds)} />
           </View>
           <Pressable onPress={() => setCategory(null)} hitSlop={10} style={{ marginTop: spacing["space.4"] }}>
             <Text style={styles.link}>Change topic</Text>
