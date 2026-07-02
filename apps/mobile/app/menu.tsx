@@ -30,11 +30,11 @@ export default function Menu() {
           </GlassCard>
         </Pressable>
 
-        <Pressable onPress={() => router.push("/picture-quiz")}>
+        <Pressable onPress={() => router.push("/quizzes")}>
           <GlassCard style={styles.bigCard}>
-            <Text style={styles.bigEmoji}>🖼️</Text>
+            <Text style={styles.bigEmoji}>🎯</Text>
             <Text style={styles.bigTitle}>Quiz</Text>
-            <Text style={styles.bigSub}>Match pictures and words</Text>
+            <Text style={styles.bigSub}>Picture · Meaning · Audio</Text>
           </GlassCard>
         </Pressable>
 
