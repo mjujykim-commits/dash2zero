@@ -11,6 +11,7 @@ import { GradientBackground, GlassCard, GlowOrb } from "@/src/components/d022";
 
 const ITEMS = [
   { emoji: "🖼️", title: "Picture Quiz", sub: "Match pictures and words", href: "/picture-quiz" },
+  { emoji: "📸", title: "Photo Quiz", sub: "Real photos, pick the Korean", href: "/photo-quiz" },
   { emoji: "💬", title: "Meaning Quiz", sub: "Match Korean words and meanings", href: "/vocab-quiz?mode=meaning" },
   { emoji: "🔊", title: "Audio Quiz", sub: "Hear a word, pick the Korean", href: "/vocab-quiz?mode=audio" },
 ];
