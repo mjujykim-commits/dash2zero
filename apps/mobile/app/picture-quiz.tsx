@@ -5,6 +5,7 @@
  * 카테고리 선택 시 그 주제 단어만 출제(distractor도 같은 주제 → 적정 난이도).
  */
 
+import { router } from "expo-router";
 import { useMemo, useRef, useState } from "react";
 import { Alert, Pressable, ScrollView, StyleSheet, Text, View } from "react-native";
 
@@ -149,6 +150,9 @@ export default function PictureQuiz() {
       <GradientBackground variant="dark" direction="vertical" style={{ flex: 1 }}>
         <GlowOrb color="neon.pink" size={260} opacity={0.3} style={{ top: -60, right: -60 }} />
         <View style={styles.content}>
+          <Pressable onPress={() => router.back()} hitSlop={12} style={{ marginBottom: spacing["space.2"] }}>
+            <Text style={styles.link}>‹ Menu</Text>
+          </Pressable>
           <Text style={styles.bigTitle}>Picture Quiz</Text>
           <Text style={styles.sub}>Pick a topic.</Text>
           <ScrollView style={{ flex: 1, marginTop: spacing["space.5"] }} showsVerticalScrollIndicator={false}>
