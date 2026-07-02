@@ -1,0 +1,31 @@
+pack_id: "theme-adjectives-001"
+pack_name: "Theme — Common Adjectives"
+tier: core
+target_count: 24
+content_version: 1
+license: "tts-google-neural2"
+words:
+  - { word_id: "w-adj-001", korean: "크다", romanization: "keu-da", gloss: "to be big", example_ko: "코끼리는 커요.", example_en: "The elephant is big.", distractors_candidate: ["작다","많다","높다"] }
+  - { word_id: "w-adj-002", korean: "작다", romanization: "jak-tta", gloss: "to be small", example_ko: "개미는 작아요.", example_en: "The ant is small.", distractors_candidate: ["크다","적다","낮다"] }
+  - { word_id: "w-adj-003", korean: "많다", romanization: "man-ta", gloss: "to be many", example_ko: "사람이 많아요.", example_en: "There are many people.", distractors_candidate: ["적다","크다","무겁다"] }
+  - { word_id: "w-adj-004", korean: "적다", romanization: "jeok-tta", gloss: "to be few", example_ko: "돈이 적어요.", example_en: "There is little money.", distractors_candidate: ["많다","작다","짧다"] }
+  - { word_id: "w-adj-005", korean: "길다", romanization: "gil-da", gloss: "to be long", example_ko: "이 길은 길어요.", example_en: "This road is long.", distractors_candidate: ["짧다","높다","크다"] }
+  - { word_id: "w-adj-006", korean: "짧다", romanization: "jjal-tta", gloss: "to be short", example_ko: "이 연필은 짧아요.", example_en: "This pencil is short.", distractors_candidate: ["길다","작다","낮다"] }
+  - { word_id: "w-adj-007", korean: "높다", romanization: "nop-tta", gloss: "to be high", example_ko: "산이 높아요.", example_en: "The mountain is high.", distractors_candidate: ["낮다","길다","크다"] }
+  - { word_id: "w-adj-008", korean: "낮다", romanization: "nat-tta", gloss: "to be low", example_ko: "의자가 낮아요.", example_en: "The chair is low.", distractors_candidate: ["높다","짧다","작다"] }
+  - { word_id: "w-adj-009", korean: "빠르다", romanization: "ppa-reu-da", gloss: "to be fast", example_ko: "차가 빨라요.", example_en: "The car is fast.", distractors_candidate: ["느리다","가볍다","새롭다"] }
+  - { word_id: "w-adj-010", korean: "느리다", romanization: "neu-ri-da", gloss: "to be slow", example_ko: "거북이는 느려요.", example_en: "The turtle is slow.", distractors_candidate: ["빠르다","무겁다","낡다"] }
+  - { word_id: "w-adj-011", korean: "뜨겁다", romanization: "tteu-geop-tta", gloss: "to be hot", example_ko: "커피가 뜨거워요.", example_en: "The coffee is hot.", distractors_candidate: ["차갑다","밝다","무겁다"] }
+  - { word_id: "w-adj-012", korean: "차갑다", romanization: "cha-gap-tta", gloss: "to be cold", example_ko: "물이 차가워요.", example_en: "The water is cold.", distractors_candidate: ["뜨겁다","어둡다","가볍다"] }
+  - { word_id: "w-adj-013", korean: "새롭다", romanization: "sae-rop-tta", gloss: "to be new", example_ko: "이 책은 새로워요.", example_en: "This book is new.", distractors_candidate: ["낡다","예쁘다","깨끗하다"] }
+  - { word_id: "w-adj-014", korean: "낡다", romanization: "nak-tta", gloss: "to be old", example_ko: "신발이 낡았어요.", example_en: "The shoes are old.", distractors_candidate: ["새롭다","더럽다","어둡다"] }
+  - { word_id: "w-adj-015", korean: "쉽다", romanization: "swip-tta", gloss: "to be easy", example_ko: "시험이 쉬워요.", example_en: "The exam is easy.", distractors_candidate: ["어렵다","가볍다","밝다"] }
+  - { word_id: "w-adj-016", korean: "어렵다", romanization: "eo-ryeop-tta", gloss: "to be difficult", example_ko: "한국어가 어려워요.", example_en: "Korean is difficult.", distractors_candidate: ["쉽다","무겁다","어둡다"] }
+  - { word_id: "w-adj-017", korean: "무겁다", romanization: "mu-geop-tta", gloss: "to be heavy", example_ko: "가방이 무거워요.", example_en: "The bag is heavy.", distractors_candidate: ["가볍다","많다","어렵다"] }
+  - { word_id: "w-adj-018", korean: "가볍다", romanization: "ga-byeop-tta", gloss: "to be light", example_ko: "공이 가벼워요.", example_en: "The ball is light.", distractors_candidate: ["무겁다","적다","쉽다"] }
+  - { word_id: "w-adj-019", korean: "밝다", romanization: "bak-tta", gloss: "to be bright", example_ko: "방이 밝아요.", example_en: "The room is bright.", distractors_candidate: ["어둡다","새롭다","깨끗하다"] }
+  - { word_id: "w-adj-020", korean: "어둡다", romanization: "eo-dup-tta", gloss: "to be dark", example_ko: "밖이 어두워요.", example_en: "It is dark outside.", distractors_candidate: ["밝다","낡다","더럽다"] }
+  - { word_id: "w-adj-021", korean: "예쁘다", romanization: "ye-ppeu-da", gloss: "to be pretty", example_ko: "꽃이 예뻐요.", example_en: "The flower is pretty.", distractors_candidate: ["멋있다","깨끗하다","새롭다"] }
+  - { word_id: "w-adj-022", korean: "멋있다", romanization: "meo-sit-tta", gloss: "to be cool", example_ko: "그 사람은 멋있어요.", example_en: "That person is cool.", distractors_candidate: ["예쁘다","밝다","새롭다"] }
+  - { word_id: "w-adj-023", korean: "깨끗하다", romanization: "kkae-kkeu-ta-da", gloss: "to be clean", example_ko: "손이 깨끗해요.", example_en: "The hands are clean.", distractors_candidate: ["더럽다","밝다","예쁘다"] }
+  - { word_id: "w-adj-024", korean: "더럽다", romanization: "deo-reop-tta", gloss: "to be dirty", example_ko: "신발이 더러워요.", example_en: "The shoes are dirty.", distractors_candidate: ["깨끗하다","어둡다","낡다"] }

@@ -1,0 +1,29 @@
+pack_id: "theme-family-001"
+pack_name: "Theme — Family & People"
+tier: core
+target_count: 22
+content_version: 1
+license: "tts-google-neural2"
+words:
+  - { word_id: "w-fam-001", korean: "가족", romanization: "ga-jok", gloss: "family", example_ko: "우리 가족은 넷이에요.", example_en: "My family has four people.", distractors_candidate: ["부모님","친구","사람"] }
+  - { word_id: "w-fam-002", korean: "엄마", romanization: "eom-ma", gloss: "mom", example_ko: "엄마가 요리해요.", example_en: "Mom is cooking.", distractors_candidate: ["아빠","누나","언니"] }
+  - { word_id: "w-fam-003", korean: "아빠", romanization: "a-ppa", gloss: "dad", example_ko: "아빠는 회사에 가요.", example_en: "Dad goes to work.", distractors_candidate: ["엄마","형","오빠"] }
+  - { word_id: "w-fam-004", korean: "부모님", romanization: "bu-mo-nim", gloss: "parents", example_ko: "부모님을 사랑해요.", example_en: "I love my parents.", distractors_candidate: ["가족","할머니","할아버지"] }
+  - { word_id: "w-fam-005", korean: "형", romanization: "hyeong", gloss: "older brother", example_ko: "형이 키가 커요.", example_en: "My older brother is tall.", distractors_candidate: ["오빠","누나","동생"] }
+  - { word_id: "w-fam-006", korean: "오빠", romanization: "o-ppa", gloss: "older brother", example_ko: "오빠가 학교에 가요.", example_en: "My older brother goes to school.", distractors_candidate: ["형","언니","동생"] }
+  - { word_id: "w-fam-007", korean: "누나", romanization: "nu-na", gloss: "older sister", example_ko: "누나가 책을 읽어요.", example_en: "My older sister reads a book.", distractors_candidate: ["언니","형","동생"] }
+  - { word_id: "w-fam-008", korean: "언니", romanization: "eon-ni", gloss: "older sister", example_ko: "언니는 커피를 마셔요.", example_en: "My older sister drinks coffee.", distractors_candidate: ["누나","오빠","동생"] }
+  - { word_id: "w-fam-009", korean: "동생", romanization: "dong-saeng", gloss: "younger sibling", example_ko: "동생이 자요.", example_en: "My younger sibling is sleeping.", distractors_candidate: ["형","누나","아기"] }
+  - { word_id: "w-fam-010", korean: "할머니", romanization: "hal-meo-ni", gloss: "grandmother", example_ko: "할머니가 웃어요.", example_en: "Grandmother is smiling.", distractors_candidate: ["할아버지","엄마","어른"] }
+  - { word_id: "w-fam-011", korean: "할아버지", romanization: "hal-a-beo-ji", gloss: "grandfather", example_ko: "할아버지는 신문을 봐요.", example_en: "Grandfather reads the newspaper.", distractors_candidate: ["할머니","아빠","어른"] }
+  - { word_id: "w-fam-012", korean: "아들", romanization: "a-deul", gloss: "son", example_ko: "아들이 밥을 먹어요.", example_en: "The son is eating.", distractors_candidate: ["딸","아기","아이"] }
+  - { word_id: "w-fam-013", korean: "딸", romanization: "ttal", gloss: "daughter", example_ko: "딸이 노래해요.", example_en: "The daughter is singing.", distractors_candidate: ["아들","아기","아이"] }
+  - { word_id: "w-fam-014", korean: "아기", romanization: "a-gi", gloss: "baby", example_ko: "아기가 울어요.", example_en: "The baby is crying.", distractors_candidate: ["아이","아들","딸"] }
+  - { word_id: "w-fam-015", korean: "남편", romanization: "nam-pyeon", gloss: "husband", example_ko: "남편이 청소해요.", example_en: "My husband is cleaning.", distractors_candidate: ["아내","남자","아빠"] }
+  - { word_id: "w-fam-016", korean: "아내", romanization: "a-nae", gloss: "wife", example_ko: "아내는 물을 마셔요.", example_en: "My wife drinks water.", distractors_candidate: ["남편","여자","엄마"] }
+  - { word_id: "w-fam-017", korean: "친구", romanization: "chin-gu", gloss: "friend", example_ko: "친구를 만나요.", example_en: "I meet a friend.", distractors_candidate: ["사람","가족","동생"] }
+  - { word_id: "w-fam-018", korean: "사람", romanization: "sa-ram", gloss: "person", example_ko: "사람이 많아요.", example_en: "There are many people.", distractors_candidate: ["친구","어른","아이"] }
+  - { word_id: "w-fam-019", korean: "남자", romanization: "nam-ja", gloss: "man", example_ko: "남자가 걸어요.", example_en: "The man is walking.", distractors_candidate: ["여자","어른","사람"] }
+  - { word_id: "w-fam-020", korean: "여자", romanization: "yeo-ja", gloss: "woman", example_ko: "여자가 웃어요.", example_en: "The woman is smiling.", distractors_candidate: ["남자","어른","사람"] }
+  - { word_id: "w-fam-021", korean: "어른", romanization: "eo-reun", gloss: "adult", example_ko: "어른이 앉아요.", example_en: "The adult sits down.", distractors_candidate: ["아이","사람","남자"] }
+  - { word_id: "w-fam-022", korean: "아이", romanization: "a-i", gloss: "child", example_ko: "아이가 놀아요.", example_en: "The child is playing.", distractors_candidate: ["어른","아기","사람"] }

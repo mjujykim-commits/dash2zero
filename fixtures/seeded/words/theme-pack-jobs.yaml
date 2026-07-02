@@ -1,0 +1,29 @@
+pack_id: "theme-jobs-001"
+pack_name: "Theme — Jobs"
+tier: core
+target_count: 22
+content_version: 1
+license: "tts-google-neural2"
+words:
+  - { word_id: "w-job-001", korean: "의사", romanization: "ui-sa", gloss: "doctor", example_ko: "저는 의사예요.", example_en: "I am a doctor.", distractors_candidate: ["간호사","선생님","변호사"] }
+  - { word_id: "w-job-002", korean: "간호사", romanization: "gan-ho-sa", gloss: "nurse", example_ko: "언니는 간호사예요.", example_en: "My older sister is a nurse.", distractors_candidate: ["의사","요리사","미용사"] }
+  - { word_id: "w-job-003", korean: "선생님", romanization: "seon-saeng-nim", gloss: "teacher", example_ko: "선생님은 친절해요.", example_en: "The teacher is kind.", distractors_candidate: ["학생","의사","작가"] }
+  - { word_id: "w-job-004", korean: "학생", romanization: "hak-saeng", gloss: "student", example_ko: "저는 학생이에요.", example_en: "I am a student.", distractors_candidate: ["선생님","회사원","군인"] }
+  - { word_id: "w-job-005", korean: "경찰", romanization: "gyeong-chal", gloss: "police officer", example_ko: "경찰이 도와줘요.", example_en: "The police officer helps.", distractors_candidate: ["소방관","군인","기자"] }
+  - { word_id: "w-job-006", korean: "소방관", romanization: "so-bang-gwan", gloss: "firefighter", example_ko: "소방관은 용감해요.", example_en: "The firefighter is brave.", distractors_candidate: ["경찰","군인","운전사"] }
+  - { word_id: "w-job-007", korean: "요리사", romanization: "yo-ri-sa", gloss: "cook", example_ko: "요리사가 밥을 만들어요.", example_en: "The cook makes food.", distractors_candidate: ["가수","화가","간호사"] }
+  - { word_id: "w-job-008", korean: "가수", romanization: "ga-su", gloss: "singer", example_ko: "가수가 노래해요.", example_en: "The singer sings.", distractors_candidate: ["배우","화가","작가"] }
+  - { word_id: "w-job-009", korean: "배우", romanization: "bae-u", gloss: "actor", example_ko: "배우가 멋있어요.", example_en: "The actor is cool.", distractors_candidate: ["가수","화가","기자"] }
+  - { word_id: "w-job-010", korean: "화가", romanization: "hwa-ga", gloss: "painter", example_ko: "화가가 그림을 그려요.", example_en: "The painter draws a picture.", distractors_candidate: ["작가","가수","배우"] }
+  - { word_id: "w-job-011", korean: "작가", romanization: "jak-ga", gloss: "writer", example_ko: "작가가 책을 써요.", example_en: "The writer writes a book.", distractors_candidate: ["기자","화가","가수"] }
+  - { word_id: "w-job-012", korean: "기자", romanization: "gi-ja", gloss: "reporter", example_ko: "기자가 뉴스를 써요.", example_en: "The reporter writes the news.", distractors_candidate: ["작가","경찰","배우"] }
+  - { word_id: "w-job-013", korean: "운전사", romanization: "un-jeon-sa", gloss: "driver", example_ko: "운전사가 버스를 몰아요.", example_en: "The driver drives the bus.", distractors_candidate: ["소방관","농부","어부"] }
+  - { word_id: "w-job-014", korean: "농부", romanization: "nong-bu", gloss: "farmer", example_ko: "농부가 일해요.", example_en: "The farmer works.", distractors_candidate: ["어부","운전사","군인"] }
+  - { word_id: "w-job-015", korean: "어부", romanization: "eo-bu", gloss: "fisherman", example_ko: "어부가 물고기를 잡아요.", example_en: "The fisherman catches fish.", distractors_candidate: ["농부","운전사","소방관"] }
+  - { word_id: "w-job-016", korean: "군인", romanization: "gun-in", gloss: "soldier", example_ko: "형은 군인이에요.", example_en: "My older brother is a soldier.", distractors_candidate: ["경찰","소방관","운전사"] }
+  - { word_id: "w-job-017", korean: "변호사", romanization: "byeon-ho-sa", gloss: "lawyer", example_ko: "변호사는 바빠요.", example_en: "The lawyer is busy.", distractors_candidate: ["의사","회사원","사장"] }
+  - { word_id: "w-job-018", korean: "회사원", romanization: "hoe-sa-won", gloss: "office worker", example_ko: "저는 회사원이에요.", example_en: "I am an office worker.", distractors_candidate: ["사장","점원","학생"] }
+  - { word_id: "w-job-019", korean: "주부", romanization: "ju-bu", gloss: "housewife", example_ko: "엄마는 주부예요.", example_en: "My mom is a housewife.", distractors_candidate: ["회사원","점원","미용사"] }
+  - { word_id: "w-job-020", korean: "점원", romanization: "jeom-won", gloss: "shop clerk", example_ko: "점원이 친절해요.", example_en: "The clerk is kind.", distractors_candidate: ["회사원","미용사","주부"] }
+  - { word_id: "w-job-021", korean: "미용사", romanization: "mi-yong-sa", gloss: "hairdresser", example_ko: "미용사가 머리를 잘라요.", example_en: "The hairdresser cuts hair.", distractors_candidate: ["점원","요리사","주부"] }
+  - { word_id: "w-job-022", korean: "사장", romanization: "sa-jang", gloss: "boss", example_ko: "사장님은 바빠요.", example_en: "The boss is busy.", distractors_candidate: ["회사원","변호사","점원"] }

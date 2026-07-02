@@ -1,0 +1,29 @@
+pack_id: "theme-home-001"
+pack_name: "Theme — Home & Living"
+tier: core
+target_count: 22
+content_version: 1
+license: "tts-google-neural2"
+words:
+  - { word_id: "w-hom-001", korean: "집", romanization: "jip", gloss: "house, home", example_ko: "우리 집이 커요.", example_en: "Our house is big.", distractors_candidate: ["방","문","벽"] }
+  - { word_id: "w-hom-002", korean: "방", romanization: "bang", gloss: "room", example_ko: "제 방은 작아요.", example_en: "My room is small.", distractors_candidate: ["집","거실","침실"] }
+  - { word_id: "w-hom-003", korean: "문", romanization: "mun", gloss: "door", example_ko: "문을 열어요.", example_en: "I open the door.", distractors_candidate: ["창문","벽","계단"] }
+  - { word_id: "w-hom-004", korean: "창문", romanization: "chang-mun", gloss: "window", example_ko: "창문이 열려요.", example_en: "The window is open.", distractors_candidate: ["문","벽","거울"] }
+  - { word_id: "w-hom-005", korean: "부엌", romanization: "bu-eok", gloss: "kitchen", example_ko: "부엌에서 밥을 먹어요.", example_en: "I eat in the kitchen.", distractors_candidate: ["거실","화장실","침실"] }
+  - { word_id: "w-hom-006", korean: "화장실", romanization: "hwa-jang-sil", gloss: "bathroom, toilet", example_ko: "화장실이 깨끗해요.", example_en: "The bathroom is clean.", distractors_candidate: ["부엌","거실","침실"] }
+  - { word_id: "w-hom-007", korean: "거실", romanization: "geo-sil", gloss: "living room", example_ko: "거실에 소파가 있어요.", example_en: "There is a sofa in the living room.", distractors_candidate: ["침실","부엌","방"] }
+  - { word_id: "w-hom-008", korean: "침실", romanization: "chim-sil", gloss: "bedroom", example_ko: "침실에 침대가 있어요.", example_en: "There is a bed in the bedroom.", distractors_candidate: ["거실","부엌","방"] }
+  - { word_id: "w-hom-009", korean: "의자", romanization: "ui-ja", gloss: "chair", example_ko: "의자에 앉아요.", example_en: "I sit on the chair.", distractors_candidate: ["책상","소파","침대"] }
+  - { word_id: "w-hom-010", korean: "책상", romanization: "chaek-sang", gloss: "desk", example_ko: "책상 위에 책이 있어요.", example_en: "There is a book on the desk.", distractors_candidate: ["의자","침대","소파"] }
+  - { word_id: "w-hom-011", korean: "침대", romanization: "chim-dae", gloss: "bed", example_ko: "침대에서 자요.", example_en: "I sleep in the bed.", distractors_candidate: ["소파","의자","책상"] }
+  - { word_id: "w-hom-012", korean: "소파", romanization: "so-pa", gloss: "sofa, couch", example_ko: "소파가 편해요.", example_en: "The sofa is comfortable.", distractors_candidate: ["침대","의자","책상"] }
+  - { word_id: "w-hom-013", korean: "냉장고", romanization: "naeng-jang-go", gloss: "refrigerator", example_ko: "냉장고에 우유가 있어요.", example_en: "There is milk in the refrigerator.", distractors_candidate: ["텔레비전","시계","전등"] }
+  - { word_id: "w-hom-014", korean: "텔레비전", romanization: "tel-le-bi-jeon", gloss: "television", example_ko: "텔레비전을 봐요.", example_en: "I watch television.", distractors_candidate: ["냉장고","시계","거울"] }
+  - { word_id: "w-hom-015", korean: "시계", romanization: "si-gye", gloss: "clock, watch", example_ko: "시계가 벽에 있어요.", example_en: "The clock is on the wall.", distractors_candidate: ["거울","전등","텔레비전"] }
+  - { word_id: "w-hom-016", korean: "거울", romanization: "geo-ul", gloss: "mirror", example_ko: "거울을 봐요.", example_en: "I look in the mirror.", distractors_candidate: ["시계","창문","전등"] }
+  - { word_id: "w-hom-017", korean: "전등", romanization: "jeon-deung", gloss: "lamp, light", example_ko: "전등을 켜요.", example_en: "I turn on the light.", distractors_candidate: ["시계","거울","텔레비전"] }
+  - { word_id: "w-hom-018", korean: "열쇠", romanization: "yeol-soe", gloss: "key", example_ko: "열쇠로 문을 열어요.", example_en: "I open the door with a key.", distractors_candidate: ["문","시계","전등"] }
+  - { word_id: "w-hom-019", korean: "계단", romanization: "gye-dan", gloss: "stairs", example_ko: "계단을 올라가요.", example_en: "I go up the stairs.", distractors_candidate: ["문","바닥","지붕"] }
+  - { word_id: "w-hom-020", korean: "벽", romanization: "byeok", gloss: "wall", example_ko: "벽에 그림이 있어요.", example_en: "There is a picture on the wall.", distractors_candidate: ["바닥","지붕","창문"] }
+  - { word_id: "w-hom-021", korean: "바닥", romanization: "ba-dak", gloss: "floor", example_ko: "바닥이 차가워요.", example_en: "The floor is cold.", distractors_candidate: ["벽","지붕","계단"] }
+  - { word_id: "w-hom-022", korean: "지붕", romanization: "ji-bung", gloss: "roof", example_ko: "지붕이 빨개요.", example_en: "The roof is red.", distractors_candidate: ["벽","바닥","계단"] }

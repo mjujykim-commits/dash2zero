@@ -1,0 +1,27 @@
+pack_id: "theme-colors-001"
+pack_name: "Theme — Colors & Shapes"
+tier: core
+target_count: 20
+content_version: 1
+license: "tts-google-neural2"
+words:
+  - { word_id: "w-col-001", korean: "색깔", romanization: "saek-kkal", gloss: "color", example_ko: "이 색깔 예뻐요.", example_en: "This color is pretty.", distractors_candidate: ["빨간색","파란색","노란색"] }
+  - { word_id: "w-col-002", korean: "빨간색", romanization: "ppal-gan-saek", gloss: "red", example_ko: "사과는 빨간색이에요.", example_en: "The apple is red.", distractors_candidate: ["파란색","노란색","초록색"] }
+  - { word_id: "w-col-003", korean: "파란색", romanization: "pa-ran-saek", gloss: "blue", example_ko: "하늘은 파란색이에요.", example_en: "The sky is blue.", distractors_candidate: ["빨간색","초록색","노란색"] }
+  - { word_id: "w-col-004", korean: "노란색", romanization: "no-ran-saek", gloss: "yellow", example_ko: "바나나는 노란색이에요.", example_en: "The banana is yellow.", distractors_candidate: ["빨간색","파란색","초록색"] }
+  - { word_id: "w-col-005", korean: "초록색", romanization: "cho-rok-saek", gloss: "green", example_ko: "나무는 초록색이에요.", example_en: "The tree is green.", distractors_candidate: ["파란색","노란색","갈색"] }
+  - { word_id: "w-col-006", korean: "검은색", romanization: "geo-meun-saek", gloss: "black", example_ko: "머리가 검은색이에요.", example_en: "The hair is black.", distractors_candidate: ["흰색","회색","갈색"] }
+  - { word_id: "w-col-007", korean: "흰색", romanization: "hin-saek", gloss: "white", example_ko: "눈은 흰색이에요.", example_en: "The snow is white.", distractors_candidate: ["검은색","회색","분홍색"] }
+  - { word_id: "w-col-008", korean: "분홍색", romanization: "bun-hong-saek", gloss: "pink", example_ko: "꽃이 분홍색이에요.", example_en: "The flower is pink.", distractors_candidate: ["빨간색","보라색","주황색"] }
+  - { word_id: "w-col-009", korean: "보라색", romanization: "bo-ra-saek", gloss: "purple", example_ko: "포도는 보라색이에요.", example_en: "The grapes are purple.", distractors_candidate: ["분홍색","파란색","빨간색"] }
+  - { word_id: "w-col-010", korean: "주황색", romanization: "ju-hwang-saek", gloss: "orange", example_ko: "이 공은 주황색이에요.", example_en: "This ball is orange.", distractors_candidate: ["빨간색","노란색","분홍색"] }
+  - { word_id: "w-col-011", korean: "갈색", romanization: "gal-saek", gloss: "brown", example_ko: "곰은 갈색이에요.", example_en: "The bear is brown.", distractors_candidate: ["초록색","회색","검은색"] }
+  - { word_id: "w-col-012", korean: "회색", romanization: "hoe-saek", gloss: "gray", example_ko: "구름이 회색이에요.", example_en: "The cloud is gray.", distractors_candidate: ["검은색","흰색","갈색"] }
+  - { word_id: "w-col-013", korean: "하늘색", romanization: "ha-neul-saek", gloss: "sky blue", example_ko: "가방이 하늘색이에요.", example_en: "The bag is sky blue.", distractors_candidate: ["파란색","보라색","초록색"] }
+  - { word_id: "w-col-014", korean: "동그라미", romanization: "dong-geu-ra-mi", gloss: "circle", example_ko: "이것은 동그라미예요.", example_en: "This is a circle.", distractors_candidate: ["네모","세모","별표"] }
+  - { word_id: "w-col-015", korean: "네모", romanization: "ne-mo", gloss: "square", example_ko: "창문은 네모예요.", example_en: "The window is a square.", distractors_candidate: ["동그라미","세모","하트"] }
+  - { word_id: "w-col-016", korean: "세모", romanization: "se-mo", gloss: "triangle", example_ko: "이것은 세모예요.", example_en: "This is a triangle.", distractors_candidate: ["동그라미","네모","별표"] }
+  - { word_id: "w-col-017", korean: "별표", romanization: "byeol-pyo", gloss: "star", example_ko: "별표를 그려요.", example_en: "I draw a star.", distractors_candidate: ["하트","동그라미","세모"] }
+  - { word_id: "w-col-018", korean: "하트", romanization: "ha-teu", gloss: "heart", example_ko: "하트를 그려요.", example_en: "I draw a heart.", distractors_candidate: ["별표","동그라미","네모"] }
+  - { word_id: "w-col-019", korean: "줄", romanization: "jul", gloss: "line", example_ko: "줄을 그어요.", example_en: "I draw a line.", distractors_candidate: ["점","네모","세모"] }
+  - { word_id: "w-col-020", korean: "점", romanization: "jeom", gloss: "dot", example_ko: "점을 찍어요.", example_en: "I make a dot.", distractors_candidate: ["줄","동그라미","별표"] }

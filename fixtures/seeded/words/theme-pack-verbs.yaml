@@ -1,0 +1,31 @@
+pack_id: "theme-verbs-001"
+pack_name: "Theme — Common Verbs"
+tier: core
+target_count: 24
+content_version: 1
+license: "tts-google-neural2"
+words:
+  - { word_id: "w-vrb-001", korean: "가다", romanization: "ga-da", gloss: "to go", example_ko: "학교에 가요.", example_en: "I go to school.", distractors_candidate: ["오다","자다","보다"] }
+  - { word_id: "w-vrb-002", korean: "오다", romanization: "o-da", gloss: "to come", example_ko: "친구가 와요.", example_en: "My friend comes.", distractors_candidate: ["가다","만나다","앉다"] }
+  - { word_id: "w-vrb-003", korean: "먹다", romanization: "meok-da", gloss: "to eat", example_ko: "밥을 먹어요.", example_en: "I eat rice.", distractors_candidate: ["마시다","사다","자다"] }
+  - { word_id: "w-vrb-004", korean: "마시다", romanization: "ma-si-da", gloss: "to drink", example_ko: "물을 마셔요.", example_en: "I drink water.", distractors_candidate: ["먹다","받다","보다"] }
+  - { word_id: "w-vrb-005", korean: "자다", romanization: "ja-da", gloss: "to sleep", example_ko: "밤에 자요.", example_en: "I sleep at night.", distractors_candidate: ["일어나다","앉다","놀다"] }
+  - { word_id: "w-vrb-006", korean: "일어나다", romanization: "i-reo-na-da", gloss: "to get up", example_ko: "아침에 일어나요.", example_en: "I get up in the morning.", distractors_candidate: ["자다","앉다","서다"] }
+  - { word_id: "w-vrb-007", korean: "앉다", romanization: "an-da", gloss: "to sit", example_ko: "의자에 앉아요.", example_en: "I sit on the chair.", distractors_candidate: ["서다","일어나다","자다"] }
+  - { word_id: "w-vrb-008", korean: "서다", romanization: "seo-da", gloss: "to stand", example_ko: "여기에 서요.", example_en: "I stand here.", distractors_candidate: ["앉다","걷다","가다"] }
+  - { word_id: "w-vrb-009", korean: "걷다", romanization: "geot-da", gloss: "to walk", example_ko: "공원에서 걸어요.", example_en: "I walk in the park.", distractors_candidate: ["뛰다","서다","가다"] }
+  - { word_id: "w-vrb-010", korean: "뛰다", romanization: "ttwi-da", gloss: "to run", example_ko: "빠르게 뛰어요.", example_en: "I run fast.", distractors_candidate: ["걷다","놀다","오다"] }
+  - { word_id: "w-vrb-011", korean: "보다", romanization: "bo-da", gloss: "to see", example_ko: "영화를 봐요.", example_en: "I watch a movie.", distractors_candidate: ["듣다","읽다","만나다"] }
+  - { word_id: "w-vrb-012", korean: "듣다", romanization: "deut-da", gloss: "to listen", example_ko: "음악을 들어요.", example_en: "I listen to music.", distractors_candidate: ["보다","말하다","읽다"] }
+  - { word_id: "w-vrb-013", korean: "말하다", romanization: "mal-ha-da", gloss: "to speak", example_ko: "천천히 말해요.", example_en: "I speak slowly.", distractors_candidate: ["듣다","웃다","읽다"] }
+  - { word_id: "w-vrb-014", korean: "읽다", romanization: "ik-da", gloss: "to read", example_ko: "책을 읽어요.", example_en: "I read a book.", distractors_candidate: ["쓰다","보다","듣다"] }
+  - { word_id: "w-vrb-015", korean: "쓰다", romanization: "sseu-da", gloss: "to write", example_ko: "편지를 써요.", example_en: "I write a letter.", distractors_candidate: ["읽다","공부하다","보다"] }
+  - { word_id: "w-vrb-016", korean: "사다", romanization: "sa-da", gloss: "to buy", example_ko: "빵을 사요.", example_en: "I buy bread.", distractors_candidate: ["팔다","받다","먹다"] }
+  - { word_id: "w-vrb-017", korean: "팔다", romanization: "pal-da", gloss: "to sell", example_ko: "과일을 팔아요.", example_en: "I sell fruit.", distractors_candidate: ["사다","주다","받다"] }
+  - { word_id: "w-vrb-018", korean: "주다", romanization: "ju-da", gloss: "to give", example_ko: "선물을 줘요.", example_en: "I give a present.", distractors_candidate: ["받다","팔다","사다"] }
+  - { word_id: "w-vrb-019", korean: "받다", romanization: "bat-da", gloss: "to receive", example_ko: "편지를 받아요.", example_en: "I receive a letter.", distractors_candidate: ["주다","사다","마시다"] }
+  - { word_id: "w-vrb-020", korean: "만나다", romanization: "man-na-da", gloss: "to meet", example_ko: "친구를 만나요.", example_en: "I meet a friend.", distractors_candidate: ["오다","보다","놀다"] }
+  - { word_id: "w-vrb-021", korean: "공부하다", romanization: "gong-bu-ha-da", gloss: "to study", example_ko: "한국어를 공부해요.", example_en: "I study Korean.", distractors_candidate: ["일하다","읽다","쓰다"] }
+  - { word_id: "w-vrb-022", korean: "일하다", romanization: "il-ha-da", gloss: "to work", example_ko: "회사에서 일해요.", example_en: "I work at a company.", distractors_candidate: ["공부하다","놀다","자다"] }
+  - { word_id: "w-vrb-023", korean: "놀다", romanization: "nol-da", gloss: "to play", example_ko: "친구와 놀아요.", example_en: "I play with a friend.", distractors_candidate: ["일하다","뛰다","웃다"] }
+  - { word_id: "w-vrb-024", korean: "웃다", romanization: "ut-da", gloss: "to laugh", example_ko: "크게 웃어요.", example_en: "I laugh loudly.", distractors_candidate: ["말하다","놀다","걷다"] }

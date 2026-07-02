@@ -1,0 +1,27 @@
+pack_id: "theme-emotions-001"
+pack_name: "Theme — Emotions"
+tier: core
+target_count: 20
+content_version: 1
+license: "tts-google-neural2"
+words:
+  - { word_id: "w-emo-001", korean: "행복하다", romanization: "haeng-bok-ha-da", gloss: "to be happy", example_ko: "저는 행복해요.", example_en: "I am happy.", distractors_candidate: ["슬프다","화나다","무섭다"] }
+  - { word_id: "w-emo-002", korean: "슬프다", romanization: "seul-peu-da", gloss: "to be sad", example_ko: "저는 슬퍼요.", example_en: "I am sad.", distractors_candidate: ["행복하다","기쁘다","외롭다"] }
+  - { word_id: "w-emo-003", korean: "화나다", romanization: "hwa-na-da", gloss: "to be angry", example_ko: "저는 화났어요.", example_en: "I got angry.", distractors_candidate: ["놀라다","무섭다","슬프다"] }
+  - { word_id: "w-emo-004", korean: "무섭다", romanization: "mu-seop-da", gloss: "to be scary/afraid", example_ko: "저는 무서워요.", example_en: "I am scared.", distractors_candidate: ["놀라다","화나다","걱정하다"] }
+  - { word_id: "w-emo-005", korean: "기쁘다", romanization: "gi-ppeu-da", gloss: "to be glad", example_ko: "저는 기뻐요.", example_en: "I am glad.", distractors_candidate: ["행복하다","즐겁다","슬프다"] }
+  - { word_id: "w-emo-006", korean: "즐겁다", romanization: "jeul-geop-da", gloss: "to be joyful", example_ko: "저는 즐거워요.", example_en: "I feel joyful.", distractors_candidate: ["기쁘다","재미있다","행복하다"] }
+  - { word_id: "w-emo-007", korean: "피곤하다", romanization: "pi-gon-ha-da", gloss: "to be tired", example_ko: "저는 피곤해요.", example_en: "I am tired.", distractors_candidate: ["아프다","배고프다","목마르다"] }
+  - { word_id: "w-emo-008", korean: "아프다", romanization: "a-peu-da", gloss: "to be sick/hurt", example_ko: "저는 아파요.", example_en: "I am sick.", distractors_candidate: ["피곤하다","배고프다","슬프다"] }
+  - { word_id: "w-emo-009", korean: "배고프다", romanization: "bae-go-peu-da", gloss: "to be hungry", example_ko: "저는 배고파요.", example_en: "I am hungry.", distractors_candidate: ["목마르다","피곤하다","아프다"] }
+  - { word_id: "w-emo-010", korean: "목마르다", romanization: "mong-ma-reu-da", gloss: "to be thirsty", example_ko: "저는 목말라요.", example_en: "I am thirsty.", distractors_candidate: ["배고프다","피곤하다","아프다"] }
+  - { word_id: "w-emo-011", korean: "놀라다", romanization: "nol-la-da", gloss: "to be surprised", example_ko: "저는 놀랐어요.", example_en: "I was surprised.", distractors_candidate: ["무섭다","화나다","걱정하다"] }
+  - { word_id: "w-emo-012", korean: "외롭다", romanization: "oe-rop-da", gloss: "to be lonely", example_ko: "저는 외로워요.", example_en: "I am lonely.", distractors_candidate: ["슬프다","심심하다","걱정하다"] }
+  - { word_id: "w-emo-013", korean: "심심하다", romanization: "sim-sim-ha-da", gloss: "to be bored", example_ko: "저는 심심해요.", example_en: "I am bored.", distractors_candidate: ["외롭다","피곤하다","재미있다"] }
+  - { word_id: "w-emo-014", korean: "걱정하다", romanization: "geok-jeong-ha-da", gloss: "to worry", example_ko: "저는 걱정해요.", example_en: "I worry.", distractors_candidate: ["긴장하다","무섭다","외롭다"] }
+  - { word_id: "w-emo-015", korean: "사랑하다", romanization: "sa-rang-ha-da", gloss: "to love", example_ko: "저는 엄마를 사랑해요.", example_en: "I love my mom.", distractors_candidate: ["좋다","싫다","기쁘다"] }
+  - { word_id: "w-emo-016", korean: "좋다", romanization: "jo-ta", gloss: "to be good/to like", example_ko: "저는 커피가 좋아요.", example_en: "I like coffee.", distractors_candidate: ["싫다","사랑하다","재미있다"] }
+  - { word_id: "w-emo-017", korean: "싫다", romanization: "sil-ta", gloss: "to dislike", example_ko: "저는 비가 싫어요.", example_en: "I don't like rain.", distractors_candidate: ["좋다","사랑하다","화나다"] }
+  - { word_id: "w-emo-018", korean: "재미있다", romanization: "jae-mi-it-da", gloss: "to be fun", example_ko: "이 책은 재미있어요.", example_en: "This book is fun.", distractors_candidate: ["즐겁다","심심하다","좋다"] }
+  - { word_id: "w-emo-019", korean: "편하다", romanization: "pyeon-ha-da", gloss: "to be comfortable", example_ko: "이 의자는 편해요.", example_en: "This chair is comfortable.", distractors_candidate: ["피곤하다","좋다","즐겁다"] }
+  - { word_id: "w-emo-020", korean: "긴장하다", romanization: "gin-jang-ha-da", gloss: "to be nervous", example_ko: "저는 긴장했어요.", example_en: "I was nervous.", distractors_candidate: ["걱정하다","무섭다","놀라다"] }

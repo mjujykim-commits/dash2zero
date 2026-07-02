@@ -1,0 +1,29 @@
+pack_id: "theme-body-001"
+pack_name: "Theme — Body"
+tier: core
+target_count: 22
+content_version: 1
+license: "tts-google-neural2"
+words:
+  - { word_id: "w-bod-001", korean: "몸", romanization: "mom", gloss: "body", example_ko: "몸이 아파요.", example_en: "My body hurts.", distractors_candidate: ["머리","얼굴","다리"] }
+  - { word_id: "w-bod-002", korean: "머리", romanization: "meo-ri", gloss: "head", example_ko: "머리가 아파요.", example_en: "My head hurts.", distractors_candidate: ["얼굴","목","어깨"] }
+  - { word_id: "w-bod-003", korean: "얼굴", romanization: "eol-gul", gloss: "face", example_ko: "얼굴이 예뻐요.", example_en: "Your face is pretty.", distractors_candidate: ["머리","눈","입"] }
+  - { word_id: "w-bod-004", korean: "눈", romanization: "nun", gloss: "eye", example_ko: "눈이 커요.", example_en: "Your eyes are big.", distractors_candidate: ["코","입","귀"] }
+  - { word_id: "w-bod-005", korean: "코", romanization: "ko", gloss: "nose", example_ko: "코가 작아요.", example_en: "Your nose is small.", distractors_candidate: ["눈","입","귀"] }
+  - { word_id: "w-bod-006", korean: "입", romanization: "ip", gloss: "mouth", example_ko: "입이 커요.", example_en: "Your mouth is big.", distractors_candidate: ["눈","코","귀"] }
+  - { word_id: "w-bod-007", korean: "귀", romanization: "gwi", gloss: "ear", example_ko: "귀가 아파요.", example_en: "My ear hurts.", distractors_candidate: ["눈","코","입"] }
+  - { word_id: "w-bod-008", korean: "이", romanization: "i", gloss: "teeth", example_ko: "이가 하얘요.", example_en: "The teeth are white.", distractors_candidate: ["입","코","귀"] }
+  - { word_id: "w-bod-009", korean: "목", romanization: "mok", gloss: "neck", example_ko: "목이 길어요.", example_en: "Your neck is long.", distractors_candidate: ["머리","어깨","팔"] }
+  - { word_id: "w-bod-010", korean: "어깨", romanization: "eo-kkae", gloss: "shoulder", example_ko: "어깨가 아파요.", example_en: "My shoulder hurts.", distractors_candidate: ["목","팔","등"] }
+  - { word_id: "w-bod-011", korean: "팔", romanization: "pal", gloss: "arm", example_ko: "팔이 길어요.", example_en: "Your arm is long.", distractors_candidate: ["손","다리","어깨"] }
+  - { word_id: "w-bod-012", korean: "손", romanization: "son", gloss: "hand", example_ko: "손이 따뜻해요.", example_en: "Your hand is warm.", distractors_candidate: ["팔","발","손가락"] }
+  - { word_id: "w-bod-013", korean: "손가락", romanization: "son-ga-rak", gloss: "finger", example_ko: "손가락이 아파요.", example_en: "My finger hurts.", distractors_candidate: ["손","발","팔"] }
+  - { word_id: "w-bod-014", korean: "다리", romanization: "da-ri", gloss: "leg", example_ko: "다리가 길어요.", example_en: "Your legs are long.", distractors_candidate: ["팔","발","무릎"] }
+  - { word_id: "w-bod-015", korean: "발", romanization: "bal", gloss: "foot", example_ko: "발이 아파요.", example_en: "My foot hurts.", distractors_candidate: ["손","다리","무릎"] }
+  - { word_id: "w-bod-016", korean: "무릎", romanization: "mu-reup", gloss: "knee", example_ko: "무릎이 아파요.", example_en: "My knee hurts.", distractors_candidate: ["다리","발","팔"] }
+  - { word_id: "w-bod-017", korean: "배", romanization: "bae", gloss: "belly", example_ko: "배가 고파요.", example_en: "I am hungry.", distractors_candidate: ["등","가슴","목"] }
+  - { word_id: "w-bod-018", korean: "등", romanization: "deung", gloss: "back", example_ko: "등이 아파요.", example_en: "My back hurts.", distractors_candidate: ["배","가슴","어깨"] }
+  - { word_id: "w-bod-019", korean: "가슴", romanization: "ga-seum", gloss: "chest", example_ko: "가슴이 아파요.", example_en: "My chest hurts.", distractors_candidate: ["배","등","심장"] }
+  - { word_id: "w-bod-020", korean: "머리카락", romanization: "meo-ri-ka-rak", gloss: "hair", example_ko: "머리카락이 길어요.", example_en: "Your hair is long.", distractors_candidate: ["머리","얼굴","피부"] }
+  - { word_id: "w-bod-021", korean: "피부", romanization: "pi-bu", gloss: "skin", example_ko: "피부가 좋아요.", example_en: "Your skin is nice.", distractors_candidate: ["얼굴","머리카락","가슴"] }
+  - { word_id: "w-bod-022", korean: "심장", romanization: "sim-jang", gloss: "heart", example_ko: "심장이 빨라요.", example_en: "My heart is fast.", distractors_candidate: ["가슴","배","등"] }
