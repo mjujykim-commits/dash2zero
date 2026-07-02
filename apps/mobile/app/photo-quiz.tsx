@@ -7,7 +7,7 @@
 
 import { router } from "expo-router";
 import { useEffect, useMemo, useRef, useState } from "react";
-import { ActivityIndicator, Alert, Image, Linking, Pressable, ScrollView, StyleSheet, Text, View } from "react-native";
+import { ActivityIndicator, Image, Linking, Pressable, ScrollView, StyleSheet, Text, View } from "react-native";
 
 import { lightColors, spacing, typeScale } from "@dash2zero/design-tokens";
 
@@ -16,6 +16,7 @@ import { hapticNotification } from "@/src/lib/haptics";
 import { playSfx } from "@/src/lib/sound";
 import { recordAnswer } from "@/src/lib/reviewStore";
 import { getPhotoManifest, photoUri, type PhotoCredit } from "@/src/lib/photos";
+import { RoundsModal } from "@/src/components/RoundsModal";
 import { GradientBackground, GlassCard, GlowOrb, NeonButton } from "@/src/components/d022";
 
 const DEFAULT_ROUNDS = 10;
@@ -72,6 +73,7 @@ export default function PhotoQuiz() {
   const [score, setScore] = useState(0);
   const [picked, setPicked] = useState<string | null>(null);
   const [done, setDone] = useState(false);
+  const [modalCat, setModalCat] = useState<CatKey | null>(null);
   const lockRef = useRef(false);
 
   useEffect(() => {
@@ -115,28 +117,7 @@ export default function PhotoQuiz() {
     resetRun();
   }
 
-  function promptRounds(cat: CatKey) {
-    const max = counts[cat] ?? 0;
-    Alert.prompt(
-      "How many questions?",
-      `Enter 1 – ${max}`,
-      [
-        { text: "Cancel", style: "cancel" },
-        {
-          text: "Start",
-          onPress: (value) => {
-            let n = parseInt((value ?? "").trim(), 10);
-            if (!Number.isFinite(n) || n < 1) n = Math.min(DEFAULT_ROUNDS, max);
-            n = Math.min(Math.max(1, n), max);
-            start(cat, n);
-          },
-        },
-      ],
-      "plain-text",
-      String(Math.min(DEFAULT_ROUNDS, max)),
-      "number-pad",
-    );
-  }
+  const modalMax = modalCat ? counts[modalCat] ?? 0 : 0;
 
   function choose(opt: EmojiWord) {
     if (lockRef.current || !q) return;
@@ -208,7 +189,7 @@ export default function PhotoQuiz() {
           <ScrollView style={{ flex: 1, marginTop: spacing["space.5"] }} showsVerticalScrollIndicator={false}>
             <View style={styles.catGrid}>
               {cats.map((c) => (
-                <Pressable key={c.key} onPress={() => promptRounds(c.key)} style={styles.catCellWrap}>
+                <Pressable key={c.key} onPress={() => setModalCat(c.key)} style={styles.catCellWrap}>
                   <GlassCard style={styles.catCell}>
                     <Text style={styles.catEmoji}>{c.emoji}</Text>
                     <Text style={styles.catLabel}>{c.label}</Text>
@@ -220,6 +201,19 @@ export default function PhotoQuiz() {
             <View style={{ height: spacing["space.8"] }} />
           </ScrollView>
         </View>
+
+        <RoundsModal
+          visible={modalCat !== null}
+          max={modalMax}
+          subtitle={`${CATEGORIES.find((c) => c.key === modalCat)?.label ?? ""} · ${modalMax} photos`}
+          defaultValue={Math.min(DEFAULT_ROUNDS, modalMax)}
+          onStart={(n) => {
+            const cat = modalCat!;
+            setModalCat(null);
+            start(cat, n);
+          }}
+          onCancel={() => setModalCat(null)}
+        />
       </GradientBackground>
     );
   }

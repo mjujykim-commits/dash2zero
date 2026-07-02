@@ -1,8 +1,8 @@
 /**
- * Study (사전) — 그림(이모지) + 한글 + 뜻 카드. 탭하면 발음 재생.
+ * Study (사전) — 1스크린 1단어 플래시카드. 넘기면서 빠르게 학습.
  *
- * 발음: Supabase Storage의 emoji/{korean}.mp3 (generate-emoji-audio.mjs 생성) → expo-av 재생.
- * 카테고리 필터로 주제별 열람.
+ * 큰 이모지 + 한글 + 뜻. 카드 진입 시 발음 자동 재생, 탭하면 다시 재생.
+ * Prev/Next로 이동, 카테고리 칩으로 주제 전환. 발음: emoji/{korean}.mp3 (expo-av).
  */
 
 import { Audio } from "expo-av";
@@ -13,8 +13,9 @@ import { FlatList, Pressable, StyleSheet, Text, View } from "react-native";
 import { lightColors, spacing, typeScale } from "@dash2zero/design-tokens";
 
 import { EMOJI_WORDS, type EmojiWord } from "@/src/lib/emojiWords";
+import { hapticImpact } from "@/src/lib/haptics";
 import { SUPABASE_URL } from "@/src/lib/supabase";
-import { GradientBackground, GlowOrb } from "@/src/components/d022";
+import { GradientBackground, GlassCard, GlowOrb } from "@/src/components/d022";
 
 type CatKey = EmojiWord["category"] | "all";
 
@@ -41,7 +42,8 @@ function audioUri(korean: string): string {
 
 export default function Study() {
   const [cat, setCat] = useState<CatKey>("all");
-  const [playing, setPlaying] = useState<string | null>(null);
+  const [index, setIndex] = useState(0);
+  const [playing, setPlaying] = useState(false);
   const soundRef = useRef<Audio.Sound | null>(null);
 
   const words = useMemo(
@@ -49,14 +51,13 @@ export default function Study() {
     [cat],
   );
 
-  useEffect(() => {
-    return () => {
-      if (soundRef.current) void soundRef.current.unloadAsync().catch(() => undefined);
-    };
-  }, []);
+  const word = words[index];
+
+  // 카테고리 바꾸면 처음으로
+  useEffect(() => setIndex(0), [cat]);
 
   async function play(korean: string) {
-    setPlaying(korean);
+    setPlaying(true);
     try {
       if (soundRef.current) {
         await soundRef.current.unloadAsync().catch(() => undefined);
@@ -65,28 +66,45 @@ export default function Study() {
       const { sound } = await Audio.Sound.createAsync({ uri: audioUri(korean) }, { shouldPlay: true, volume: 1 });
       soundRef.current = sound;
       sound.setOnPlaybackStatusUpdate((s) => {
-        if (s.isLoaded && s.didJustFinish) setPlaying((p) => (p === korean ? null : p));
+        if (s.isLoaded && s.didJustFinish) setPlaying(false);
       });
     } catch {
-      setPlaying(null);
+      setPlaying(false);
     }
   }
 
+  // 카드 바뀔 때마다 발음 자동 재생
+  useEffect(() => {
+    if (word) void play(word.korean);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [word?.korean]);
+
+  useEffect(() => {
+    return () => {
+      if (soundRef.current) void soundRef.current.unloadAsync().catch(() => undefined);
+    };
+  }, []);
+
+  const go = (delta: number) => {
+    void hapticImpact("light");
+    setIndex((i) => Math.min(Math.max(0, i + delta), words.length - 1));
+  };
+
   return (
     <GradientBackground variant="dark" direction="vertical" style={{ flex: 1 }}>
-      <GlowOrb color="neon.cyan" size={240} opacity={0.3} style={{ top: -60, left: -60 }} />
+      <GlowOrb color="neon.cyan" size={260} opacity={0.3} style={{ top: -60, left: -60 }} />
 
       <View style={styles.content}>
         <View style={styles.topRow}>
           <Pressable onPress={() => router.back()} hitSlop={12}>
             <Text style={styles.link}>‹ Menu</Text>
           </Pressable>
-          <Text style={styles.count}>{words.length} words</Text>
+          <Text style={styles.count}>
+            {words.length ? index + 1 : 0} / {words.length}
+          </Text>
         </View>
-        <Text style={styles.heading}>Study</Text>
-        <Text style={styles.sub}>Tap a card to hear the pronunciation.</Text>
 
-        {/* 카테고리 필터 */}
+        {/* 카테고리 칩 */}
         <FlatList
           horizontal
           data={CATEGORIES}
@@ -105,39 +123,56 @@ export default function Study() {
           }}
         />
 
-        {/* 단어 그리드 */}
-        <FlatList
-          data={words}
-          keyExtractor={(w) => w.korean}
-          numColumns={3}
-          columnWrapperStyle={{ justifyContent: "space-between" }}
-          style={{ flex: 1, marginTop: spacing["space.3"] }}
-          showsVerticalScrollIndicator={false}
-          renderItem={({ item }) => {
-            const isPlaying = playing === item.korean;
-            return (
-              <Pressable onPress={() => play(item.korean)} style={[styles.card, isPlaying && styles.cardActive]}>
-                <Text style={styles.cardEmoji}>{item.emoji}</Text>
-                <Text style={styles.cardKorean}>{item.korean}</Text>
-                <Text style={styles.cardGloss} numberOfLines={1}>{item.gloss}</Text>
-                <Text style={styles.speaker}>{isPlaying ? "🔊" : "🔈"}</Text>
-              </Pressable>
-            );
-          }}
-          ListFooterComponent={<View style={{ height: spacing["space.8"] }} />}
-        />
+        {/* 플래시카드 */}
+        <View style={styles.cardArea}>
+          <Pressable style={{ width: "100%" }} onPress={() => word && play(word.korean)}>
+            <GlassCard style={styles.flashCard}>
+              <Text style={styles.emoji}>{word?.emoji}</Text>
+              <Text style={styles.korean}>{word?.korean}</Text>
+              <Text style={styles.gloss}>{word?.gloss}</Text>
+              <View style={styles.speakerPill}>
+                <Text style={styles.speakerText}>{playing ? "🔊 Playing…" : "🔈 Tap to hear"}</Text>
+              </View>
+            </GlassCard>
+          </Pressable>
+        </View>
+
+        {/* 진행 도트 (최대 20개) */}
+        {words.length <= 20 && (
+          <View style={styles.dots}>
+            {words.map((w, i) => (
+              <View key={w.korean} style={[styles.dot, i === index && styles.dotActive]} />
+            ))}
+          </View>
+        )}
+
+        {/* 이동 컨트롤 */}
+        <View style={styles.navRow}>
+          <Pressable
+            onPress={() => go(-1)}
+            disabled={index === 0}
+            style={[styles.navBtn, index === 0 && styles.navBtnDisabled]}
+          >
+            <Text style={styles.navText}>‹ Prev</Text>
+          </Pressable>
+          <Pressable
+            onPress={() => go(1)}
+            disabled={index >= words.length - 1}
+            style={[styles.navBtn, styles.navNext, index >= words.length - 1 && styles.navBtnDisabled]}
+          >
+            <Text style={[styles.navText, styles.navNextText]}>Next ›</Text>
+          </Pressable>
+        </View>
       </View>
     </GradientBackground>
   );
 }
 
 const styles = StyleSheet.create({
-  content: { flex: 1, paddingHorizontal: spacing["space.4"], paddingTop: spacing["space.12"], paddingBottom: spacing["space.2"] },
+  content: { flex: 1, paddingHorizontal: spacing["space.5"], paddingTop: spacing["space.12"], paddingBottom: spacing["space.6"] },
   topRow: { flexDirection: "row", justifyContent: "space-between", alignItems: "center" },
   link: { color: lightColors["neon.cyan"], fontSize: 16, fontWeight: "700" },
-  count: { color: lightColors["text.muted"], fontSize: typeScale["text.caption"].fontSize, fontWeight: "700" },
-  heading: { color: lightColors["text.primary"], fontSize: 28, fontWeight: "900", marginTop: spacing["space.2"] },
-  sub: { color: lightColors["text.secondary"], fontSize: typeScale["text.caption"].fontSize, marginTop: 2 },
+  count: { color: lightColors["text.muted"], fontSize: typeScale["text.caption"].fontSize, fontWeight: "800" },
   chip: {
     paddingHorizontal: spacing["space.3"],
     paddingVertical: spacing["space.2"],
@@ -148,19 +183,41 @@ const styles = StyleSheet.create({
   chipActive: { backgroundColor: lightColors["neon.cyan"] },
   chipText: { color: lightColors["text.secondary"], fontSize: 13, fontWeight: "700" },
   chipTextActive: { color: "#0B0B0F" },
-  card: {
-    width: "31.5%",
-    backgroundColor: "rgba(255,255,255,0.05)",
-    borderRadius: 16,
-    borderWidth: 1,
-    borderColor: "transparent",
+  cardArea: { flex: 1, justifyContent: "center" },
+  flashCard: {
     alignItems: "center",
-    paddingVertical: spacing["space.3"],
-    marginBottom: spacing["space.3"],
+    justifyContent: "center",
+    paddingVertical: spacing["space.10"],
+    paddingHorizontal: spacing["space.5"],
   },
-  cardActive: { borderColor: lightColors["neon.cyan"], backgroundColor: "rgba(6,182,212,0.12)" },
-  cardEmoji: { fontSize: 40 },
-  cardKorean: { color: lightColors["korean.glyph"], fontSize: 18, fontWeight: "800", marginTop: 4 },
-  cardGloss: { color: lightColors["text.muted"], fontSize: 11, marginTop: 2, maxWidth: "100%" },
-  speaker: { fontSize: 14, marginTop: 4 },
+  emoji: { fontSize: 120 },
+  korean: { color: lightColors["korean.glyph"], fontSize: 52, fontWeight: "900", marginTop: spacing["space.4"] },
+  gloss: { color: lightColors["text.secondary"], fontSize: 22, fontWeight: "700", marginTop: spacing["space.2"] },
+  speakerPill: {
+    marginTop: spacing["space.5"],
+    paddingHorizontal: spacing["space.4"],
+    paddingVertical: spacing["space.2"],
+    borderRadius: 999,
+    backgroundColor: "rgba(6,182,212,0.14)",
+    borderWidth: 1,
+    borderColor: lightColors["neon.cyan"],
+  },
+  speakerText: { color: lightColors["neon.cyan"], fontSize: 14, fontWeight: "800" },
+  dots: { flexDirection: "row", flexWrap: "wrap", justifyContent: "center", marginBottom: spacing["space.4"] },
+  dot: { width: 7, height: 7, borderRadius: 4, backgroundColor: "rgba(255,255,255,0.18)", margin: 3 },
+  dotActive: { backgroundColor: lightColors["neon.cyan"], width: 18 },
+  navRow: { flexDirection: "row", justifyContent: "space-between" },
+  navBtn: {
+    flex: 1,
+    height: 56,
+    borderRadius: 16,
+    alignItems: "center",
+    justifyContent: "center",
+    backgroundColor: "rgba(255,255,255,0.07)",
+    marginHorizontal: spacing["space.1"],
+  },
+  navNext: { backgroundColor: lightColors["neon.cyan"] },
+  navBtnDisabled: { opacity: 0.35 },
+  navText: { color: lightColors["text.primary"], fontSize: 18, fontWeight: "800" },
+  navNextText: { color: "#0B0B0F" },
 });

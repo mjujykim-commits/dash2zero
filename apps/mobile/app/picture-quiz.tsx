@@ -8,7 +8,7 @@
 
 import { router, useLocalSearchParams } from "expo-router";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
-import { Alert, Pressable, ScrollView, StyleSheet, Text, View } from "react-native";
+import { Pressable, ScrollView, StyleSheet, Text, View } from "react-native";
 
 import { lightColors, spacing, typeScale } from "@dash2zero/design-tokens";
 
@@ -16,6 +16,7 @@ import { EMOJI_WORDS, type EmojiWord } from "@/src/lib/emojiWords";
 import { hapticNotification } from "@/src/lib/haptics";
 import { playSfx } from "@/src/lib/sound";
 import { getWrongKoreans, recordAnswer } from "@/src/lib/reviewStore";
+import { RoundsModal } from "@/src/components/RoundsModal";
 import { GradientBackground, GlassCard, GlowOrb, NeonButton } from "@/src/components/d022";
 
 const DEFAULT_ROUNDS = 10;
@@ -83,6 +84,7 @@ export default function PictureQuiz() {
   const [done, setDone] = useState(false);
   const lockRef = useRef(false);
   const [reviewPool, setReviewPool] = useState<EmojiWord[] | null>(null); // null=로딩
+  const [modalCat, setModalCat] = useState<CatKey | null>(null); // 개수 입력 모달 대상
 
   const counts = useMemo(() => {
     const c: Record<string, number> = { all: EMOJI_WORDS.length };
@@ -125,28 +127,7 @@ export default function PictureQuiz() {
     resetRun();
   }
 
-  function promptRounds(cat: CatKey) {
-    const max = cat === "all" ? EMOJI_WORDS.length : counts[cat] ?? 0;
-    Alert.prompt(
-      "How many questions?",
-      `Enter 1 – ${max}`,
-      [
-        { text: "Cancel", style: "cancel" },
-        {
-          text: "Start",
-          onPress: (value) => {
-            let n = parseInt((value ?? "").trim(), 10);
-            if (!Number.isFinite(n) || n < 1) n = Math.min(DEFAULT_ROUNDS, max);
-            n = Math.min(Math.max(1, n), max);
-            start(cat, n);
-          },
-        },
-      ],
-      "plain-text",
-      String(Math.min(DEFAULT_ROUNDS, max)),
-      "number-pad",
-    );
-  }
+  const modalMax = modalCat ? (modalCat === "all" ? EMOJI_WORDS.length : counts[modalCat] ?? 0) : 0;
 
   function choose(opt: EmojiWord) {
     if (lockRef.current || !q) return;
@@ -215,7 +196,7 @@ export default function PictureQuiz() {
           <ScrollView style={{ flex: 1, marginTop: spacing["space.5"] }} showsVerticalScrollIndicator={false}>
             <View style={styles.catGrid}>
               {CATEGORIES.map((c) => (
-                <Pressable key={c.key} onPress={() => promptRounds(c.key)} style={styles.catCellWrap}>
+                <Pressable key={c.key} onPress={() => setModalCat(c.key)} style={styles.catCellWrap}>
                   <GlassCard style={styles.catCell}>
                     <Text style={styles.catEmoji}>{c.emoji}</Text>
                     <Text style={styles.catLabel}>{c.label}</Text>
@@ -227,6 +208,19 @@ export default function PictureQuiz() {
             <View style={{ height: spacing["space.8"] }} />
           </ScrollView>
         </View>
+
+        <RoundsModal
+          visible={modalCat !== null}
+          max={modalMax}
+          subtitle={`${CATEGORIES.find((c) => c.key === modalCat)?.label ?? ""} · ${modalMax} words`}
+          defaultValue={Math.min(DEFAULT_ROUNDS, modalMax)}
+          onStart={(n) => {
+            const cat = modalCat!;
+            setModalCat(null);
+            start(cat, n);
+          }}
+          onCancel={() => setModalCat(null)}
+        />
       </GradientBackground>
     );
   }

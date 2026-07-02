@@ -14,14 +14,23 @@ export interface VocabWord {
   gloss: string;
 }
 
-let cache: VocabWord[] | null = null;
+export interface VocabPack {
+  pack_id: string;
+  name: string;
+  words: VocabWord[];
+}
 
-export async function getVocab(): Promise<VocabWord[]> {
-  if (cache) return cache;
+let cache: VocabWord[] | null = null;
+let packCache: VocabPack[] | null = null;
+
+/** 팩(주제)별로 묶은 어휘. 카테고리 선택 UI용. 단어 중복은 팩 간 유지(첫 등장 팩 기준 dedup). */
+export async function getVocabPacks(): Promise<VocabPack[]> {
+  if (packCache) return packCache;
   const manifest = await fetchContentManifest(0);
   const seen = new Set<string>();
-  const words: VocabWord[] = [];
+  const packs: VocabPack[] = [];
   for (const p of manifest?.packs ?? []) {
+    const words: VocabWord[] = [];
     for (const w of p.words) {
       if (seen.has(w.word_id)) continue;
       seen.add(w.word_id);
@@ -32,9 +41,17 @@ export async function getVocab(): Promise<VocabWord[]> {
         gloss: w.gloss_short || w.gloss,
       });
     }
+    if (words.length) packs.push({ pack_id: p.pack_id, name: p.name, words });
   }
-  cache = words;
-  return words;
+  packCache = packs;
+  return packs;
+}
+
+export async function getVocab(): Promise<VocabWord[]> {
+  if (cache) return cache;
+  const packs = await getVocabPacks();
+  cache = packs.flatMap((p) => p.words);
+  return cache;
 }
 
 export function vocabAudioUri(wordId: string): string {
