@@ -166,16 +166,18 @@ export default function VocabQuiz() {
       void hapticNotification("warning");
       void playSfx("incorrect");
     }
-    setTimeout(() => {
-      lockRef.current = false;
-      setPicked(null);
-      if (round + 1 >= total) {
-        setDone(true);
-        void playSfx("complete");
-      } else {
-        setRound((r) => r + 1);
-      }
-    }, 1200);
+  }
+
+  // 정답 확인(회고) 후 사용자가 직접 진행
+  function next() {
+    setPicked(null);
+    lockRef.current = false;
+    if (round + 1 >= total) {
+      setDone(true);
+      void playSfx("complete");
+    } else {
+      setRound((r) => r + 1);
+    }
   }
 
   // ── 로딩 ──
@@ -290,13 +292,7 @@ export default function VocabQuiz() {
             <Pressable onPress={() => q && playAudio(q.target.word_id)} style={styles.playBtn}>
               <Text style={styles.playEmoji}>🔊</Text>
             </Pressable>
-            {revealed ? (
-              <Text style={styles.answerReveal}>
-                {q?.target.korean} · {q?.target.romanization}
-              </Text>
-            ) : (
-              <Text style={styles.replayHint}>Tap to replay</Text>
-            )}
+            <Text style={styles.replayHint}>Tap to replay</Text>
           </View>
         )}
         {q?.prompt === "gloss" && (
@@ -340,6 +336,22 @@ export default function VocabQuiz() {
             );
           })}
         </View>
+
+        {/* 풀이 후 멈춤 — 정답(뜻·발음) 확인 후 직접 진행 */}
+        {revealed && q && (
+          <>
+            <View style={{ flex: 1 }} />
+            <Text style={[styles.verdict, { color: picked === q.target.word_id ? lightColors["semantic.success"] : lightColors["semantic.danger"] }]}>
+              {picked === q.target.word_id ? "✅ Correct!" : "❌ Not quite"}
+            </Text>
+            <View style={styles.reviewCard}>
+              <Text style={styles.reviewKorean}>{q.target.korean}</Text>
+              <Text style={styles.reviewRr}>{q.target.romanization}</Text>
+              <Text style={styles.reviewGloss}>{q.target.gloss}</Text>
+            </View>
+            <NeonButton label={round + 1 >= total ? "See results ›" : "Next ›"} onPress={next} />
+          </>
+        )}
       </View>
     </GradientBackground>
   );
@@ -376,11 +388,21 @@ const styles = StyleSheet.create({
   },
   playEmoji: { fontSize: 56 },
   replayHint: { color: lightColors["text.muted"], fontSize: 13, marginTop: spacing["space.3"], marginBottom: spacing["space.6"] },
-  answerReveal: { color: lightColors["korean.glyph"], fontSize: 22, fontWeight: "800", marginTop: spacing["space.3"], marginBottom: spacing["space.4"], textAlign: "center" },
   grid: { flexDirection: "row", flexWrap: "wrap", justifyContent: "space-between", marginTop: spacing["space.2"] },
   optionCard: { minHeight: 88, alignItems: "center", justifyContent: "center", padding: spacing["space.3"] },
   optionKorean: { color: lightColors["korean.glyph"], fontSize: 24, fontWeight: "800", textAlign: "center" },
   optionGlossText: { color: lightColors["text.primary"], fontSize: 17, fontWeight: "700", textAlign: "center" },
   resultEmoji: { fontSize: 72 },
   resultScore: { color: lightColors["text.primary"], fontSize: 64, fontWeight: "900", marginTop: spacing["space.3"] },
+  verdict: { fontSize: 20, fontWeight: "900", textAlign: "center", marginBottom: spacing["space.3"] },
+  reviewCard: {
+    alignItems: "center",
+    backgroundColor: "rgba(255,255,255,0.06)",
+    borderRadius: 16,
+    padding: spacing["space.4"],
+    marginBottom: spacing["space.4"],
+  },
+  reviewKorean: { color: lightColors["korean.glyph"], fontSize: 30, fontWeight: "900" },
+  reviewRr: { color: lightColors["text.muted"], fontSize: 15, marginTop: 2 },
+  reviewGloss: { color: lightColors["text.secondary"], fontSize: 18, fontWeight: "700", marginTop: spacing["space.2"] },
 });

@@ -131,7 +131,7 @@ export default function PictureQuiz() {
 
   function choose(opt: EmojiWord) {
     if (lockRef.current || !q) return;
-    lockRef.current = true;
+    lockRef.current = true; // 답 고정(정답 확인 시간). 다음 문제는 Next 버튼으로.
     setPicked(opt.korean);
     const correct = opt.korean === q.target.korean;
     void recordAnswer(q.target.korean, correct); // 오답 기록(복습용)
@@ -143,16 +143,18 @@ export default function PictureQuiz() {
       void hapticNotification("warning");
       void playSfx("incorrect");
     }
-    setTimeout(() => {
-      lockRef.current = false;
-      setPicked(null);
-      if (round + 1 >= total) {
-        setDone(true);
-        void playSfx("complete");
-      } else {
-        setRound((r) => r + 1);
-      }
-    }, 1100);
+  }
+
+  // 사용자가 정답을 확인한 뒤 직접 진행
+  function next() {
+    setPicked(null);
+    lockRef.current = false;
+    if (round + 1 >= total) {
+      setDone(true);
+      void playSfx("complete");
+    } else {
+      setRound((r) => r + 1);
+    }
   }
 
   // ── 복습 모드: 로딩 / 오답 없음 ──
@@ -311,6 +313,24 @@ export default function PictureQuiz() {
             );
           })}
         </View>
+
+        {/* 풀이 후 멈춤 — 정답 확인(회고) 후 사용자가 직접 진행 */}
+        {picked !== null && q && (
+          <>
+            <View style={{ flex: 1 }} />
+            <Text style={[styles.verdict, { color: picked === q.target.korean ? lightColors["semantic.success"] : lightColors["semantic.danger"] }]}>
+              {picked === q.target.korean ? "✅ Correct!" : "❌ Not quite"}
+            </Text>
+            <View style={styles.reviewCard}>
+              <Text style={styles.reviewEmoji}>{q.target.emoji}</Text>
+              <View style={{ flex: 1 }}>
+                <Text style={styles.reviewKorean}>{q.target.korean}</Text>
+                <Text style={styles.reviewGloss}>{q.target.gloss}</Text>
+              </View>
+            </View>
+            <NeonButton label={round + 1 >= total ? "See results ›" : "Next ›"} onPress={next} />
+          </>
+        )}
       </View>
     </GradientBackground>
   );
@@ -361,4 +381,16 @@ const styles = StyleSheet.create({
   },
   resultEmoji: { fontSize: 72 },
   resultScore: { color: lightColors["text.primary"], fontSize: 64, fontWeight: "900", marginTop: spacing["space.3"] },
+  verdict: { fontSize: 20, fontWeight: "900", textAlign: "center", marginBottom: spacing["space.3"] },
+  reviewCard: {
+    flexDirection: "row",
+    alignItems: "center",
+    backgroundColor: "rgba(255,255,255,0.06)",
+    borderRadius: 16,
+    padding: spacing["space.4"],
+    marginBottom: spacing["space.4"],
+  },
+  reviewEmoji: { fontSize: 44, marginRight: spacing["space.4"] },
+  reviewKorean: { color: lightColors["korean.glyph"], fontSize: 26, fontWeight: "900" },
+  reviewGloss: { color: lightColors["text.secondary"], fontSize: 16, fontWeight: "700", marginTop: 2 },
 });

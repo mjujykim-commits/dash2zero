@@ -133,16 +133,18 @@ export default function PhotoQuiz() {
       void hapticNotification("warning");
       void playSfx("incorrect");
     }
-    setTimeout(() => {
-      lockRef.current = false;
-      setPicked(null);
-      if (round + 1 >= total) {
-        setDone(true);
-        void playSfx("complete");
-      } else {
-        setRound((r) => r + 1);
-      }
-    }, 1300);
+  }
+
+  // 정답 확인(회고) 후 사용자가 직접 진행
+  function next() {
+    setPicked(null);
+    lockRef.current = false;
+    if (round + 1 >= total) {
+      setDone(true);
+      void playSfx("complete");
+    } else {
+      setRound((r) => r + 1);
+    }
   }
 
   // ── 로딩 ──
@@ -299,6 +301,18 @@ export default function PhotoQuiz() {
             );
           })}
         </View>
+
+        {/* 풀이 후 멈춤 — 정답 확인 후 직접 진행 */}
+        {revealed && q && (
+          <>
+            <View style={{ flex: 1 }} />
+            <Text style={[styles.verdict, { color: picked === q.target.korean ? lightColors["semantic.success"] : lightColors["semantic.danger"] }]}>
+              {picked === q.target.korean ? "✅ Correct!" : `❌ Answer: ${q.target.korean}`}
+            </Text>
+            <Text style={styles.reviewGloss}>{q.target.korean} · {q.target.gloss}</Text>
+            <NeonButton label={round + 1 >= total ? "See results ›" : "Next ›"} onPress={next} />
+          </>
+        )}
       </View>
     </GradientBackground>
   );
@@ -356,4 +370,6 @@ const styles = StyleSheet.create({
   },
   resultEmoji: { fontSize: 72 },
   resultScore: { color: lightColors["text.primary"], fontSize: 64, fontWeight: "900", marginTop: spacing["space.3"] },
+  verdict: { fontSize: 20, fontWeight: "900", textAlign: "center", marginBottom: spacing["space.2"] },
+  reviewGloss: { color: lightColors["text.secondary"], fontSize: 16, fontWeight: "700", textAlign: "center", marginBottom: spacing["space.4"] },
 });
