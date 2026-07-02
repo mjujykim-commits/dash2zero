@@ -1,12 +1,13 @@
 /**
- * Picture Quiz — 이모지(그림) 제시 → 한글 4지선다. Picture Quiz 전용 앱.
+ * Picture Quiz — 이모지(그림) ↔ 한글 4지선다. 방향 랜덤(문제 유형 x2).
  *
- * 흐름: 카테고리 선택 → 퀴즈(최대 10라운드) → 결과 → Play again / Change category.
- * 카테고리 선택 시 그 주제 단어만 출제(distractor도 같은 주제 → 적정 난이도).
+ * 일반 모드: 카테고리 선택 → 문제 개수 입력 → 퀴즈.
+ * 복습 모드(?review=1): 저장된 오답 단어만 출제(카테고리/개수 선택 없이 바로 시작).
+ * 모든 답변은 reviewStore에 기록(틀리면 복습 목록에 추가, 맞히면 감소).
  */
 
-import { router } from "expo-router";
-import { useMemo, useRef, useState } from "react";
+import { router, useLocalSearchParams } from "expo-router";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { Alert, Pressable, ScrollView, StyleSheet, Text, View } from "react-native";
 
 import { lightColors, spacing, typeScale } from "@dash2zero/design-tokens";
@@ -14,6 +15,7 @@ import { lightColors, spacing, typeScale } from "@dash2zero/design-tokens";
 import { EMOJI_WORDS, type EmojiWord } from "@/src/lib/emojiWords";
 import { hapticNotification } from "@/src/lib/haptics";
 import { playSfx } from "@/src/lib/sound";
+import { getWrongKoreans, recordAnswer } from "@/src/lib/reviewStore";
 import { GradientBackground, GlassCard, GlowOrb, NeonButton } from "@/src/components/d022";
 
 const DEFAULT_ROUNDS = 10;
@@ -47,15 +49,19 @@ function shuffle<T>(arr: T[]): T[] {
 interface Question {
   target: EmojiWord;
   options: EmojiWord[];
-  /** emoji: 이모지 보고 한글 선택 / korean: 한글 보고 이모지 선택 (라운드마다 랜덤 → 문제 유형 x2) */
   direction: "emoji" | "korean";
 }
 
-function buildQuestions(cat: CatKey, rounds: number): Question[] {
-  const pool = cat === "all" ? EMOJI_WORDS : EMOJI_WORDS.filter((w) => w.category === cat);
+const poolFor = (cat: CatKey): EmojiWord[] =>
+  cat === "all" ? EMOJI_WORDS : EMOJI_WORDS.filter((w) => w.category === cat);
+
+function buildQuestions(pool: EmojiWord[], rounds: number): Question[] {
   const targets = shuffle(pool).slice(0, Math.min(rounds, pool.length));
   return targets.map((target) => {
-    const distractors = shuffle(pool.filter((w) => w.korean !== target.korean)).slice(0, 3);
+    // distractor: 같은 풀 우선, 부족하면(복습 풀이 작을 때) 전체에서 보충
+    let dpool = pool.filter((w) => w.korean !== target.korean);
+    if (dpool.length < 3) dpool = EMOJI_WORDS.filter((w) => w.korean !== target.korean);
+    const distractors = shuffle(dpool).slice(0, 3);
     return {
       target,
       options: shuffle([target, ...distractors]),
@@ -65,15 +71,18 @@ function buildQuestions(cat: CatKey, rounds: number): Question[] {
 }
 
 export default function PictureQuiz() {
+  const params = useLocalSearchParams<{ review?: string }>();
+  const reviewMode = params.review === "1";
+
   const [category, setCategory] = useState<CatKey | null>(null);
   const [rounds, setRounds] = useState(DEFAULT_ROUNDS);
   const [seed, setSeed] = useState(0);
-  const questions = useMemo(() => (category ? buildQuestions(category, rounds) : []), [seed, category, rounds]);
   const [round, setRound] = useState(0);
   const [score, setScore] = useState(0);
   const [picked, setPicked] = useState<string | null>(null);
   const [done, setDone] = useState(false);
   const lockRef = useRef(false);
+  const [reviewPool, setReviewPool] = useState<EmojiWord[] | null>(null); // null=로딩
 
   const counts = useMemo(() => {
     const c: Record<string, number> = { all: EMOJI_WORDS.length };
@@ -81,21 +90,41 @@ export default function PictureQuiz() {
     return c;
   }, []);
 
+  const questions = useMemo(() => {
+    if (reviewMode) return reviewPool && reviewPool.length ? buildQuestions(reviewPool, reviewPool.length) : [];
+    return category ? buildQuestions(poolFor(category), rounds) : [];
+  }, [seed, category, rounds, reviewMode, reviewPool]);
+
   const total = questions.length;
   const q = questions[round];
 
-  function start(cat: CatKey, r: number) {
-    setCategory(cat);
-    setRounds(r);
-    setSeed((s) => s + 1);
+  const resetRun = () => {
     setRound(0);
     setScore(0);
     setPicked(null);
     setDone(false);
     lockRef.current = false;
+    setSeed((s) => s + 1);
+  };
+
+  // 복습 모드: 오답 단어 로드 (마운트 + Play again)
+  const loadReview = useCallback(async () => {
+    const koreans = await getWrongKoreans();
+    const set = new Set(koreans);
+    setReviewPool(EMOJI_WORDS.filter((w) => set.has(w.korean)));
+    resetRun();
+  }, []);
+
+  useEffect(() => {
+    if (reviewMode) void loadReview();
+  }, [reviewMode, loadReview]);
+
+  function start(cat: CatKey, r: number) {
+    setCategory(cat);
+    setRounds(r);
+    resetRun();
   }
 
-  // Start 시 문제 개수 입력 팝업 (iOS Alert.prompt) → 확인 시 start
   function promptRounds(cat: CatKey) {
     const max = cat === "all" ? EMOJI_WORDS.length : counts[cat] ?? 0;
     Alert.prompt(
@@ -124,6 +153,7 @@ export default function PictureQuiz() {
     lockRef.current = true;
     setPicked(opt.korean);
     const correct = opt.korean === q.target.korean;
+    void recordAnswer(q.target.korean, correct); // 오답 기록(복습용)
     if (correct) {
       setScore((s) => s + 1);
       void hapticNotification("success");
@@ -144,8 +174,35 @@ export default function PictureQuiz() {
     }, 1100);
   }
 
-  // 1) 카테고리 선택 화면
-  if (!category) {
+  // ── 복습 모드: 로딩 / 오답 없음 ──
+  if (reviewMode && reviewPool === null) {
+    return (
+      <GradientBackground variant="dark" direction="vertical" style={{ flex: 1 }}>
+        <View style={[styles.content, { justifyContent: "center", alignItems: "center" }]}>
+          <Text style={styles.sub}>Loading…</Text>
+        </View>
+      </GradientBackground>
+    );
+  }
+  if (reviewMode && reviewPool !== null && reviewPool.length === 0 && !done) {
+    return (
+      <GradientBackground variant="dark" direction="vertical" style={{ flex: 1 }}>
+        <GlowOrb color="neon.lime" size={280} opacity={0.35} style={{ top: -60, right: -60 }} />
+        <View style={[styles.content, { justifyContent: "center", alignItems: "center" }]}>
+          <Text style={styles.resultEmoji}>🎉</Text>
+          <Text style={styles.bigTitle}>No mistakes!</Text>
+          <Text style={styles.sub}>Words you miss in the quiz show up here to review.</Text>
+          <View style={{ height: spacing["space.8"] }} />
+          <View style={{ width: "100%" }}>
+            <NeonButton label="Back to menu" onPress={() => router.back()} />
+          </View>
+        </View>
+      </GradientBackground>
+    );
+  }
+
+  // ── 일반 모드: 카테고리 선택 ──
+  if (!reviewMode && !category) {
     return (
       <GradientBackground variant="dark" direction="vertical" style={{ flex: 1 }}>
         <GlowOrb color="neon.pink" size={260} opacity={0.3} style={{ top: -60, right: -60 }} />
@@ -174,7 +231,7 @@ export default function PictureQuiz() {
     );
   }
 
-  // 2) 결과 화면
+  // ── 결과 ──
   if (done) {
     return (
       <GradientBackground variant="dark" direction="vertical" style={{ flex: 1 }}>
@@ -187,26 +244,34 @@ export default function PictureQuiz() {
           <Text style={styles.sub}>correct</Text>
           <View style={{ height: spacing["space.8"] }} />
           <View style={{ width: "100%" }}>
-            <NeonButton label="Play again" onPress={() => start(category, rounds)} />
+            <NeonButton
+              label="Play again"
+              onPress={() => (reviewMode ? loadReview() : category && start(category, rounds))}
+            />
           </View>
-          <Pressable onPress={() => setCategory(null)} hitSlop={10} style={{ marginTop: spacing["space.4"] }}>
-            <Text style={styles.link}>Change topic</Text>
+          <Pressable
+            onPress={() => (reviewMode ? router.back() : setCategory(null))}
+            hitSlop={10}
+            style={{ marginTop: spacing["space.4"] }}
+          >
+            <Text style={styles.link}>{reviewMode ? "Back to menu" : "Change topic"}</Text>
           </Pressable>
         </View>
       </GradientBackground>
     );
   }
 
-  // 3) 퀴즈 화면
+  // ── 퀴즈 ──
   return (
     <GradientBackground variant="dark" direction="vertical" style={{ flex: 1 }}>
       <GlowOrb color="neon.pink" size={240} opacity={0.3} style={{ top: -60, left: -60 }} />
       <View style={styles.content}>
         <View style={styles.topRow}>
-          <Pressable onPress={() => setCategory(null)} hitSlop={12}>
-            <Text style={styles.link}>‹ Topics</Text>
+          <Pressable onPress={() => (reviewMode ? router.back() : setCategory(null))} hitSlop={12}>
+            <Text style={styles.link}>{reviewMode ? "‹ Menu" : "‹ Topics"}</Text>
           </Pressable>
           <Text style={styles.progress}>
+            {reviewMode ? "Review · " : ""}
             {round + 1} / {total} · score {score}
           </Text>
         </View>
@@ -268,7 +333,7 @@ const styles = StyleSheet.create({
   link: { color: lightColors["neon.cyan"], fontSize: 16, fontWeight: "700" },
   progress: { color: lightColors["text.muted"], fontSize: typeScale["text.caption"].fontSize, fontWeight: "700" },
   bigTitle: { color: lightColors["text.primary"], fontSize: 32, fontWeight: "900" },
-  sub: { color: lightColors["text.secondary"], fontSize: typeScale["text.body"].fontSize, marginTop: spacing["space.1"] },
+  sub: { color: lightColors["text.secondary"], fontSize: typeScale["text.body"].fontSize, marginTop: spacing["space.1"], textAlign: "center" },
   catGrid: { flexDirection: "row", flexWrap: "wrap", justifyContent: "space-between" },
   catCellWrap: { width: "31%", marginBottom: spacing["space.3"] },
   catCell: { alignItems: "center", justifyContent: "center", paddingVertical: spacing["space.4"] },
