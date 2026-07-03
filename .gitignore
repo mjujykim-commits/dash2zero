@@ -30,3 +30,6 @@ google-services.json
 GoogleService-Info.plist
 scripts/.env.local
 sources/gloss_out.json
+sources/romanization_out.json
+sources/topik_enriched.json
+sources/kiip_enriched.json
