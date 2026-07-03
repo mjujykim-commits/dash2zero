@@ -1,8 +1,8 @@
 /**
- * Study (사전) — 1스크린 1단어 플래시카드. 넘기면서 빠르게 학습.
+ * Study (사전) — 1스크린 1단어 플래시카드. 틱톡/쇼츠식 세로 스와이프로 넘김.
  *
  * 큰 이모지 + 한글 + 뜻. 카드 진입 시 발음 자동 재생, 탭하면 다시 재생.
- * Prev/Next로 이동, 카테고리 칩으로 주제 전환. 발음: emoji/{korean}.mp3 (expo-av).
+ * 위로 스와이프=다음 / 아래로=이전. 카테고리 칩으로 주제 전환. 발음: emoji/{korean}.mp3.
  */
 
 import { Audio } from "expo-av";
@@ -15,6 +15,8 @@ import { lightColors, spacing, typeScale } from "@dash2zero/design-tokens";
 import { EMOJI_WORDS, type EmojiWord } from "@/src/lib/emojiWords";
 import { hapticImpact } from "@/src/lib/haptics";
 import { SUPABASE_URL } from "@/src/lib/supabase";
+import { useVerticalSwipe } from "@/src/hooks/useVerticalSwipe";
+import { SwipeHint } from "@/src/components/SwipeHint";
 import { GradientBackground, GlassCard, GlowOrb } from "@/src/components/d022";
 
 type CatKey = EmojiWord["category"] | "all";
@@ -44,6 +46,7 @@ export default function Study() {
   const [cat, setCat] = useState<CatKey>("all");
   const [index, setIndex] = useState(0);
   const [playing, setPlaying] = useState(false);
+  const [hasSwiped, setHasSwiped] = useState(false);
   const soundRef = useRef<Audio.Sound | null>(null);
 
   const words = useMemo(
@@ -90,11 +93,17 @@ export default function Study() {
     setIndex((i) => Math.min(Math.max(0, i + delta), words.length - 1));
   };
 
+  const swipe = useVerticalSwipe({
+    enabled: words.length > 0,
+    onSwipeUp: () => { setHasSwiped(true); go(1); },
+    onSwipeDown: () => { setHasSwiped(true); go(-1); },
+  });
+
   return (
     <GradientBackground variant="dark" direction="vertical" style={{ flex: 1 }}>
       <GlowOrb color="neon.cyan" size={260} opacity={0.3} style={{ top: -60, left: -60 }} />
 
-      <View style={styles.content}>
+      <View style={styles.content} {...swipe}>
         <View style={styles.topRow}>
           <Pressable onPress={() => router.back()} hitSlop={12}>
             <Text style={styles.link}>‹ Menu</Text>
@@ -146,22 +155,9 @@ export default function Study() {
           </View>
         )}
 
-        {/* 이동 컨트롤 */}
-        <View style={styles.navRow}>
-          <Pressable
-            onPress={() => go(-1)}
-            disabled={index === 0}
-            style={[styles.navBtn, index === 0 && styles.navBtnDisabled]}
-          >
-            <Text style={styles.navText}>‹ Prev</Text>
-          </Pressable>
-          <Pressable
-            onPress={() => go(1)}
-            disabled={index >= words.length - 1}
-            style={[styles.navBtn, styles.navNext, index >= words.length - 1 && styles.navBtnDisabled]}
-          >
-            <Text style={[styles.navText, styles.navNextText]}>Next ›</Text>
-          </Pressable>
+        {/* 세로 스와이프 안내 (첫 스와이프 전까지 펄스) */}
+        <View style={styles.hintArea}>
+          <SwipeHint visible={!hasSwiped && words.length > 1} label="Swipe" direction="both" />
         </View>
       </View>
     </GradientBackground>
@@ -206,18 +202,5 @@ const styles = StyleSheet.create({
   dots: { flexDirection: "row", flexWrap: "wrap", justifyContent: "center", marginBottom: spacing["space.4"] },
   dot: { width: 7, height: 7, borderRadius: 4, backgroundColor: "rgba(255,255,255,0.18)", margin: 3 },
   dotActive: { backgroundColor: lightColors["neon.cyan"], width: 18 },
-  navRow: { flexDirection: "row", justifyContent: "space-between" },
-  navBtn: {
-    flex: 1,
-    height: 56,
-    borderRadius: 16,
-    alignItems: "center",
-    justifyContent: "center",
-    backgroundColor: "rgba(255,255,255,0.07)",
-    marginHorizontal: spacing["space.1"],
-  },
-  navNext: { backgroundColor: lightColors["neon.cyan"] },
-  navBtnDisabled: { opacity: 0.35 },
-  navText: { color: lightColors["text.primary"], fontSize: 18, fontWeight: "800" },
-  navNextText: { color: "#0B0B0F" },
+  hintArea: { height: 84, justifyContent: "center", alignItems: "center" },
 });

@@ -17,6 +17,8 @@ import { hapticNotification } from "@/src/lib/haptics";
 import { playSfx } from "@/src/lib/sound";
 import { getWrongKoreans, recordAnswer } from "@/src/lib/reviewStore";
 import { RoundsModal } from "@/src/components/RoundsModal";
+import { SwipeHint } from "@/src/components/SwipeHint";
+import { useVerticalSwipe } from "@/src/hooks/useVerticalSwipe";
 import { GradientBackground, GlassCard, GlowOrb, NeonButton } from "@/src/components/d022";
 
 const DEFAULT_ROUNDS = 10;
@@ -82,6 +84,7 @@ export default function PictureQuiz() {
   const [score, setScore] = useState(0);
   const [picked, setPicked] = useState<string | null>(null);
   const [done, setDone] = useState(false);
+  const [hasSwiped, setHasSwiped] = useState(false);
   const lockRef = useRef(false);
   const [reviewPool, setReviewPool] = useState<EmojiWord[] | null>(null); // null=로딩
   const [modalCat, setModalCat] = useState<CatKey | null>(null); // 개수 입력 모달 대상
@@ -105,9 +108,16 @@ export default function PictureQuiz() {
     setScore(0);
     setPicked(null);
     setDone(false);
+    setHasSwiped(false);
     lockRef.current = false;
     setSeed((s) => s + 1);
   };
+
+  // 답 확인 후 위로 스와이프 → 다음 문제
+  const swipe = useVerticalSwipe({
+    enabled: picked !== null,
+    onSwipeUp: () => { setHasSwiped(true); next(); },
+  });
 
   // 복습 모드: 오답 단어 로드 (마운트 + Play again)
   const loadReview = useCallback(async () => {
@@ -261,7 +271,7 @@ export default function PictureQuiz() {
   return (
     <GradientBackground variant="dark" direction="vertical" style={{ flex: 1 }}>
       <GlowOrb color="neon.pink" size={240} opacity={0.3} style={{ top: -60, left: -60 }} />
-      <View style={styles.content}>
+      <View style={styles.content} {...swipe}>
         <View style={styles.topRow}>
           <Pressable onPress={() => (reviewMode ? router.back() : setCategory(null))} hitSlop={12}>
             <Text style={styles.link}>{reviewMode ? "‹ Menu" : "‹ Topics"}</Text>
@@ -328,7 +338,7 @@ export default function PictureQuiz() {
                 <Text style={styles.reviewGloss}>{q.target.gloss}</Text>
               </View>
             </View>
-            <NeonButton label={round + 1 >= total ? "See results ›" : "Next ›"} onPress={next} />
+            <SwipeHint visible={!hasSwiped} label={round + 1 >= total ? "Swipe up to finish" : "Swipe up"} />
           </>
         )}
       </View>

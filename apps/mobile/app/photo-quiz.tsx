@@ -17,6 +17,8 @@ import { playSfx } from "@/src/lib/sound";
 import { recordAnswer } from "@/src/lib/reviewStore";
 import { getPhotoManifest, photoUri, type PhotoCredit } from "@/src/lib/photos";
 import { RoundsModal } from "@/src/components/RoundsModal";
+import { SwipeHint } from "@/src/components/SwipeHint";
+import { useVerticalSwipe } from "@/src/hooks/useVerticalSwipe";
 import { GradientBackground, GlassCard, GlowOrb, NeonButton } from "@/src/components/d022";
 
 const DEFAULT_ROUNDS = 10;
@@ -73,6 +75,7 @@ export default function PhotoQuiz() {
   const [score, setScore] = useState(0);
   const [picked, setPicked] = useState<string | null>(null);
   const [done, setDone] = useState(false);
+  const [hasSwiped, setHasSwiped] = useState(false);
   const [modalCat, setModalCat] = useState<CatKey | null>(null);
   const lockRef = useRef(false);
 
@@ -107,6 +110,7 @@ export default function PhotoQuiz() {
     setScore(0);
     setPicked(null);
     setDone(false);
+    setHasSwiped(false);
     lockRef.current = false;
     setSeed((s) => s + 1);
   };
@@ -116,6 +120,12 @@ export default function PhotoQuiz() {
     setRounds(r);
     resetRun();
   }
+
+  // 답 확인 후 위로 스와이프 → 다음 문제
+  const swipe = useVerticalSwipe({
+    enabled: picked !== null,
+    onSwipeUp: () => { setHasSwiped(true); next(); },
+  });
 
   const modalMax = modalCat ? counts[modalCat] ?? 0 : 0;
 
@@ -248,7 +258,7 @@ export default function PhotoQuiz() {
   const revealed = picked !== null;
   return (
     <GradientBackground variant="dark" direction="vertical" style={{ flex: 1 }}>
-      <View style={styles.content}>
+      <View style={styles.content} {...swipe}>
         <View style={styles.topRow}>
           <Pressable onPress={() => setCategory(null)} hitSlop={12}>
             <Text style={styles.link}>‹ Topics</Text>
@@ -310,7 +320,7 @@ export default function PhotoQuiz() {
               {picked === q.target.korean ? "✅ Correct!" : `❌ Answer: ${q.target.korean}`}
             </Text>
             <Text style={styles.reviewGloss}>{q.target.korean} · {q.target.gloss}</Text>
-            <NeonButton label={round + 1 >= total ? "See results ›" : "Next ›"} onPress={next} />
+            <SwipeHint visible={!hasSwiped} label={round + 1 >= total ? "Swipe up to finish" : "Swipe up"} />
           </>
         )}
       </View>

@@ -18,6 +18,8 @@ import { getVocabPacks, vocabAudioUri, type VocabPack, type VocabWord } from "@/
 import { hapticNotification } from "@/src/lib/haptics";
 import { playSfx } from "@/src/lib/sound";
 import { RoundsModal } from "@/src/components/RoundsModal";
+import { SwipeHint } from "@/src/components/SwipeHint";
+import { useVerticalSwipe } from "@/src/hooks/useVerticalSwipe";
 import { GradientBackground, GlassCard, GlowOrb, NeonButton } from "@/src/components/d022";
 
 const DEFAULT_ROUNDS = 10;
@@ -93,6 +95,7 @@ export default function VocabQuiz() {
   const [score, setScore] = useState(0);
   const [picked, setPicked] = useState<string | null>(null);
   const [done, setDone] = useState(false);
+  const [hasSwiped, setHasSwiped] = useState(false);
   const lockRef = useRef(false);
   const soundRef = useRef<Audio.Sound | null>(null);
 
@@ -135,9 +138,16 @@ export default function VocabQuiz() {
     setScore(0);
     setPicked(null);
     setDone(false);
+    setHasSwiped(false);
     lockRef.current = false;
     setSeed((s) => s + 1);
   }
+
+  // 답 확인 후 위로 스와이프 → 다음 문제
+  const swipe = useVerticalSwipe({
+    enabled: picked !== null,
+    onSwipeUp: () => { setHasSwiped(true); next(); },
+  });
 
   function pickCategory(words: VocabWord[], label: string) {
     setPool(words);
@@ -276,7 +286,7 @@ export default function VocabQuiz() {
   return (
     <GradientBackground variant="dark" direction="vertical" style={{ flex: 1 }}>
       <GlowOrb color="neon.purple" size={240} opacity={0.3} style={{ top: -60, left: -60 }} />
-      <View style={styles.content}>
+      <View style={styles.content} {...swipe}>
         <View style={styles.topRow}>
           <Pressable onPress={() => setStarted(false)} hitSlop={12}>
             <Text style={styles.link}>‹ Topics</Text>
@@ -349,7 +359,7 @@ export default function VocabQuiz() {
               <Text style={styles.reviewRr}>{q.target.romanization}</Text>
               <Text style={styles.reviewGloss}>{q.target.gloss}</Text>
             </View>
-            <NeonButton label={round + 1 >= total ? "See results ›" : "Next ›"} onPress={next} />
+            <SwipeHint visible={!hasSwiped} label={round + 1 >= total ? "Swipe up to finish" : "Swipe up"} />
           </>
         )}
       </View>
