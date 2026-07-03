@@ -61,7 +61,9 @@ function synth(text, outFile) {
 async function one(korean) {
   if (await exists(korean)) return "skip";
   const local = path.join(TMP, `${encodeURIComponent(korean).replace(/%/g, "")}.mp3`);
-  try { await synth(korean, local); } catch { await new Promise((r) => setTimeout(r, 700)); await synth(korean, local); }
+  // 접사 표기 하이픈(-되다, -화 등)은 edge-tts가 옵션으로 오인 → 발음 텍스트에서만 제거(저장 키는 원본 유지)
+  const ttsText = korean.replace(/-/g, "").trim() || korean;
+  try { await synth(ttsText, local); } catch { await new Promise((r) => setTimeout(r, 700)); await synth(ttsText, local); }
   const buf = fs.readFileSync(local);
   const up = await fetch(`${URL}/storage/v1/object/${BUCKET}/${keyFor(korean)}`, {
     method: "POST", headers: { ...auth, "Content-Type": "audio/mpeg", "x-upsert": "true" }, body: buf,
