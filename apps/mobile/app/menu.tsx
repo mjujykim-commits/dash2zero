@@ -38,6 +38,17 @@ export default function Menu() {
           </GlassCard>
         </Pressable>
 
+        <Pressable onPress={() => router.push("/exam")}>
+          <GlassCard style={styles.examCard}>
+            <Text style={styles.examEmoji}>🎓</Text>
+            <View style={{ flex: 1 }}>
+              <Text style={styles.examTitle}>Exam prep</Text>
+              <Text style={styles.examSub}>TOPIK · KIIP — by level</Text>
+            </View>
+            <Text style={styles.examChevron}>›</Text>
+          </GlassCard>
+        </Pressable>
+
         <View style={{ flex: 1 }} />
 
         {/* 오답 복습 버튼 */}
@@ -64,6 +75,17 @@ const styles = StyleSheet.create({
   bigEmoji: { fontSize: 52 },
   bigTitle: { color: lightColors["text.primary"], fontSize: 26, fontWeight: "900", marginTop: spacing["space.2"] },
   bigSub: { color: lightColors["text.muted"], fontSize: typeScale["text.caption"].fontSize, marginTop: spacing["space.1"] },
+  examCard: {
+    flexDirection: "row",
+    alignItems: "center",
+    paddingVertical: spacing["space.4"],
+    paddingHorizontal: spacing["space.5"],
+    marginBottom: spacing["space.4"],
+  },
+  examEmoji: { fontSize: 34, marginRight: spacing["space.4"] },
+  examTitle: { color: lightColors["text.primary"], fontSize: 20, fontWeight: "900" },
+  examSub: { color: lightColors["text.muted"], fontSize: typeScale["text.caption"].fontSize, marginTop: 2 },
+  examChevron: { color: lightColors["text.muted"], fontSize: 26 },
   reviewBtn: {
     borderRadius: 14,
     borderWidth: 1.5,
