@@ -83,10 +83,11 @@ async function fileExists(korean) {
 }
 
 let rateRemaining = Infinity;
-async function pexelsSearchOnce(query, square) {
+async function pexelsSearchOnce(query) {
   const q = encodeURIComponent(query);
-  const orient = square ? "&orientation=square" : "";
-  const r = await fetch(`https://api.pexels.com/v1/search?query=${q}&per_page=1${orient}`, {
+  // orientation=square 는 후보 풀을 좁혀 관련도를 크게 떨어뜨림(소화기→소방차 등) → 제거.
+  // 앱은 1:1 center-crop 표시라 세로/가로 원본도 무방. 관련도 순위 최상위를 사용.
+  const r = await fetch(`https://api.pexels.com/v1/search?query=${q}&per_page=1`, {
     headers: { Authorization: PEXELS },
   });
   const rem = r.headers.get("x-ratelimit-remaining");
@@ -96,13 +97,11 @@ async function pexelsSearchOnce(query, square) {
   const j = await r.json();
   return j.photos?.[0] ?? null;
 }
-// 503 등 일시 오류 최대 2회 재시도(429는 즉시 전파). 정사각형 결과 없으면 방향 제약 없이 폴백.
+// 503 등 일시 오류 최대 2회 재시도(429는 즉시 전파).
 async function pexelsSearch(query) {
   for (let attempt = 0; ; attempt++) {
     try {
-      const photo = await pexelsSearchOnce(query, true);
-      if (photo) return photo;
-      return await pexelsSearchOnce(query, false);
+      return await pexelsSearchOnce(query);
     } catch (e) {
       if (e.message === "RATE_LIMIT" || attempt >= 2) throw e;
       await new Promise((r) => setTimeout(r, 800 * (attempt + 1)));
