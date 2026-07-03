@@ -29,3 +29,4 @@ yarn-error.*
 google-services.json
 GoogleService-Info.plist
 scripts/.env.local
+sources/gloss_out.json
