@@ -50,6 +50,7 @@ export default function ExamQuiz() {
 
   const [pool, setPool] = useState<TrackWord[] | null>(null); // null=로딩
   const [levelLabel, setLevelLabel] = useState("");
+  const [levelBadge, setLevelBadge] = useState("");
   const [modalVisible, setModalVisible] = useState(true);
   const [started, setStarted] = useState(false);
   const [rounds, setRounds] = useState(DEFAULT_ROUNDS);
@@ -70,6 +71,7 @@ export default function ExamQuiz() {
         const lv = d.levels.find((l) => l.key === levelKey);
         setPool(lv?.words ?? []);
         setLevelLabel(lv?.label ?? "");
+        setLevelBadge(lv?.badge ?? levelKey);
       })
       .catch(() => !cancelled && setPool([]));
     return () => { cancelled = true; if (soundRef.current) void soundRef.current.unloadAsync().catch(() => undefined); };
@@ -149,7 +151,7 @@ export default function ExamQuiz() {
         <RoundsModal
           visible={modalVisible}
           max={pool.length}
-          subtitle={`${track.toUpperCase()} · ${levelKey} · ${pool.length} words`}
+          subtitle={`${track.toUpperCase()} · ${levelBadge} · ${pool.length} words`}
           defaultValue={Math.min(DEFAULT_ROUNDS, pool.length)}
           onStart={startWith}
           onCancel={() => router.back()}

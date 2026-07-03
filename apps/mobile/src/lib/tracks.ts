@@ -14,6 +14,7 @@ export interface TrackWord {
 }
 export interface TrackLevel {
   key: string;
+  badge?: string; // 뱃지 표기(초급/중급/고급, 1단계…)
   label: string;
   words: TrackWord[];
 }

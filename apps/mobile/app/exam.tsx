@@ -84,7 +84,7 @@ export default function Exam() {
                 <Pressable key={lv.key} onPress={() => setLevel(lv.key)}>
                   <GlassCard style={styles.levelCard}>
                     <View style={styles.levelBadge}>
-                      <Text style={styles.levelBadgeText}>{lv.key}</Text>
+                      <Text style={styles.levelBadgeText}>{lv.badge ?? lv.key}</Text>
                     </View>
                     <View style={{ flex: 1 }}>
                       <Text style={styles.levelLabel}>{lv.label}</Text>
@@ -111,7 +111,7 @@ export default function Exam() {
         <Pressable onPress={() => setLevel(null)} hitSlop={12} style={{ marginBottom: spacing["space.2"] }}>
           <Text style={styles.link}>‹ Levels</Text>
         </Pressable>
-        <Text style={styles.heading}>{data?.name} · {level}</Text>
+        <Text style={styles.heading}>{data?.name} · {lvObj?.badge ?? level}</Text>
         <Text style={styles.sub}>{lvObj?.label} · {lvObj?.words.length} words</Text>
 
         <View style={{ marginTop: spacing["space.6"] }}>
@@ -150,11 +150,12 @@ const styles = StyleSheet.create({
   trackSub: { color: lightColors["text.muted"], fontSize: typeScale["text.caption"].fontSize, marginTop: 2 },
   levelCard: { flexDirection: "row", alignItems: "center", padding: spacing["space.4"], marginBottom: spacing["space.3"] },
   levelBadge: {
-    width: 44, height: 44, borderRadius: 12, backgroundColor: "rgba(6,182,212,0.15)",
+    minWidth: 56, height: 40, borderRadius: 12, paddingHorizontal: spacing["space.3"],
+    backgroundColor: "rgba(6,182,212,0.15)",
     borderWidth: 1.5, borderColor: lightColors["neon.cyan"],
     alignItems: "center", justifyContent: "center", marginRight: spacing["space.4"],
   },
-  levelBadgeText: { color: lightColors["neon.cyan"], fontSize: 18, fontWeight: "900" },
+  levelBadgeText: { color: lightColors["neon.cyan"], fontSize: 14, fontWeight: "900" },
   levelLabel: { color: lightColors["text.primary"], fontSize: 17, fontWeight: "800" },
   levelCount: { color: lightColors["text.muted"], fontSize: typeScale["text.caption"].fontSize, marginTop: 2 },
   modeCard: { flexDirection: "row", alignItems: "center", padding: spacing["space.5"], marginBottom: spacing["space.4"] },
