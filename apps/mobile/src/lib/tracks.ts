@@ -52,7 +52,25 @@ export function trackPhotoUri(korean: string): string {
 
 export interface TrackPhotoCredit { author: string; source: string; title: string; quiz?: boolean }
 
+export interface TrackExample {
+  examples: { ko: string; en: string }[];
+  sentence: { ko: string; en: string } | null;
+}
+
 let photoCache: Record<string, TrackPhotoCredit> | null = null;
+let exampleCache: Record<string, TrackExample> | null = null;
+
+/** 단어별 예시어/예문 (Study 학습 보조). 아직 생성 전이면 {}. */
+export async function getTrackExamples(): Promise<Record<string, TrackExample>> {
+  if (exampleCache) return exampleCache;
+  try {
+    const r = await fetch(`${SUPABASE_URL}/storage/v1/object/public/images/track-examples.json?t=${Date.now()}`);
+    exampleCache = r.ok ? ((await r.json()) as Record<string, TrackExample>) : {};
+  } catch {
+    exampleCache = {};
+  }
+  return exampleCache;
+}
 
 /** 사진이 있는 단어(korean) → 크레딧. 실패 시 {}. */
 export async function getTrackPhotos(): Promise<Record<string, TrackPhotoCredit>> {

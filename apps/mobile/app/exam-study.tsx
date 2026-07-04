@@ -12,7 +12,7 @@ import { ActivityIndicator, Image, Pressable, StyleSheet, Text, View } from "rea
 
 import { lightColors, spacing, typeScale } from "@dash2zero/design-tokens";
 
-import { getTrack, getTrackPhotos, trackAudioUri, trackPhotoUri, type TrackId, type TrackWord } from "@/src/lib/tracks";
+import { getTrack, getTrackPhotos, getTrackExamples, trackAudioUri, trackPhotoUri, type TrackExample, type TrackId, type TrackWord } from "@/src/lib/tracks";
 import { getKnownSet, markKnown } from "@/src/lib/knownStore";
 import { hapticImpact } from "@/src/lib/haptics";
 import { useVerticalSwipe } from "@/src/hooks/useVerticalSwipe";
@@ -32,6 +32,7 @@ export default function ExamStudy() {
 
   const [words, setWords] = useState<TrackWord[] | null>(null);
   const [photoSet, setPhotoSet] = useState<Set<string>>(new Set());
+  const [examples, setExamples] = useState<Record<string, TrackExample>>({});
   const [known, setKnown] = useState<Set<string>>(new Set());
   const [levelBadge, setLevelBadge] = useState("");
   const [index, setIndex] = useState(0);
@@ -41,14 +42,15 @@ export default function ExamStudy() {
 
   useEffect(() => {
     let cancelled = false;
-    Promise.all([getTrack(track), getTrackPhotos(), getKnownSet()])
-      .then(([d, ph, kn]) => {
+    Promise.all([getTrack(track), getTrackPhotos(), getKnownSet(), getTrackExamples()])
+      .then(([d, ph, kn, ex]) => {
         if (cancelled) return;
         const lv = d.levels.find((l) => l.key === levelKey);
         setWords(shuffle(lv?.words ?? []));
         setLevelBadge(lv?.badge ?? levelKey);
         setPhotoSet(new Set(Object.keys(ph)));
         setKnown(kn);
+        setExamples(ex);
       })
       .catch(() => !cancelled && setWords([]));
     return () => { cancelled = true; if (soundRef.current) void soundRef.current.unloadAsync().catch(() => undefined); };
@@ -151,6 +153,24 @@ export default function ExamStudy() {
               </View>
             </GlassCard>
           </Pressable>
+
+          {/* 예시어 · 예문 (특히 추상어 학습 보조) */}
+          {word && examples[word.k] && (examples[word.k]!.examples?.length || examples[word.k]!.sentence) ? (
+            <View style={styles.exampleBox}>
+              {examples[word.k]!.examples?.slice(0, 2).map((e, i) => (
+                <Text key={i} style={styles.exLine}>
+                  <Text style={styles.exKo}>{e.ko}</Text>
+                  <Text style={styles.exEn}>  {e.en}</Text>
+                </Text>
+              ))}
+              {examples[word.k]!.sentence ? (
+                <View style={styles.exSentence}>
+                  <Text style={styles.exSentKo}>{examples[word.k]!.sentence!.ko}</Text>
+                  <Text style={styles.exSentEn}>{examples[word.k]!.sentence!.en}</Text>
+                </View>
+              ) : null}
+            </View>
+          ) : null}
         </View>
 
         {/* 안다 / 아직 몰라 */}
@@ -188,6 +208,13 @@ const styles = StyleSheet.create({
     borderRadius: 999, backgroundColor: "rgba(6,182,212,0.14)", borderWidth: 1, borderColor: lightColors["neon.cyan"],
   },
   speakerText: { color: lightColors["neon.cyan"], fontSize: 14, fontWeight: "800" },
+  exampleBox: { marginTop: spacing["space.4"], paddingHorizontal: spacing["space.2"] },
+  exLine: { marginBottom: 4 },
+  exKo: { color: lightColors["korean.glyph"], fontSize: 15, fontWeight: "800" },
+  exEn: { color: lightColors["text.muted"], fontSize: 13, fontWeight: "600" },
+  exSentence: { marginTop: spacing["space.2"], borderLeftWidth: 2, borderLeftColor: lightColors["neon.cyan"], paddingLeft: spacing["space.3"] },
+  exSentKo: { color: lightColors["text.primary"], fontSize: 15, fontWeight: "700" },
+  exSentEn: { color: lightColors["text.muted"], fontSize: 13, marginTop: 2 },
   decideRow: { flexDirection: "row", justifyContent: "space-between" },
   decideBtn: { flex: 1, height: 52, borderRadius: 14, alignItems: "center", justifyContent: "center", marginHorizontal: spacing["space.1"] },
   stillBtn: { backgroundColor: "rgba(255,255,255,0.07)" },
