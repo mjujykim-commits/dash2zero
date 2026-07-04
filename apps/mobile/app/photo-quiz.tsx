@@ -281,7 +281,7 @@ export default function PhotoQuiz() {
           )}
           {revealed && credit && (
             <Pressable onPress={() => Linking.openURL(credit.pexels_url)} style={styles.creditPill}>
-              <Text style={styles.creditText}>📷 {credit.photographer} · Pexels</Text>
+              <Text style={styles.creditText}>📷 {credit.photographer} · {credit.source ?? "Pexels"}</Text>
             </Pressable>
           )}
         </View>

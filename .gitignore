@@ -37,3 +37,9 @@ sources/track-topik.json
 sources/track-kiip.json
 sources/_audio_missing.json
 sources/final_sourcing_result_2nd.csv
+sources/emoji_photos_v2/
+sources/photos_batch1/
+sources/emoji_credits_v2.csv
+sources/credits_batch1.csv
+sources/emoji_temp_boards/
+sources/*.py

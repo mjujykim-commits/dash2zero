@@ -13,6 +13,7 @@ export interface PhotoCredit {
   photographer_url: string;
   pexels_url: string;
   avg_color?: string;
+  source?: string; // "Pexels" | "Pixabay" (기본 Pexels)
 }
 
 const MANIFEST_URL = `${SUPABASE_URL}/storage/v1/object/public/images/photos-manifest.json`;
