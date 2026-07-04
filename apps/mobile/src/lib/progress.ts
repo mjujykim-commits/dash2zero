@@ -232,6 +232,12 @@ export async function getProgress() {
   };
 }
 
+/** 마스터한(한 번이라도 맞힌) 단어 집합 — 레벨별 진도 계산용. */
+export async function getMasteredKoreans(): Promise<Set<string>> {
+  const s = await load();
+  return new Set(s.mastered);
+}
+
 /** 일일 목표 변경(10/20/30/50 등). */
 export async function setDailyGoal(n: number): Promise<void> {
   const s = await load();

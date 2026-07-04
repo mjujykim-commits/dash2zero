@@ -4,13 +4,15 @@
  * 데이터: getTrack (Storage 호스팅). 사진 없이 뜻·발음·음성으로 학습.
  */
 
-import { router } from "expo-router";
-import { useEffect, useState } from "react";
+import { router, useFocusEffect } from "expo-router";
+import { useCallback, useEffect, useState } from "react";
 import { ActivityIndicator, Pressable, ScrollView, StyleSheet, Text, View } from "react-native";
 
 import { lightColors, spacing, typeScale } from "@dash2zero/design-tokens";
 
 import { getTrack, getTrackPhotos, type TrackData, type TrackId } from "@/src/lib/tracks";
+import { examWrongCount } from "@/src/lib/examReviewStore";
+import { getMasteredKoreans } from "@/src/lib/progress";
 import { GradientBackground, GlassCard, GlowOrb } from "@/src/components/d022";
 
 const TRACKS: { id: TrackId; emoji: string; name: string; sub: string }[] = [
@@ -24,10 +26,24 @@ export default function Exam() {
   const [level, setLevel] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
   const [photoSet, setPhotoSet] = useState<Set<string>>(new Set());
+  const [mastered, setMastered] = useState<Set<string>>(new Set());
+  const [wrongN, setWrongN] = useState(0);
 
   useEffect(() => {
     getTrackPhotos().then((m) => setPhotoSet(new Set(Object.keys(m)))).catch(() => undefined);
   }, []);
+
+  // 진도/오답수는 화면 포커스 시 갱신(퀴즈 후 즉시 반영)
+  useFocusEffect(
+    useCallback(() => {
+      let alive = true;
+      Promise.all([getMasteredKoreans(), examWrongCount()]).then(([m, n]) => {
+        if (!alive) return;
+        setMastered(m); setWrongN(n);
+      }).catch(() => undefined);
+      return () => { alive = false; };
+    }, []),
+  );
 
   useEffect(() => {
     if (!track) { setData(null); setLevel(null); return; }
@@ -63,6 +79,17 @@ export default function Exam() {
               </Pressable>
             ))}
           </View>
+
+          <View style={{ flex: 1 }} />
+          {/* 오답 복습 (TOPIK/KIIP 공통) */}
+          <Pressable
+            onPress={() => wrongN > 0 && router.push("/exam-quiz?review=1&mode=meaning")}
+            style={[styles.reviewBtn, wrongN === 0 && styles.reviewBtnEmpty]}
+          >
+            <Text style={[styles.reviewText, wrongN === 0 && styles.reviewTextEmpty]}>
+              🔁  Review wrong words{wrongN > 0 ? `  ·  ${wrongN}` : ""}
+            </Text>
+          </Pressable>
         </View>
       </GradientBackground>
     );
@@ -85,19 +112,27 @@ export default function Exam() {
             </View>
           ) : (
             <ScrollView style={{ marginTop: spacing["space.5"] }} showsVerticalScrollIndicator={false}>
-              {data.levels.map((lv) => (
-                <Pressable key={lv.key} onPress={() => setLevel(lv.key)}>
-                  <GlassCard style={styles.levelCard}>
-                    <View style={styles.levelBadge}>
-                      <Text style={styles.levelBadgeText}>{lv.badge ?? lv.key}</Text>
-                    </View>
-                    <View style={{ flex: 1 }}>
-                      <Text style={styles.levelLabel}>{lv.label}</Text>
-                    </View>
-                    <Text style={styles.chevron}>›</Text>
-                  </GlassCard>
-                </Pressable>
-              ))}
+              {data.levels.map((lv) => {
+                const learned = lv.words.reduce((n, w) => n + (mastered.has(w.k) ? 1 : 0), 0);
+                const ratio = lv.words.length ? learned / lv.words.length : 0;
+                return (
+                  <Pressable key={lv.key} onPress={() => setLevel(lv.key)}>
+                    <GlassCard style={styles.levelCard}>
+                      <View style={styles.levelBadge}>
+                        <Text style={styles.levelBadgeText}>{lv.badge ?? lv.key}</Text>
+                      </View>
+                      <View style={{ flex: 1 }}>
+                        <Text style={styles.levelLabel}>{lv.label}</Text>
+                        <View style={styles.progTrack}>
+                          <View style={[styles.progFill, { width: `${Math.round(ratio * 100)}%` }]} />
+                        </View>
+                        <Text style={styles.progText}>{learned} learned</Text>
+                      </View>
+                      <Text style={styles.chevron}>›</Text>
+                    </GlassCard>
+                  </Pressable>
+                );
+              })}
               <View style={{ height: spacing["space.8"] }} />
             </ScrollView>
           )}
@@ -176,6 +211,16 @@ const styles = StyleSheet.create({
   },
   levelBadgeText: { color: lightColors["neon.cyan"], fontSize: 14, fontWeight: "900" },
   levelLabel: { color: lightColors["text.primary"], fontSize: 17, fontWeight: "800" },
+  progTrack: { height: 6, borderRadius: 4, backgroundColor: "rgba(255,255,255,0.08)", overflow: "hidden", marginTop: 6 },
+  progFill: { height: "100%", borderRadius: 4, backgroundColor: lightColors["neon.lime"] },
+  progText: { color: lightColors["text.muted"], fontSize: 11, fontWeight: "700", marginTop: 3 },
+  reviewBtn: {
+    borderRadius: 14, borderWidth: 1.5, borderColor: lightColors["neon.cyan"],
+    paddingVertical: spacing["space.4"], alignItems: "center",
+  },
+  reviewBtnEmpty: { borderColor: lightColors["glass.border"], opacity: 0.5 },
+  reviewText: { color: lightColors["neon.cyan"], fontSize: 16, fontWeight: "800" },
+  reviewTextEmpty: { color: lightColors["text.muted"] },
   levelCount: { color: lightColors["text.muted"], fontSize: typeScale["text.caption"].fontSize, marginTop: 2 },
   modeCard: { flexDirection: "row", alignItems: "center", padding: spacing["space.5"], marginBottom: spacing["space.4"] },
   studyCard: { borderWidth: 1, borderColor: lightColors["neon.cyan"] },

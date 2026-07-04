@@ -14,6 +14,7 @@ import { Image, Pressable, StyleSheet, Text, View } from "react-native";
 import { lightColors, spacing, typeScale } from "@dash2zero/design-tokens";
 
 import { getTrack, getTrackPhotos, trackAudioUri, trackPhotoUri, type TrackId, type TrackPhotoCredit, type TrackWord } from "@/src/lib/tracks";
+import { getExamWrong, recordExamAnswer } from "@/src/lib/examReviewStore";
 import { hapticNotification } from "@/src/lib/haptics";
 import { playSfx } from "@/src/lib/sound";
 import { RoundsModal } from "@/src/components/RoundsModal";
@@ -45,11 +46,13 @@ function buildQuestions(pool: TrackWord[], rounds: number, mode: QuizMode): Ques
 }
 
 export default function ExamQuiz() {
-  const params = useLocalSearchParams<{ track?: string; level?: string; mode?: string }>();
+  const params = useLocalSearchParams<{ track?: string; level?: string; mode?: string; review?: string }>();
   const track = (params.track === "kiip" ? "kiip" : "topik") as TrackId;
   const levelKey = params.level ?? "";
-  const mode: QuizMode = params.mode === "audio" ? "audio" : params.mode === "photo" ? "photo" : "meaning";
-  const title = mode === "audio" ? "Audio Quiz" : mode === "photo" ? "Photo Quiz" : "Meaning Quiz";
+  const reviewMode = params.review === "1";
+  // 복습은 사진 없이 뜻/발음으로만
+  const mode: QuizMode = params.mode === "audio" ? "audio" : params.mode === "photo" && !reviewMode ? "photo" : "meaning";
+  const title = reviewMode ? "Review" : mode === "audio" ? "Audio Quiz" : mode === "photo" ? "Photo Quiz" : "Meaning Quiz";
 
   const [pool, setPool] = useState<TrackWord[] | null>(null); // null=로딩
   const [photos, setPhotos] = useState<Record<string, TrackPhotoCredit>>({});
@@ -70,20 +73,29 @@ export default function ExamQuiz() {
 
   useEffect(() => {
     let cancelled = false;
-    Promise.all([getTrack(track), mode === "photo" ? getTrackPhotos() : Promise.resolve({} as Record<string, TrackPhotoCredit>)])
-      .then(([d, ph]) => {
+    (async () => {
+      if (reviewMode) {
+        const wrong = await getExamWrong();
         if (cancelled) return;
-        const lv = d.levels.find((l) => l.key === levelKey);
-        let words = lv?.words ?? [];
-        if (mode === "photo") words = words.filter((w) => ph[w.k]); // 사진 있는 단어만
-        setPhotos(ph);
-        setPool(words);
-        setLevelLabel(lv?.label ?? "");
-        setLevelBadge(lv?.badge ?? levelKey);
-      })
-      .catch(() => !cancelled && setPool([]));
+        setPool(wrong.map((w) => ({ k: w.k, g: w.g, r: w.r })));
+        setLevelLabel("Wrong words"); setLevelBadge("Review");
+        return;
+      }
+      const [d, ph] = await Promise.all([
+        getTrack(track),
+        mode === "photo" ? getTrackPhotos() : Promise.resolve({} as Record<string, TrackPhotoCredit>),
+      ]);
+      if (cancelled) return;
+      const lv = d.levels.find((l) => l.key === levelKey);
+      let words = lv?.words ?? [];
+      if (mode === "photo") words = words.filter((w) => ph[w.k]); // 사진 있는 단어만
+      setPhotos(ph);
+      setPool(words);
+      setLevelLabel(lv?.label ?? "");
+      setLevelBadge(lv?.badge ?? levelKey);
+    })().catch(() => !cancelled && setPool([]));
     return () => { cancelled = true; if (soundRef.current) void soundRef.current.unloadAsync().catch(() => undefined); };
-  }, [track, levelKey, mode]);
+  }, [track, levelKey, mode, reviewMode]);
 
   const questions = useMemo(
     () => (started && pool ? buildQuestions(pool, rounds, mode) : []),
@@ -118,6 +130,7 @@ export default function ExamQuiz() {
     setPicked(opt.k);
     const correct = opt.k === q.target.k;
     resultsRef.current.push({ korean: q.target.k, correct });
+    void recordExamAnswer({ k: q.target.k, g: q.target.g, r: q.target.r }, correct); // 오답 복습 기록/해제
     if (correct) { setScore((s) => s + 1); void hapticNotification("success"); void playSfx("correct"); }
     else { void hapticNotification("warning"); void playSfx("incorrect"); }
   }
@@ -141,6 +154,24 @@ export default function ExamQuiz() {
     );
   }
 
+  // ── 복습인데 오답 없음 ──
+  if (!started && reviewMode && pool.length === 0) {
+    return (
+      <GradientBackground variant="dark" direction="vertical" style={{ flex: 1 }}>
+        <GlowOrb color="neon.lime" size={280} opacity={0.35} style={{ top: -60, right: -60 }} />
+        <View style={[styles.content, { justifyContent: "center", alignItems: "center" }]}>
+          <Text style={styles.introEmoji}>🎉</Text>
+          <Text style={styles.bigTitle}>No wrong words</Text>
+          <Text style={styles.sub}>Words you miss in exam quizzes show up here to review.</Text>
+          <View style={{ height: spacing["space.8"] }} />
+          <Pressable onPress={() => router.back()} hitSlop={10}>
+            <Text style={styles.link}>Back</Text>
+          </Pressable>
+        </View>
+      </GradientBackground>
+    );
+  }
+
   // ── 개수 입력(모달) — 취소 시 뒤로 ──
   if (!started) {
     return (
@@ -151,16 +182,16 @@ export default function ExamQuiz() {
             <Text style={styles.link}>‹ Back</Text>
           </Pressable>
           <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
-            <Text style={styles.introEmoji}>{mode === "audio" ? "🔊" : mode === "photo" ? "📸" : "💬"}</Text>
+            <Text style={styles.introEmoji}>{reviewMode ? "🔁" : mode === "audio" ? "🔊" : mode === "photo" ? "📸" : "💬"}</Text>
             <Text style={styles.bigTitle}>{title}</Text>
-            <Text style={styles.sub}>{track.toUpperCase()} · {levelLabel}</Text>
+            <Text style={styles.sub}>{reviewMode ? levelLabel : `${track.toUpperCase()} · ${levelLabel}`}</Text>
           </View>
         </View>
         <RoundsModal
           visible={modalVisible}
           max={pool.length}
           title="How many words per round?"
-          subtitle={`${track.toUpperCase()} · ${levelBadge}`}
+          subtitle={reviewMode ? "Review · wrong words" : `${track.toUpperCase()} · ${levelBadge}`}
           openEnded
           defaultValue={DEFAULT_ROUNDS}
           onStart={startWith}
