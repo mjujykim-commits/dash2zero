@@ -44,3 +44,24 @@ export function trackAudioUri(korean: string): string {
   const key = encodeURIComponent(korean).replace(/%/g, "");
   return `${SUPABASE_URL}/storage/v1/object/public/audio/vocab/${key}.mp3`;
 }
+
+export function trackPhotoUri(korean: string): string {
+  const key = encodeURIComponent(korean).replace(/%/g, "");
+  return `${SUPABASE_URL}/storage/v1/object/public/images/track/${key}.jpg`;
+}
+
+export interface TrackPhotoCredit { author: string; source: string; title: string }
+
+let photoCache: Record<string, TrackPhotoCredit> | null = null;
+
+/** 사진이 있는 단어(korean) → 크레딧. 실패 시 {}. */
+export async function getTrackPhotos(): Promise<Record<string, TrackPhotoCredit>> {
+  if (photoCache) return photoCache;
+  try {
+    const r = await fetch(`${SUPABASE_URL}/storage/v1/object/public/images/track-photos.json?t=${Date.now()}`);
+    photoCache = r.ok ? ((await r.json()) as Record<string, TrackPhotoCredit>) : {};
+  } catch {
+    photoCache = {};
+  }
+  return photoCache;
+}

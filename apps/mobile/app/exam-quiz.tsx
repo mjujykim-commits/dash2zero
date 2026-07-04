@@ -9,11 +9,11 @@
 import { Audio } from "expo-av";
 import { router, useLocalSearchParams } from "expo-router";
 import { useEffect, useMemo, useRef, useState } from "react";
-import { Pressable, StyleSheet, Text, View } from "react-native";
+import { Image, Pressable, StyleSheet, Text, View } from "react-native";
 
 import { lightColors, spacing, typeScale } from "@dash2zero/design-tokens";
 
-import { getTrack, trackAudioUri, type TrackId, type TrackWord } from "@/src/lib/tracks";
+import { getTrack, getTrackPhotos, trackAudioUri, trackPhotoUri, type TrackId, type TrackPhotoCredit, type TrackWord } from "@/src/lib/tracks";
 import { hapticNotification } from "@/src/lib/haptics";
 import { playSfx } from "@/src/lib/sound";
 import { RoundsModal } from "@/src/components/RoundsModal";
@@ -25,7 +25,8 @@ import { GradientBackground, GlassCard, GlowOrb } from "@/src/components/d022";
 
 const DEFAULT_ROUNDS = 10;
 
-type PromptType = "gloss" | "korean" | "audio";
+type QuizMode = "meaning" | "audio" | "photo";
+type PromptType = "gloss" | "korean" | "audio" | "photo";
 interface Question { target: TrackWord; options: TrackWord[]; prompt: PromptType; }
 
 function shuffle<T>(arr: T[]): T[] {
@@ -34,11 +35,11 @@ function shuffle<T>(arr: T[]): T[] {
   return a;
 }
 
-function buildQuestions(pool: TrackWord[], rounds: number, mode: "meaning" | "audio"): Question[] {
+function buildQuestions(pool: TrackWord[], rounds: number, mode: QuizMode): Question[] {
   const targets = shuffle(pool).slice(0, Math.min(rounds, pool.length));
   return targets.map((target) => {
     const distractors = shuffle(pool.filter((w) => w.k !== target.k)).slice(0, 3);
-    const prompt: PromptType = mode === "audio" ? "audio" : Math.random() < 0.5 ? "gloss" : "korean";
+    const prompt: PromptType = mode === "audio" ? "audio" : mode === "photo" ? "photo" : Math.random() < 0.5 ? "gloss" : "korean";
     return { target, options: shuffle([target, ...distractors]), prompt };
   });
 }
@@ -47,10 +48,11 @@ export default function ExamQuiz() {
   const params = useLocalSearchParams<{ track?: string; level?: string; mode?: string }>();
   const track = (params.track === "kiip" ? "kiip" : "topik") as TrackId;
   const levelKey = params.level ?? "";
-  const mode: "meaning" | "audio" = params.mode === "audio" ? "audio" : "meaning";
-  const title = mode === "audio" ? "Audio Quiz" : "Meaning Quiz";
+  const mode: QuizMode = params.mode === "audio" ? "audio" : params.mode === "photo" ? "photo" : "meaning";
+  const title = mode === "audio" ? "Audio Quiz" : mode === "photo" ? "Photo Quiz" : "Meaning Quiz";
 
   const [pool, setPool] = useState<TrackWord[] | null>(null); // null=로딩
+  const [photos, setPhotos] = useState<Record<string, TrackPhotoCredit>>({});
   const [levelLabel, setLevelLabel] = useState("");
   const [levelBadge, setLevelBadge] = useState("");
   const [modalVisible, setModalVisible] = useState(true);
@@ -68,17 +70,20 @@ export default function ExamQuiz() {
 
   useEffect(() => {
     let cancelled = false;
-    getTrack(track)
-      .then((d) => {
+    Promise.all([getTrack(track), mode === "photo" ? getTrackPhotos() : Promise.resolve({} as Record<string, TrackPhotoCredit>)])
+      .then(([d, ph]) => {
         if (cancelled) return;
         const lv = d.levels.find((l) => l.key === levelKey);
-        setPool(lv?.words ?? []);
+        let words = lv?.words ?? [];
+        if (mode === "photo") words = words.filter((w) => ph[w.k]); // 사진 있는 단어만
+        setPhotos(ph);
+        setPool(words);
         setLevelLabel(lv?.label ?? "");
         setLevelBadge(lv?.badge ?? levelKey);
       })
       .catch(() => !cancelled && setPool([]));
     return () => { cancelled = true; if (soundRef.current) void soundRef.current.unloadAsync().catch(() => undefined); };
-  }, [track, levelKey]);
+  }, [track, levelKey, mode]);
 
   const questions = useMemo(
     () => (started && pool ? buildQuestions(pool, rounds, mode) : []),
@@ -146,7 +151,7 @@ export default function ExamQuiz() {
             <Text style={styles.link}>‹ Back</Text>
           </Pressable>
           <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
-            <Text style={styles.introEmoji}>{mode === "audio" ? "🔊" : "💬"}</Text>
+            <Text style={styles.introEmoji}>{mode === "audio" ? "🔊" : mode === "photo" ? "📸" : "💬"}</Text>
             <Text style={styles.bigTitle}>{title}</Text>
             <Text style={styles.sub}>{track.toUpperCase()} · {levelLabel}</Text>
           </View>
@@ -200,6 +205,19 @@ export default function ExamQuiz() {
             </Pressable>
             <Text style={styles.replayHint}>Tap to replay</Text>
           </View>
+        )}
+        {q?.prompt === "photo" && (
+          <>
+            <Text style={styles.prompt}>Which word is this?</Text>
+            <View style={styles.photoWrap}>
+              <Image source={{ uri: trackPhotoUri(q.target.k) }} style={styles.photo} resizeMode="cover" />
+              {revealed && photos[q.target.k] && (
+                <View style={styles.creditPill}>
+                  <Text style={styles.creditText}>📷 {photos[q.target.k]?.author || "Pixabay"} · Pixabay</Text>
+                </View>
+              )}
+            </View>
+          </>
         )}
         {q?.prompt === "gloss" && (
           <>
@@ -272,6 +290,16 @@ const styles = StyleSheet.create({
   },
   playEmoji: { fontSize: 56 },
   replayHint: { color: lightColors["text.muted"], fontSize: 13, marginTop: spacing["space.3"], marginBottom: spacing["space.6"] },
+  photoWrap: {
+    marginTop: spacing["space.3"], marginBottom: spacing["space.6"], borderRadius: 20, overflow: "hidden",
+    alignSelf: "center", width: "100%", aspectRatio: 1, maxHeight: 280, backgroundColor: "rgba(255,255,255,0.05)",
+  },
+  photo: { width: "100%", height: "100%" },
+  creditPill: {
+    position: "absolute", bottom: 8, right: 8, backgroundColor: "rgba(0,0,0,0.55)",
+    paddingHorizontal: 10, paddingVertical: 4, borderRadius: 12,
+  },
+  creditText: { color: "#fff", fontSize: 11, fontWeight: "600" },
   grid: { flexDirection: "row", flexWrap: "wrap", justifyContent: "space-between", marginTop: spacing["space.2"] },
   optionCard: { minHeight: 88, alignItems: "center", justifyContent: "center", padding: spacing["space.3"] },
   optionKorean: { color: lightColors["korean.glyph"], fontSize: 24, fontWeight: "800", textAlign: "center" },

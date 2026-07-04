@@ -10,7 +10,7 @@ import { ActivityIndicator, Pressable, ScrollView, StyleSheet, Text, View } from
 
 import { lightColors, spacing, typeScale } from "@dash2zero/design-tokens";
 
-import { getTrack, type TrackData, type TrackId } from "@/src/lib/tracks";
+import { getTrack, getTrackPhotos, type TrackData, type TrackId } from "@/src/lib/tracks";
 import { GradientBackground, GlassCard, GlowOrb } from "@/src/components/d022";
 
 const TRACKS: { id: TrackId; emoji: string; name: string; sub: string }[] = [
@@ -23,6 +23,11 @@ export default function Exam() {
   const [data, setData] = useState<TrackData | null>(null);
   const [level, setLevel] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
+  const [photoSet, setPhotoSet] = useState<Set<string>>(new Set());
+
+  useEffect(() => {
+    getTrackPhotos().then((m) => setPhotoSet(new Set(Object.keys(m)))).catch(() => undefined);
+  }, []);
 
   useEffect(() => {
     if (!track) { setData(null); setLevel(null); return; }
@@ -117,6 +122,9 @@ export default function Exam() {
           {[
             { mode: "meaning", emoji: "💬", title: "Meaning Quiz", sub: "Match Korean words and meanings" },
             { mode: "audio", emoji: "🔊", title: "Audio Quiz", sub: "Hear a word, pick the meaning" },
+            ...((lvObj?.words.filter((w) => photoSet.has(w.k)).length ?? 0) >= 4
+              ? [{ mode: "photo", emoji: "📸", title: "Photo Quiz", sub: "See a photo, pick the word" }]
+              : []),
           ].map((m) => (
             <Pressable
               key={m.mode}
