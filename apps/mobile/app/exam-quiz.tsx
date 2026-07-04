@@ -149,14 +149,15 @@ export default function ExamQuiz() {
             <Text style={styles.introEmoji}>{mode === "audio" ? "🔊" : "💬"}</Text>
             <Text style={styles.bigTitle}>{title}</Text>
             <Text style={styles.sub}>{track.toUpperCase()} · {levelLabel}</Text>
-            <Text style={styles.sub}>{pool.length} words</Text>
           </View>
         </View>
         <RoundsModal
           visible={modalVisible}
           max={pool.length}
-          subtitle={`${track.toUpperCase()} · ${levelBadge} · ${pool.length} words`}
-          defaultValue={Math.min(DEFAULT_ROUNDS, pool.length)}
+          title="How many words per round?"
+          subtitle={`${track.toUpperCase()} · ${levelBadge}`}
+          openEnded
+          defaultValue={DEFAULT_ROUNDS}
           onStart={startWith}
           onCancel={() => router.back()}
         />

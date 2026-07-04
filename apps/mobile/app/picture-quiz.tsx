@@ -90,7 +90,7 @@ export default function PictureQuiz() {
   const lockRef = useRef(false);
   const resultsRef = useRef<SessionResult[]>([]);
   const [reviewPool, setReviewPool] = useState<EmojiWord[] | null>(null); // null=로딩
-  const [modalCat, setModalCat] = useState<CatKey | null>(null); // 개수 입력 모달 대상
+  const [desiredRounds, setDesiredRounds] = useState<number | null>(null); // 카테고리 진입 전 설정
 
   const counts = useMemo(() => {
     const c: Record<string, number> = { all: EMOJI_WORDS.length };
@@ -141,7 +141,11 @@ export default function PictureQuiz() {
     resetRun();
   }
 
-  const modalMax = modalCat ? (modalCat === "all" ? EMOJI_WORDS.length : counts[modalCat] ?? 0) : 0;
+  // 카테고리 선택 → 설정값을 해당 카테고리 보유 수로 클램프(초과 시 최대치)
+  function pickCategory(cat: CatKey) {
+    const avail = cat === "all" ? EMOJI_WORDS.length : counts[cat] ?? 0;
+    start(cat, Math.min(desiredRounds ?? DEFAULT_ROUNDS, Math.max(1, avail)));
+  }
 
   function choose(opt: EmojiWord) {
     if (lockRef.current || !q) return;
@@ -208,16 +212,20 @@ export default function PictureQuiz() {
           <Pressable onPress={() => router.back()} hitSlop={12} style={{ marginBottom: spacing["space.2"] }}>
             <Text style={styles.link}>‹ Menu</Text>
           </Pressable>
-          <Text style={styles.bigTitle}>Picture Quiz</Text>
+          <View style={styles.headerRow}>
+            <Text style={styles.bigTitle}>Picture Quiz</Text>
+            <Pressable onPress={() => setDesiredRounds(null)} hitSlop={8} style={styles.roundsPill}>
+              <Text style={styles.roundsPillText}>✎ {desiredRounds ?? DEFAULT_ROUNDS} / round</Text>
+            </Pressable>
+          </View>
           <Text style={styles.sub}>Pick a topic.</Text>
           <ScrollView style={{ flex: 1, marginTop: spacing["space.5"] }} showsVerticalScrollIndicator={false}>
             <View style={styles.catGrid}>
               {CATEGORIES.map((c) => (
-                <Pressable key={c.key} onPress={() => setModalCat(c.key)} style={styles.catCellWrap}>
+                <Pressable key={c.key} onPress={() => pickCategory(c.key)} style={styles.catCellWrap}>
                   <GlassCard style={styles.catCell}>
                     <Text style={styles.catEmoji}>{c.emoji}</Text>
                     <Text style={styles.catLabel}>{c.label}</Text>
-                    <Text style={styles.catCount}>{counts[c.key] ?? 0}</Text>
                   </GlassCard>
                 </Pressable>
               ))}
@@ -227,16 +235,13 @@ export default function PictureQuiz() {
         </View>
 
         <RoundsModal
-          visible={modalCat !== null}
-          max={modalMax}
-          subtitle={`${CATEGORIES.find((c) => c.key === modalCat)?.label ?? ""} · ${modalMax} words`}
-          defaultValue={Math.min(DEFAULT_ROUNDS, modalMax)}
-          onStart={(n) => {
-            const cat = modalCat!;
-            setModalCat(null);
-            start(cat, n);
-          }}
-          onCancel={() => setModalCat(null)}
+          visible={desiredRounds === null}
+          max={EMOJI_WORDS.length}
+          title="How many words per round?"
+          openEnded
+          defaultValue={DEFAULT_ROUNDS}
+          onStart={(n) => setDesiredRounds(n)}
+          onCancel={() => router.back()}
         />
       </GradientBackground>
     );
@@ -346,6 +351,12 @@ const styles = StyleSheet.create({
   progress: { color: lightColors["text.muted"], fontSize: typeScale["text.caption"].fontSize, fontWeight: "700" },
   bigTitle: { color: lightColors["text.primary"], fontSize: 32, fontWeight: "900" },
   sub: { color: lightColors["text.secondary"], fontSize: typeScale["text.body"].fontSize, marginTop: spacing["space.1"], textAlign: "center" },
+  headerRow: { flexDirection: "row", justifyContent: "space-between", alignItems: "center" },
+  roundsPill: {
+    borderRadius: 999, borderWidth: 1.5, borderColor: lightColors["neon.cyan"],
+    paddingHorizontal: spacing["space.3"], paddingVertical: 6,
+  },
+  roundsPillText: { color: lightColors["neon.cyan"], fontSize: 13, fontWeight: "800" },
   catGrid: { flexDirection: "row", flexWrap: "wrap", justifyContent: "space-between" },
   catCellWrap: { width: "31%", marginBottom: spacing["space.3"] },
   catCell: { alignItems: "center", justifyContent: "center", paddingVertical: spacing["space.4"] },

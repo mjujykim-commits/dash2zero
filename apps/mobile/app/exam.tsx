@@ -88,7 +88,6 @@ export default function Exam() {
                     </View>
                     <View style={{ flex: 1 }}>
                       <Text style={styles.levelLabel}>{lv.label}</Text>
-                      <Text style={styles.levelCount}>{lv.words.length} words</Text>
                     </View>
                     <Text style={styles.chevron}>›</Text>
                   </GlassCard>
@@ -112,7 +111,7 @@ export default function Exam() {
           <Text style={styles.link}>‹ Levels</Text>
         </Pressable>
         <Text style={styles.heading}>{data?.name} · {lvObj?.badge ?? level}</Text>
-        <Text style={styles.sub}>{lvObj?.label} · {lvObj?.words.length} words</Text>
+        <Text style={styles.sub}>{lvObj?.label}</Text>
 
         <View style={{ marginTop: spacing["space.6"] }}>
           {[

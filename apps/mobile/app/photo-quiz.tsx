@@ -78,7 +78,7 @@ export default function PhotoQuiz() {
   const [picked, setPicked] = useState<string | null>(null);
   const [done, setDone] = useState(false);
   const [hasSwiped, setHasSwiped] = useState(false);
-  const [modalCat, setModalCat] = useState<CatKey | null>(null);
+  const [desiredRounds, setDesiredRounds] = useState<number | null>(null);
   const lockRef = useRef(false);
   const resultsRef = useRef<SessionResult[]>([]);
 
@@ -125,13 +125,16 @@ export default function PhotoQuiz() {
     resetRun();
   }
 
+  function pickCategory(cat: CatKey) {
+    const avail = counts[cat] ?? 0;
+    start(cat, Math.min(desiredRounds ?? DEFAULT_ROUNDS, Math.max(1, avail)));
+  }
+
   // 답 확인 후 위로 스와이프 → 다음 문제
   const swipe = useVerticalSwipe({
     enabled: picked !== null,
     onSwipeUp: () => { setHasSwiped(true); next(); },
   });
-
-  const modalMax = modalCat ? counts[modalCat] ?? 0 : 0;
 
   function choose(opt: EmojiWord) {
     if (lockRef.current || !q) return;
@@ -201,16 +204,20 @@ export default function PhotoQuiz() {
           <Pressable onPress={() => router.back()} hitSlop={12} style={{ marginBottom: spacing["space.2"] }}>
             <Text style={styles.link}>‹ Quizzes</Text>
           </Pressable>
-          <Text style={styles.bigTitle}>Photo Quiz</Text>
+          <View style={styles.headerRow}>
+            <Text style={styles.bigTitle}>Photo Quiz</Text>
+            <Pressable onPress={() => setDesiredRounds(null)} hitSlop={8} style={styles.roundsPill}>
+              <Text style={styles.roundsPillText}>✎ {desiredRounds ?? DEFAULT_ROUNDS} / round</Text>
+            </Pressable>
+          </View>
           <Text style={styles.sub}>Real photos. Pick a topic.</Text>
           <ScrollView style={{ flex: 1, marginTop: spacing["space.5"] }} showsVerticalScrollIndicator={false}>
             <View style={styles.catGrid}>
               {cats.map((c) => (
-                <Pressable key={c.key} onPress={() => setModalCat(c.key)} style={styles.catCellWrap}>
+                <Pressable key={c.key} onPress={() => pickCategory(c.key)} style={styles.catCellWrap}>
                   <GlassCard style={styles.catCell}>
                     <Text style={styles.catEmoji}>{c.emoji}</Text>
                     <Text style={styles.catLabel}>{c.label}</Text>
-                    <Text style={styles.catCount}>{counts[c.key] ?? 0}</Text>
                   </GlassCard>
                 </Pressable>
               ))}
@@ -220,16 +227,13 @@ export default function PhotoQuiz() {
         </View>
 
         <RoundsModal
-          visible={modalCat !== null}
-          max={modalMax}
-          subtitle={`${CATEGORIES.find((c) => c.key === modalCat)?.label ?? ""} · ${modalMax} photos`}
-          defaultValue={Math.min(DEFAULT_ROUNDS, modalMax)}
-          onStart={(n) => {
-            const cat = modalCat!;
-            setModalCat(null);
-            start(cat, n);
-          }}
-          onCancel={() => setModalCat(null)}
+          visible={desiredRounds === null}
+          max={ready.length}
+          title="How many words per round?"
+          openEnded
+          defaultValue={DEFAULT_ROUNDS}
+          onStart={(n) => setDesiredRounds(n)}
+          onCancel={() => router.back()}
         />
       </GradientBackground>
     );
@@ -341,6 +345,12 @@ const styles = StyleSheet.create({
   catEmoji: { fontSize: 36 },
   catLabel: { color: lightColors["text.primary"], fontSize: 13, fontWeight: "800", marginTop: spacing["space.1"] },
   catCount: { color: lightColors["text.muted"], fontSize: 11, marginTop: 2 },
+  headerRow: { flexDirection: "row", justifyContent: "space-between", alignItems: "center" },
+  roundsPill: {
+    borderRadius: 999, borderWidth: 1.5, borderColor: lightColors["neon.cyan"],
+    paddingHorizontal: spacing["space.3"], paddingVertical: 6,
+  },
+  roundsPillText: { color: lightColors["neon.cyan"], fontSize: 13, fontWeight: "800" },
   prompt: { color: lightColors["text.secondary"], fontSize: typeScale["text.body"].fontSize, marginTop: spacing["space.6"], textAlign: "center" },
   photoWrap: {
     marginTop: spacing["space.3"],

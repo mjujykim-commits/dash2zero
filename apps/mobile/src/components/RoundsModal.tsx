@@ -27,6 +27,8 @@ interface Props {
   title?: string;
   subtitle?: string;
   defaultValue?: number;
+  /** true면 보유 단어 수를 노출하지 않음(카테고리 진입 전 설정용). "Max"=가능한 최대. */
+  openEnded?: boolean;
   onStart: (n: number) => void;
   onCancel: () => void;
 }
@@ -37,6 +39,7 @@ export function RoundsModal({
   title = "How many questions?",
   subtitle,
   defaultValue = 10,
+  openEnded = false,
   onStart,
   onCancel,
 }: Props) {
@@ -54,10 +57,10 @@ export function RoundsModal({
   const clamped = Math.min(Math.max(1, value || 1), Math.max(1, max));
   const valid = value >= 1 && value <= max;
 
-  const quick = [5, 10, 20, 30].filter((n) => n < max);
+  const quick = (openEnded ? [10, 20, 30, 50] : [5, 10, 20, 30]).filter((n) => n < max);
   const chips: { label: string; n: number }[] = [
     ...quick.map((n) => ({ label: String(n), n })),
-    { label: `All ${max}`, n: max },
+    { label: openEnded ? "Max" : `All ${max}`, n: max },
   ];
 
   const step = (d: number) => setText(String(Math.min(Math.max(1, clamped + d), max)));
@@ -108,10 +111,17 @@ export function RoundsModal({
                 <Text style={styles.stepBtnText}>+</Text>
               </Pressable>
             </View>
-            <Text style={styles.hint}>{valid ? `1 – ${max} questions` : `Enter 1 – ${max}`}</Text>
+            <Text style={styles.hint}>
+              {openEnded
+                ? "Words per round · we’ll use the max if a topic has fewer"
+                : valid ? `1 – ${max} questions` : `Enter 1 – ${max}`}
+            </Text>
 
             <View style={{ height: spacing["space.4"] }} />
-            <NeonButton label={`Start · ${clamped}`} onPress={() => onStart(clamped)} />
+            <NeonButton
+              label={openEnded && clamped >= max ? "Start · Max" : `Start · ${clamped}`}
+              onPress={() => onStart(clamped)}
+            />
             <Pressable onPress={onCancel} hitSlop={8} style={styles.cancel}>
               <Text style={styles.cancelText}>Cancel</Text>
             </Pressable>

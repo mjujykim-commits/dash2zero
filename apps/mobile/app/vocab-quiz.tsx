@@ -86,9 +86,7 @@ export default function VocabQuiz() {
   const allWords = useMemo(() => (packs ? packs.flatMap((p) => p.words) : []), [packs]);
 
   const [pool, setPool] = useState<VocabWord[] | null>(null); // 선택된 카테고리 단어(null=카테고리 화면)
-  const [poolLabel, setPoolLabel] = useState("");
-  const [modalMax, setModalMax] = useState(0);
-  const [modalVisible, setModalVisible] = useState(false);
+  const [desiredRounds, setDesiredRounds] = useState<number | null>(null); // 카테고리 진입 전 설정
 
   const [started, setStarted] = useState(false);
   const [rounds, setRounds] = useState(DEFAULT_ROUNDS);
@@ -153,16 +151,10 @@ export default function VocabQuiz() {
     onSwipeUp: () => { setHasSwiped(true); next(); },
   });
 
-  function pickCategory(words: VocabWord[], label: string) {
+  // 카테고리 선택 → 설정값을 해당 팩 보유 수로 클램프(초과 시 최대치) → 바로 시작
+  function pickCategory(words: VocabWord[]) {
     setPool(words);
-    setPoolLabel(label);
-    setModalMax(words.length);
-    setModalVisible(true);
-  }
-
-  function startWith(n: number) {
-    setModalVisible(false);
-    setRounds(n);
+    setRounds(Math.min(desiredRounds ?? DEFAULT_ROUNDS, Math.max(1, words.length)));
     setStarted(true);
     resetRun();
   }
@@ -215,31 +207,34 @@ export default function VocabQuiz() {
           <Pressable onPress={() => router.back()} hitSlop={12} style={{ marginBottom: spacing["space.2"] }}>
             <Text style={styles.link}>‹ Quizzes</Text>
           </Pressable>
-          <Text style={styles.bigTitle}>
-            {mode === "audio" ? "🔊 " : "💬 "}
-            {title}
-          </Text>
+          <View style={styles.headerRow}>
+            <Text style={styles.bigTitle}>
+              {mode === "audio" ? "🔊 " : "💬 "}
+              {title}
+            </Text>
+            <Pressable onPress={() => setDesiredRounds(null)} hitSlop={8} style={styles.roundsPill}>
+              <Text style={styles.roundsPillText}>✎ {desiredRounds ?? DEFAULT_ROUNDS} / round</Text>
+            </Pressable>
+          </View>
           <Text style={styles.sub}>
             {mode === "audio" ? "Hear Korean, pick the meaning." : "Match Korean words and meanings."} Pick a topic.
           </Text>
           <ScrollView style={{ flex: 1, marginTop: spacing["space.5"] }} showsVerticalScrollIndicator={false}>
             <View style={styles.catGrid}>
               {/* All */}
-              <Pressable onPress={() => pickCategory(allWords, "All topics")} style={styles.catCellWrap}>
+              <Pressable onPress={() => pickCategory(allWords)} style={styles.catCellWrap}>
                 <GlassCard style={styles.catCell}>
                   <Text style={styles.catEmoji}>🎲</Text>
                   <Text style={styles.catLabel}>All</Text>
-                  <Text style={styles.catCount}>{allWords.length}</Text>
                 </GlassCard>
               </Pressable>
               {packs.map((p) => {
                 const meta = PACK_META[p.pack_id] ?? { emoji: "📦", label: p.name.replace(/^.*—\s*/, "") };
                 return (
-                  <Pressable key={p.pack_id} onPress={() => pickCategory(p.words, meta.label)} style={styles.catCellWrap}>
+                  <Pressable key={p.pack_id} onPress={() => pickCategory(p.words)} style={styles.catCellWrap}>
                     <GlassCard style={styles.catCell}>
                       <Text style={styles.catEmoji}>{meta.emoji}</Text>
                       <Text style={styles.catLabel} numberOfLines={1}>{meta.label}</Text>
-                      <Text style={styles.catCount}>{p.words.length}</Text>
                     </GlassCard>
                   </Pressable>
                 );
@@ -250,12 +245,13 @@ export default function VocabQuiz() {
         </View>
 
         <RoundsModal
-          visible={modalVisible}
-          max={modalMax}
-          subtitle={`${poolLabel} · ${modalMax} words`}
-          defaultValue={Math.min(DEFAULT_ROUNDS, modalMax)}
-          onStart={startWith}
-          onCancel={() => setModalVisible(false)}
+          visible={desiredRounds === null}
+          max={allWords.length}
+          title="How many words per round?"
+          openEnded
+          defaultValue={DEFAULT_ROUNDS}
+          onStart={(n) => setDesiredRounds(n)}
+          onCancel={() => router.back()}
         />
       </GradientBackground>
     );
@@ -380,6 +376,12 @@ const styles = StyleSheet.create({
   catEmoji: { fontSize: 34 },
   catLabel: { color: lightColors["text.primary"], fontSize: 13, fontWeight: "800", marginTop: spacing["space.1"] },
   catCount: { color: lightColors["text.muted"], fontSize: 11, marginTop: 2 },
+  headerRow: { flexDirection: "row", justifyContent: "space-between", alignItems: "center" },
+  roundsPill: {
+    borderRadius: 999, borderWidth: 1.5, borderColor: lightColors["neon.cyan"],
+    paddingHorizontal: spacing["space.3"], paddingVertical: 6,
+  },
+  roundsPillText: { color: lightColors["neon.cyan"], fontSize: 13, fontWeight: "800" },
   prompt: { color: lightColors["text.secondary"], fontSize: typeScale["text.body"].fontSize, marginTop: spacing["space.8"], textAlign: "center" },
   promptGloss: { color: lightColors["text.primary"], fontSize: 40, fontWeight: "900", textAlign: "center", marginTop: spacing["space.3"], marginBottom: spacing["space.8"] },
   promptKorean: { color: lightColors["korean.glyph"], fontSize: 56, fontWeight: "900", textAlign: "center", marginTop: spacing["space.3"] },
