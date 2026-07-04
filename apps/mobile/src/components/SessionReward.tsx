@@ -63,6 +63,12 @@ export function SessionReward({ results, onReplay, onExit, replayLabel = "Play a
       barW.setValue(ratioBefore);
       Animated.timing(barW, { toValue: ratioAfter, duration: 800, delay: 500, easing: Easing.out(Easing.cubic), useNativeDriver: false }).start();
     }
+
+    // 일일 목표 달성/신규 업적 — 지연된 축하 햅틱+사운드
+    if (p.dailyReached || p.newAchievements.length > 0) {
+      const t = setTimeout(() => { void hapticImpact("medium"); void playSfx("complete"); }, 1500);
+      return () => clearTimeout(t);
+    }
   }, [p, enter, barW, luScale]);
 
   if (!p) {
@@ -99,7 +105,7 @@ export function SessionReward({ results, onReplay, onExit, replayLabel = "Play a
           <GlassCard style={styles.card}>
             <View style={styles.rowBetween}>
               <Text style={styles.cardLabel}>Level</Text>
-              <Text style={styles.levelNum}>Lv {p.levelAfter}</Text>
+              <Text style={styles.levelNum}>Lv {p.levelAfter} · {p.titleAfter.ko}</Text>
             </View>
             <View style={styles.track}>
               <Animated.View style={[styles.fill, { width: barWidth }]} />
@@ -109,6 +115,22 @@ export function SessionReward({ results, onReplay, onExit, replayLabel = "Play a
                 <Text style={styles.luText}>▲ LEVEL UP</Text>
               </Animated.View>
             )}
+            {p.titleUp && <Text style={styles.titleUpMsg}>🏷️ New title: {p.titleAfter.ko} · {p.titleAfter.en}</Text>}
+          </GlassCard>
+
+          {/* 일일 목표 */}
+          <GlassCard style={styles.card}>
+            <View style={styles.rowBetween}>
+              <Text style={styles.cardLabel}>Daily goal</Text>
+              <Text style={styles.dailyNum}>{p.dailyCount} / {p.dailyGoal}</Text>
+            </View>
+            <View style={styles.track}>
+              <View style={[styles.fill, {
+                width: `${Math.min(100, (p.dailyCount / p.dailyGoal) * 100)}%`,
+                backgroundColor: p.dailyReached ? lightColors["neon.lime"] : lightColors["neon.cyan"],
+              }]} />
+            </View>
+            {p.dailyReached && <Text style={styles.goalMsg}>🎯 Daily goal complete!</Text>}
           </GlassCard>
 
           {/* 아는 단어 + 등급 */}
@@ -125,6 +147,21 @@ export function SessionReward({ results, onReplay, onExit, replayLabel = "Play a
             </View>
             {p.bandUp && <Text style={styles.bandUpMsg}>🚀 Level up! Your Korean reached {p.bandAfter.ko}.</Text>}
           </GlassCard>
+
+          {/* 신규 업적 */}
+          {p.newAchievements.length > 0 && (
+            <GlassCard style={styles.card}>
+              <Text style={styles.cardLabel}>🏅 Achievement{p.newAchievements.length > 1 ? "s" : ""} unlocked</Text>
+              <View style={styles.achRow}>
+                {p.newAchievements.map((a) => (
+                  <View key={a.id} style={styles.achPill}>
+                    <Text style={styles.achIcon}>{a.icon}</Text>
+                    <Text style={styles.achTitle}>{a.title}</Text>
+                  </View>
+                ))}
+              </View>
+            </GlassCard>
+          )}
 
           {p.streakDays >= 2 && (
             <View style={styles.streak}>
@@ -175,6 +212,18 @@ const styles = StyleSheet.create({
   known: { color: lightColors["text.primary"], fontSize: 40, fontWeight: "900" },
   newWords: { color: lightColors["neon.lime"], fontSize: 15, fontWeight: "800", marginLeft: spacing["space.3"], marginBottom: 6 },
   bandUpMsg: { color: lightColors["neon.lime"], fontSize: 14, fontWeight: "700", marginTop: spacing["space.3"] },
+  titleUpMsg: { color: lightColors["neon.cyan"], fontSize: 13, fontWeight: "800", marginTop: spacing["space.3"] },
+  dailyNum: { color: lightColors["text.primary"], fontSize: 18, fontWeight: "900" },
+  goalMsg: { color: lightColors["neon.lime"], fontSize: 14, fontWeight: "800", marginTop: spacing["space.3"] },
+  achRow: { flexDirection: "row", flexWrap: "wrap", marginTop: spacing["space.1"] },
+  achPill: {
+    flexDirection: "row", alignItems: "center",
+    backgroundColor: "rgba(147,51,234,0.18)", borderWidth: 1, borderColor: lightColors["neon.purple"],
+    borderRadius: 999, paddingHorizontal: spacing["space.3"], paddingVertical: 6,
+    marginRight: spacing["space.2"], marginTop: spacing["space.2"],
+  },
+  achIcon: { fontSize: 18, marginRight: 6 },
+  achTitle: { color: lightColors["text.primary"], fontSize: 13, fontWeight: "800" },
   streak: { alignSelf: "center", marginTop: spacing["space.1"] },
   streakText: { color: "#F59E0B", fontSize: 16, fontWeight: "800" },
   exitLink: { color: lightColors["text.muted"], fontSize: 15, fontWeight: "700", textAlign: "center", marginTop: spacing["space.4"] },
