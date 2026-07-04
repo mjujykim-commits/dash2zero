@@ -17,6 +17,7 @@ import { hapticNotification } from "@/src/lib/haptics";
 import { playSfx } from "@/src/lib/sound";
 import { getWrongKoreans, recordAnswer } from "@/src/lib/reviewStore";
 import type { SessionResult } from "@/src/lib/progress";
+import { markUnknown } from "@/src/lib/knownStore";
 import { RoundsModal } from "@/src/components/RoundsModal";
 import { SwipeHint } from "@/src/components/SwipeHint";
 import { SessionReward } from "@/src/components/SessionReward";
@@ -154,6 +155,7 @@ export default function PictureQuiz() {
     const correct = opt.korean === q.target.korean;
     void recordAnswer(q.target.korean, correct); // 오답 기록(복습용)
     resultsRef.current.push({ korean: q.target.korean, correct }); // 성장 기록
+    if (!correct) void markUnknown(q.target.korean); // 안다고 표시했어도 틀리면 모름 복귀
     if (correct) {
       setScore((s) => s + 1);
       void hapticNotification("success");

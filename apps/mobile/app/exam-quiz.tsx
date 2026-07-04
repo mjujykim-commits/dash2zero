@@ -15,6 +15,7 @@ import { lightColors, spacing, typeScale } from "@dash2zero/design-tokens";
 
 import { getTrack, getTrackPhotos, trackAudioUri, trackPhotoUri, type TrackId, type TrackPhotoCredit, type TrackWord } from "@/src/lib/tracks";
 import { getExamWrong, recordExamAnswer } from "@/src/lib/examReviewStore";
+import { markUnknown } from "@/src/lib/knownStore";
 import { hapticNotification } from "@/src/lib/haptics";
 import { playSfx } from "@/src/lib/sound";
 import { RoundsModal } from "@/src/components/RoundsModal";
@@ -131,6 +132,7 @@ export default function ExamQuiz() {
     const correct = opt.k === q.target.k;
     resultsRef.current.push({ korean: q.target.k, correct });
     void recordExamAnswer({ k: q.target.k, g: q.target.g, r: q.target.r }, correct); // 오답 복습 기록/해제
+    if (!correct) void markUnknown(q.target.k); // 안다고 표시했어도 틀리면 모름 복귀
     if (correct) { setScore((s) => s + 1); void hapticNotification("success"); void playSfx("correct"); }
     else { void hapticNotification("warning"); void playSfx("incorrect"); }
   }

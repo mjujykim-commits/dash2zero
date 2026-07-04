@@ -21,6 +21,7 @@ import { RoundsModal } from "@/src/components/RoundsModal";
 import { SwipeHint } from "@/src/components/SwipeHint";
 import { SessionReward } from "@/src/components/SessionReward";
 import { useVerticalSwipe } from "@/src/hooks/useVerticalSwipe";
+import { markUnknown } from "@/src/lib/knownStore";
 import type { SessionResult } from "@/src/lib/progress";
 import { GradientBackground, GlassCard, GlowOrb } from "@/src/components/d022";
 
@@ -165,6 +166,7 @@ export default function VocabQuiz() {
     setPicked(opt.word_id);
     const correct = opt.word_id === q.target.word_id;
     resultsRef.current.push({ korean: q.target.korean, correct });
+    if (!correct) void markUnknown(q.target.korean); // 오답 시 모름 복귀
     if (correct) {
       setScore((s) => s + 1);
       void hapticNotification("success");

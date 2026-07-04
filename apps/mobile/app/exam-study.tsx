@@ -13,6 +13,7 @@ import { ActivityIndicator, Image, Pressable, StyleSheet, Text, View } from "rea
 import { lightColors, spacing, typeScale } from "@dash2zero/design-tokens";
 
 import { getTrack, getTrackPhotos, trackAudioUri, trackPhotoUri, type TrackId, type TrackWord } from "@/src/lib/tracks";
+import { getKnownSet, markKnown } from "@/src/lib/knownStore";
 import { hapticImpact } from "@/src/lib/haptics";
 import { useVerticalSwipe } from "@/src/hooks/useVerticalSwipe";
 import { SwipeHint } from "@/src/components/SwipeHint";
@@ -31,6 +32,7 @@ export default function ExamStudy() {
 
   const [words, setWords] = useState<TrackWord[] | null>(null);
   const [photoSet, setPhotoSet] = useState<Set<string>>(new Set());
+  const [known, setKnown] = useState<Set<string>>(new Set());
   const [levelBadge, setLevelBadge] = useState("");
   const [index, setIndex] = useState(0);
   const [playing, setPlaying] = useState(false);
@@ -39,19 +41,22 @@ export default function ExamStudy() {
 
   useEffect(() => {
     let cancelled = false;
-    Promise.all([getTrack(track), getTrackPhotos()])
-      .then(([d, ph]) => {
+    Promise.all([getTrack(track), getTrackPhotos(), getKnownSet()])
+      .then(([d, ph, kn]) => {
         if (cancelled) return;
         const lv = d.levels.find((l) => l.key === levelKey);
         setWords(shuffle(lv?.words ?? []));
         setLevelBadge(lv?.badge ?? levelKey);
         setPhotoSet(new Set(Object.keys(ph)));
+        setKnown(kn);
       })
       .catch(() => !cancelled && setWords([]));
     return () => { cancelled = true; if (soundRef.current) void soundRef.current.unloadAsync().catch(() => undefined); };
   }, [track, levelKey]);
 
-  const word = words?.[index];
+  // 아는 단어 제외한 학습 대상
+  const displayed = useMemo(() => (words ?? []).filter((w) => !known.has(w.k)), [words, known]);
+  const word = displayed[index];
 
   async function play(korean: string) {
     setPlaying(true);
@@ -69,7 +74,7 @@ export default function ExamStudy() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [word?.k]);
 
-  const total = words?.length ?? 0;
+  const total = displayed.length;
   const go = (delta: number) => {
     void hapticImpact("light");
     setIndex((i) => Math.min(Math.max(0, i + delta), Math.max(0, total - 1)));
@@ -80,11 +85,38 @@ export default function ExamStudy() {
     onSwipeDown: () => { setHasSwiped(true); go(-1); },
   });
 
+  // "안다" → known에 추가(제외됨). 제거 후 현재 index가 다음 카드를 가리키도록 클램프.
+  function knowIt() {
+    if (!word) return;
+    void markKnown(word.k);
+    void hapticImpact("light");
+    setKnown((prev) => new Set(prev).add(word.k));
+    setIndex((i) => Math.min(i, Math.max(0, total - 2)));
+  }
+
   if (words === null) {
     return (
       <GradientBackground variant="dark" direction="vertical" style={{ flex: 1 }}>
         <View style={[styles.content, { justifyContent: "center", alignItems: "center" }]}>
           <ActivityIndicator color={lightColors["neon.cyan"]} />
+        </View>
+      </GradientBackground>
+    );
+  }
+
+  // 다 아는 경우(학습할 단어 없음)
+  if (total === 0) {
+    return (
+      <GradientBackground variant="dark" direction="vertical" style={{ flex: 1 }}>
+        <GlowOrb color="neon.lime" size={280} opacity={0.35} style={{ top: -60, right: -60 }} />
+        <View style={[styles.content, { justifyContent: "center", alignItems: "center" }]}>
+          <Text style={styles.doneEmoji}>🎉</Text>
+          <Text style={styles.doneTitle}>You know them all!</Text>
+          <Text style={styles.doneSub}>No unknown words left in {track.toUpperCase()} · {levelBadge}. Miss one in a quiz and it comes back here.</Text>
+          <View style={{ height: spacing["space.8"] }} />
+          <Pressable onPress={() => router.back()} hitSlop={10}>
+            <Text style={styles.link}>Back</Text>
+          </Pressable>
         </View>
       </GradientBackground>
     );
@@ -100,7 +132,7 @@ export default function ExamStudy() {
           <Pressable onPress={() => router.back()} hitSlop={12}>
             <Text style={styles.link}>‹ Back</Text>
           </Pressable>
-          <Text style={styles.count}>{track.toUpperCase()} · {levelBadge} · {total ? index + 1 : 0}/{total}</Text>
+          <Text style={styles.count}>{track.toUpperCase()} · {levelBadge} · {index + 1}/{total} left</Text>
         </View>
 
         <View style={styles.cardArea}>
@@ -118,6 +150,16 @@ export default function ExamStudy() {
                 <Text style={styles.speakerText}>{playing ? "🔊 Playing…" : "🔈 Tap to hear"}</Text>
               </View>
             </GlassCard>
+          </Pressable>
+        </View>
+
+        {/* 안다 / 아직 몰라 */}
+        <View style={styles.decideRow}>
+          <Pressable onPress={() => go(1)} style={[styles.decideBtn, styles.stillBtn]}>
+            <Text style={styles.stillText}>Still learning</Text>
+          </Pressable>
+          <Pressable onPress={knowIt} style={[styles.decideBtn, styles.knowBtn]}>
+            <Text style={styles.knowText}>✓ I know this</Text>
           </Pressable>
         </View>
 
@@ -146,5 +188,14 @@ const styles = StyleSheet.create({
     borderRadius: 999, backgroundColor: "rgba(6,182,212,0.14)", borderWidth: 1, borderColor: lightColors["neon.cyan"],
   },
   speakerText: { color: lightColors["neon.cyan"], fontSize: 14, fontWeight: "800" },
-  hintArea: { height: 84, justifyContent: "center", alignItems: "center" },
+  decideRow: { flexDirection: "row", justifyContent: "space-between" },
+  decideBtn: { flex: 1, height: 52, borderRadius: 14, alignItems: "center", justifyContent: "center", marginHorizontal: spacing["space.1"] },
+  stillBtn: { backgroundColor: "rgba(255,255,255,0.07)" },
+  stillText: { color: lightColors["text.secondary"], fontSize: 15, fontWeight: "800" },
+  knowBtn: { backgroundColor: lightColors["semantic.success"] },
+  knowText: { color: "#0B0B0F", fontSize: 15, fontWeight: "900" },
+  hintArea: { height: 64, justifyContent: "center", alignItems: "center" },
+  doneEmoji: { fontSize: 72 },
+  doneTitle: { color: lightColors["text.primary"], fontSize: 26, fontWeight: "900", marginTop: spacing["space.3"] },
+  doneSub: { color: lightColors["text.secondary"], fontSize: typeScale["text.body"].fontSize, marginTop: spacing["space.2"], textAlign: "center" },
 });

@@ -17,6 +17,7 @@ import { playSfx } from "@/src/lib/sound";
 import { recordAnswer } from "@/src/lib/reviewStore";
 import { getPhotoManifest, photoUri, type PhotoCredit } from "@/src/lib/photos";
 import type { SessionResult } from "@/src/lib/progress";
+import { markUnknown } from "@/src/lib/knownStore";
 import { RoundsModal } from "@/src/components/RoundsModal";
 import { SwipeHint } from "@/src/components/SwipeHint";
 import { SessionReward } from "@/src/components/SessionReward";
@@ -143,6 +144,7 @@ export default function PhotoQuiz() {
     const correct = opt.korean === q.target.korean;
     void recordAnswer(q.target.korean, correct);
     resultsRef.current.push({ korean: q.target.korean, correct });
+    if (!correct) void markUnknown(q.target.korean); // 오답 시 모름 복귀
     if (correct) {
       setScore((s) => s + 1);
       void hapticNotification("success");
