@@ -16,8 +16,10 @@ import { hapticNotification } from "@/src/lib/haptics";
 import { playSfx } from "@/src/lib/sound";
 import { recordAnswer } from "@/src/lib/reviewStore";
 import { getPhotoManifest, photoUri, type PhotoCredit } from "@/src/lib/photos";
+import type { SessionResult } from "@/src/lib/progress";
 import { RoundsModal } from "@/src/components/RoundsModal";
 import { SwipeHint } from "@/src/components/SwipeHint";
+import { SessionReward } from "@/src/components/SessionReward";
 import { useVerticalSwipe } from "@/src/hooks/useVerticalSwipe";
 import { GradientBackground, GlassCard, GlowOrb, NeonButton } from "@/src/components/d022";
 
@@ -78,6 +80,7 @@ export default function PhotoQuiz() {
   const [hasSwiped, setHasSwiped] = useState(false);
   const [modalCat, setModalCat] = useState<CatKey | null>(null);
   const lockRef = useRef(false);
+  const resultsRef = useRef<SessionResult[]>([]);
 
   useEffect(() => {
     (async () => {
@@ -112,6 +115,7 @@ export default function PhotoQuiz() {
     setDone(false);
     setHasSwiped(false);
     lockRef.current = false;
+    resultsRef.current = [];
     setSeed((s) => s + 1);
   };
 
@@ -135,6 +139,7 @@ export default function PhotoQuiz() {
     setPicked(opt.korean);
     const correct = opt.korean === q.target.korean;
     void recordAnswer(q.target.korean, correct);
+    resultsRef.current.push({ korean: q.target.korean, correct });
     if (correct) {
       setScore((s) => s + 1);
       void hapticNotification("success");
@@ -233,23 +238,13 @@ export default function PhotoQuiz() {
   // ── 결과 ──
   if (done) {
     return (
-      <GradientBackground variant="dark" direction="vertical" style={{ flex: 1 }}>
-        <GlowOrb color="neon.lime" size={280} opacity={0.35} style={{ top: -60, right: -60 }} />
-        <View style={[styles.content, { justifyContent: "center", alignItems: "center" }]}>
-          <Text style={styles.resultEmoji}>{score >= total - 1 ? "🎉" : "👍"}</Text>
-          <Text style={styles.resultScore}>
-            {score} / {total}
-          </Text>
-          <Text style={styles.sub}>correct</Text>
-          <View style={{ height: spacing["space.8"] }} />
-          <View style={{ width: "100%" }}>
-            <NeonButton label="Play again" onPress={() => category && start(category, rounds)} />
-          </View>
-          <Pressable onPress={() => setCategory(null)} hitSlop={10} style={{ marginTop: spacing["space.4"] }}>
-            <Text style={styles.link}>Change topic</Text>
-          </Pressable>
-        </View>
-      </GradientBackground>
+      <SessionReward
+        results={resultsRef.current}
+        onReplay={() => category && start(category, rounds)}
+        onExit={() => setCategory(null)}
+        replayLabel="Play again"
+        exitLabel="Change topic"
+      />
     );
   }
 

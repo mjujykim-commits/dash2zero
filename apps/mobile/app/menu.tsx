@@ -8,6 +8,7 @@ import { Pressable, StyleSheet, Text, View } from "react-native";
 import { lightColors, spacing, typeScale } from "@dash2zero/design-tokens";
 
 import { GradientBackground, GlassCard, GlowOrb } from "@/src/components/d022";
+import { ProficiencyCard } from "@/src/components/ProficiencyCard";
 
 export default function Menu() {
   return (
@@ -20,6 +21,8 @@ export default function Menu() {
           <Text style={styles.title}>dash2zero</Text>
           <Text style={styles.sub}>Learn Korean with pictures.</Text>
         </View>
+
+        <ProficiencyCard />
 
         {/* 큰 버튼 2개 */}
         <Pressable onPress={() => router.push("/study")}>

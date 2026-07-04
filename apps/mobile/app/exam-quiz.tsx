@@ -18,8 +18,10 @@ import { hapticNotification } from "@/src/lib/haptics";
 import { playSfx } from "@/src/lib/sound";
 import { RoundsModal } from "@/src/components/RoundsModal";
 import { SwipeHint } from "@/src/components/SwipeHint";
+import { SessionReward } from "@/src/components/SessionReward";
 import { useVerticalSwipe } from "@/src/hooks/useVerticalSwipe";
-import { GradientBackground, GlassCard, GlowOrb, NeonButton } from "@/src/components/d022";
+import type { SessionResult } from "@/src/lib/progress";
+import { GradientBackground, GlassCard, GlowOrb } from "@/src/components/d022";
 
 const DEFAULT_ROUNDS = 10;
 
@@ -62,6 +64,7 @@ export default function ExamQuiz() {
   const [hasSwiped, setHasSwiped] = useState(false);
   const lockRef = useRef(false);
   const soundRef = useRef<Audio.Sound | null>(null);
+  const resultsRef = useRef<SessionResult[]>([]);
 
   useEffect(() => {
     let cancelled = false;
@@ -99,7 +102,7 @@ export default function ExamQuiz() {
 
   function resetRun() {
     setRound(0); setScore(0); setPicked(null); setDone(false); setHasSwiped(false);
-    lockRef.current = false; setSeed((s) => s + 1);
+    lockRef.current = false; resultsRef.current = []; setSeed((s) => s + 1);
   }
 
   function startWith(n: number) { setModalVisible(false); setRounds(n); setStarted(true); resetRun(); }
@@ -109,6 +112,7 @@ export default function ExamQuiz() {
     lockRef.current = true;
     setPicked(opt.k);
     const correct = opt.k === q.target.k;
+    resultsRef.current.push({ korean: q.target.k, correct });
     if (correct) { setScore((s) => s + 1); void hapticNotification("success"); void playSfx("correct"); }
     else { void hapticNotification("warning"); void playSfx("incorrect"); }
   }
@@ -160,24 +164,16 @@ export default function ExamQuiz() {
     );
   }
 
-  // ── 결과 ──
+  // ── 결과(성장 리워드) ──
   if (done) {
     return (
-      <GradientBackground variant="dark" direction="vertical" style={{ flex: 1 }}>
-        <GlowOrb color="neon.lime" size={280} opacity={0.35} style={{ top: -60, right: -60 }} />
-        <View style={[styles.content, { justifyContent: "center", alignItems: "center" }]}>
-          <Text style={styles.resultEmoji}>{score >= total - 1 ? "🎉" : "👍"}</Text>
-          <Text style={styles.resultScore}>{score} / {total}</Text>
-          <Text style={styles.sub}>correct</Text>
-          <View style={{ height: spacing["space.8"] }} />
-          <View style={{ width: "100%" }}>
-            <NeonButton label="Play again" onPress={() => { setModalVisible(true); setStarted(false); }} />
-          </View>
-          <Pressable onPress={() => router.back()} hitSlop={10} style={{ marginTop: spacing["space.4"] }}>
-            <Text style={styles.link}>Back to levels</Text>
-          </Pressable>
-        </View>
-      </GradientBackground>
+      <SessionReward
+        results={resultsRef.current}
+        onReplay={() => { setModalVisible(true); setStarted(false); }}
+        onExit={() => router.back()}
+        replayLabel="Play again"
+        exitLabel="Back to levels"
+      />
     );
   }
 

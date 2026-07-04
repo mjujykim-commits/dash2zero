@@ -19,8 +19,10 @@ import { hapticNotification } from "@/src/lib/haptics";
 import { playSfx } from "@/src/lib/sound";
 import { RoundsModal } from "@/src/components/RoundsModal";
 import { SwipeHint } from "@/src/components/SwipeHint";
+import { SessionReward } from "@/src/components/SessionReward";
 import { useVerticalSwipe } from "@/src/hooks/useVerticalSwipe";
-import { GradientBackground, GlassCard, GlowOrb, NeonButton } from "@/src/components/d022";
+import type { SessionResult } from "@/src/lib/progress";
+import { GradientBackground, GlassCard, GlowOrb } from "@/src/components/d022";
 
 const DEFAULT_ROUNDS = 10;
 
@@ -98,6 +100,7 @@ export default function VocabQuiz() {
   const [hasSwiped, setHasSwiped] = useState(false);
   const lockRef = useRef(false);
   const soundRef = useRef<Audio.Sound | null>(null);
+  const resultsRef = useRef<SessionResult[]>([]);
 
   useEffect(() => {
     let cancelled = false;
@@ -140,6 +143,7 @@ export default function VocabQuiz() {
     setDone(false);
     setHasSwiped(false);
     lockRef.current = false;
+    resultsRef.current = [];
     setSeed((s) => s + 1);
   }
 
@@ -168,6 +172,7 @@ export default function VocabQuiz() {
     lockRef.current = true;
     setPicked(opt.word_id);
     const correct = opt.word_id === q.target.word_id;
+    resultsRef.current.push({ korean: q.target.korean, correct });
     if (correct) {
       setScore((s) => s + 1);
       void hapticNotification("success");
@@ -256,26 +261,16 @@ export default function VocabQuiz() {
     );
   }
 
-  // ── 결과 ──
+  // ── 결과(성장 리워드) ──
   if (done) {
     return (
-      <GradientBackground variant="dark" direction="vertical" style={{ flex: 1 }}>
-        <GlowOrb color="neon.lime" size={280} opacity={0.35} style={{ top: -60, right: -60 }} />
-        <View style={[styles.content, { justifyContent: "center", alignItems: "center" }]}>
-          <Text style={styles.resultEmoji}>{score >= total - 1 ? "🎉" : "👍"}</Text>
-          <Text style={styles.resultScore}>
-            {score} / {total}
-          </Text>
-          <Text style={styles.sub}>correct</Text>
-          <View style={{ height: spacing["space.8"] }} />
-          <View style={{ width: "100%" }}>
-            <NeonButton label="Play again" onPress={resetRun} />
-          </View>
-          <Pressable onPress={() => setStarted(false)} hitSlop={10} style={{ marginTop: spacing["space.4"] }}>
-            <Text style={styles.link}>Change topic</Text>
-          </Pressable>
-        </View>
-      </GradientBackground>
+      <SessionReward
+        results={resultsRef.current}
+        onReplay={resetRun}
+        onExit={() => setStarted(false)}
+        replayLabel="Play again"
+        exitLabel="Change topic"
+      />
     );
   }
 
