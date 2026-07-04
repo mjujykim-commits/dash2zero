@@ -89,7 +89,7 @@ export default function ExamQuiz() {
       if (cancelled) return;
       const lv = d.levels.find((l) => l.key === levelKey);
       let words = lv?.words ?? [];
-      if (mode === "photo") words = words.filter((w) => ph[w.k]); // 사진 있는 단어만
+      if (mode === "photo") words = words.filter((w) => ph[w.k]?.quiz); // 퀴즈안전(구체어) 사진만 — 추상어(육/차 등) 제외
       setPhotos(ph);
       setPool(words);
       setLevelLabel(lv?.label ?? "");

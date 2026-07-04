@@ -50,7 +50,7 @@ export function trackPhotoUri(korean: string): string {
   return `${SUPABASE_URL}/storage/v1/object/public/images/track/${key}.jpg`;
 }
 
-export interface TrackPhotoCredit { author: string; source: string; title: string }
+export interface TrackPhotoCredit { author: string; source: string; title: string; quiz?: boolean }
 
 let photoCache: Record<string, TrackPhotoCredit> | null = null;
 

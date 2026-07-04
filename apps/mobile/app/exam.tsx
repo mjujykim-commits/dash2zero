@@ -30,7 +30,10 @@ export default function Exam() {
   const [wrongN, setWrongN] = useState(0);
 
   useEffect(() => {
-    getTrackPhotos().then((m) => setPhotoSet(new Set(Object.keys(m)))).catch(() => undefined);
+    // Photo 퀴즈 노출 판단은 "퀴즈안전(구체어)" 사진만 카운트 (추상어 제외)
+    getTrackPhotos()
+      .then((m) => setPhotoSet(new Set(Object.entries(m).filter(([, v]) => v.quiz).map(([k]) => k))))
+      .catch(() => undefined);
   }, []);
 
   // 진도/오답수는 화면 포커스 시 갱신(퀴즈 후 즉시 반영)
