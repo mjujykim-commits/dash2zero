@@ -9,6 +9,7 @@ import { lightColors, spacing, typeScale } from "@dash2zero/design-tokens";
 
 import { GradientBackground, GlassCard, GlowOrb } from "@/src/components/d022";
 import { ProficiencyCard } from "@/src/components/ProficiencyCard";
+import { isPremium } from "@/src/lib/premium";
 
 export default function Menu() {
   return (
@@ -41,12 +42,18 @@ export default function Menu() {
           </GlassCard>
         </Pressable>
 
-        <Pressable onPress={() => router.push("/exam")}>
+        {/* 유료(예정) 진입점 — 게이트 한 곳(isPremium)에서 분기 */}
+        <Pressable onPress={() => router.push(isPremium() ? "/exam" : "/paywall")}>
           <GlassCard style={styles.examCard}>
             <Text style={styles.examEmoji}>🎓</Text>
             <View style={{ flex: 1 }}>
-              <Text style={styles.examTitle}>Exam prep</Text>
-              <Text style={styles.examSub}>TOPIK · KIIP — by level</Text>
+              <View style={styles.examTitleRow}>
+                <Text style={styles.examTitle}>Exam prep</Text>
+                <View style={styles.proChip}>
+                  <Text style={styles.proText}>PRO</Text>
+                </View>
+              </View>
+              <Text style={styles.examSub}>TOPIK · KIIP — study & quiz by level</Text>
             </View>
             <Text style={styles.examChevron}>›</Text>
           </GlassCard>
@@ -84,9 +91,17 @@ const styles = StyleSheet.create({
     paddingVertical: spacing["space.4"],
     paddingHorizontal: spacing["space.5"],
     marginBottom: spacing["space.4"],
+    borderWidth: 1.5,
+    borderColor: "#F5C542", // 프리미엄 골드 액센트
   },
   examEmoji: { fontSize: 34, marginRight: spacing["space.4"] },
+  examTitleRow: { flexDirection: "row", alignItems: "center" },
   examTitle: { color: lightColors["text.primary"], fontSize: 20, fontWeight: "900" },
+  proChip: {
+    marginLeft: spacing["space.2"], backgroundColor: "#F5C542",
+    borderRadius: 6, paddingHorizontal: 6, paddingVertical: 1,
+  },
+  proText: { color: "#0B0B0F", fontSize: 11, fontWeight: "900", letterSpacing: 0.5 },
   examSub: { color: lightColors["text.muted"], fontSize: typeScale["text.caption"].fontSize, marginTop: 2 },
   examChevron: { color: lightColors["text.muted"], fontSize: 26 },
   reviewBtn: {

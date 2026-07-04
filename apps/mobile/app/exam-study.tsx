@@ -1,0 +1,150 @@
+/**
+ * Exam Study — TOPIK/KIIP 레벨 단어를 1스크린 1단어 플래시카드로 학습(유료 진입점 내부).
+ *
+ * 사진(있으면) + 한글 + 발음 + 뜻. 진입 시 발음 자동 재생, 탭하면 재생.
+ * 위로 스와이프=다음 / 아래로=이전. 데이터: getTrack. 발음: trackAudioUri. 사진: trackPhotoUri.
+ */
+
+import { Audio } from "expo-av";
+import { router, useLocalSearchParams } from "expo-router";
+import { useEffect, useMemo, useRef, useState } from "react";
+import { ActivityIndicator, Image, Pressable, StyleSheet, Text, View } from "react-native";
+
+import { lightColors, spacing, typeScale } from "@dash2zero/design-tokens";
+
+import { getTrack, getTrackPhotos, trackAudioUri, trackPhotoUri, type TrackId, type TrackWord } from "@/src/lib/tracks";
+import { hapticImpact } from "@/src/lib/haptics";
+import { useVerticalSwipe } from "@/src/hooks/useVerticalSwipe";
+import { SwipeHint } from "@/src/components/SwipeHint";
+import { GradientBackground, GlassCard, GlowOrb } from "@/src/components/d022";
+
+function shuffle<T>(arr: T[]): T[] {
+  const a = [...arr];
+  for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j]!, a[i]!]; }
+  return a;
+}
+
+export default function ExamStudy() {
+  const params = useLocalSearchParams<{ track?: string; level?: string }>();
+  const track = (params.track === "kiip" ? "kiip" : "topik") as TrackId;
+  const levelKey = params.level ?? "";
+
+  const [words, setWords] = useState<TrackWord[] | null>(null);
+  const [photoSet, setPhotoSet] = useState<Set<string>>(new Set());
+  const [levelBadge, setLevelBadge] = useState("");
+  const [index, setIndex] = useState(0);
+  const [playing, setPlaying] = useState(false);
+  const [hasSwiped, setHasSwiped] = useState(false);
+  const soundRef = useRef<Audio.Sound | null>(null);
+
+  useEffect(() => {
+    let cancelled = false;
+    Promise.all([getTrack(track), getTrackPhotos()])
+      .then(([d, ph]) => {
+        if (cancelled) return;
+        const lv = d.levels.find((l) => l.key === levelKey);
+        setWords(shuffle(lv?.words ?? []));
+        setLevelBadge(lv?.badge ?? levelKey);
+        setPhotoSet(new Set(Object.keys(ph)));
+      })
+      .catch(() => !cancelled && setWords([]));
+    return () => { cancelled = true; if (soundRef.current) void soundRef.current.unloadAsync().catch(() => undefined); };
+  }, [track, levelKey]);
+
+  const word = words?.[index];
+
+  async function play(korean: string) {
+    setPlaying(true);
+    try {
+      if (soundRef.current) { await soundRef.current.unloadAsync().catch(() => undefined); soundRef.current = null; }
+      const { sound } = await Audio.Sound.createAsync({ uri: trackAudioUri(korean) }, { shouldPlay: true, volume: 1 });
+      soundRef.current = sound;
+      sound.setOnPlaybackStatusUpdate((s) => { if (s.isLoaded && s.didJustFinish) setPlaying(false); });
+    } catch { setPlaying(false); }
+  }
+
+  // 카드 바뀔 때 자동 재생
+  useEffect(() => {
+    if (word) void play(word.k);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [word?.k]);
+
+  const total = words?.length ?? 0;
+  const go = (delta: number) => {
+    void hapticImpact("light");
+    setIndex((i) => Math.min(Math.max(0, i + delta), Math.max(0, total - 1)));
+  };
+  const swipe = useVerticalSwipe({
+    enabled: total > 0,
+    onSwipeUp: () => { setHasSwiped(true); go(1); },
+    onSwipeDown: () => { setHasSwiped(true); go(-1); },
+  });
+
+  if (words === null) {
+    return (
+      <GradientBackground variant="dark" direction="vertical" style={{ flex: 1 }}>
+        <View style={[styles.content, { justifyContent: "center", alignItems: "center" }]}>
+          <ActivityIndicator color={lightColors["neon.cyan"]} />
+        </View>
+      </GradientBackground>
+    );
+  }
+
+  const hasPhoto = word ? photoSet.has(word.k) : false;
+
+  return (
+    <GradientBackground variant="dark" direction="vertical" style={{ flex: 1 }}>
+      <GlowOrb color="neon.cyan" size={260} opacity={0.3} style={{ top: -60, left: -60 }} />
+      <View style={styles.content} {...swipe}>
+        <View style={styles.topRow}>
+          <Pressable onPress={() => router.back()} hitSlop={12}>
+            <Text style={styles.link}>‹ Back</Text>
+          </Pressable>
+          <Text style={styles.count}>{track.toUpperCase()} · {levelBadge} · {total ? index + 1 : 0}/{total}</Text>
+        </View>
+
+        <View style={styles.cardArea}>
+          <Pressable style={{ width: "100%" }} onPress={() => word && play(word.k)}>
+            <GlassCard style={styles.flashCard}>
+              {hasPhoto && word ? (
+                <Image source={{ uri: trackPhotoUri(word.k) }} style={styles.photo} resizeMode="cover" />
+              ) : (
+                <Text style={styles.noPhotoGlyph}>{word?.k?.slice(0, 1) ?? "가"}</Text>
+              )}
+              <Text style={styles.korean}>{word?.k}</Text>
+              <Text style={styles.rr}>{word?.r}</Text>
+              <Text style={styles.gloss}>{word?.g}</Text>
+              <View style={styles.speakerPill}>
+                <Text style={styles.speakerText}>{playing ? "🔊 Playing…" : "🔈 Tap to hear"}</Text>
+              </View>
+            </GlassCard>
+          </Pressable>
+        </View>
+
+        <View style={styles.hintArea}>
+          <SwipeHint visible={!hasSwiped && total > 1} label="Swipe" direction="both" />
+        </View>
+      </View>
+    </GradientBackground>
+  );
+}
+
+const styles = StyleSheet.create({
+  content: { flex: 1, paddingHorizontal: spacing["space.5"], paddingTop: spacing["space.12"], paddingBottom: spacing["space.6"] },
+  topRow: { flexDirection: "row", justifyContent: "space-between", alignItems: "center" },
+  link: { color: lightColors["neon.cyan"], fontSize: 16, fontWeight: "700" },
+  count: { color: lightColors["text.muted"], fontSize: typeScale["text.caption"].fontSize, fontWeight: "800" },
+  cardArea: { flex: 1, justifyContent: "center" },
+  flashCard: { alignItems: "center", justifyContent: "center", paddingVertical: spacing["space.8"], paddingHorizontal: spacing["space.5"] },
+  photo: { width: 180, height: 180, borderRadius: 20, marginBottom: spacing["space.4"] },
+  noPhotoGlyph: { fontSize: 96, color: lightColors["korean.glyph"], opacity: 0.25, marginBottom: spacing["space.2"] },
+  korean: { color: lightColors["korean.glyph"], fontSize: 48, fontWeight: "900", marginTop: spacing["space.2"] },
+  rr: { color: lightColors["text.muted"], fontSize: 17, marginTop: 2 },
+  gloss: { color: lightColors["text.secondary"], fontSize: 22, fontWeight: "700", marginTop: spacing["space.3"], textAlign: "center" },
+  speakerPill: {
+    marginTop: spacing["space.5"], paddingHorizontal: spacing["space.4"], paddingVertical: spacing["space.2"],
+    borderRadius: 999, backgroundColor: "rgba(6,182,212,0.14)", borderWidth: 1, borderColor: lightColors["neon.cyan"],
+  },
+  speakerText: { color: lightColors["neon.cyan"], fontSize: 14, fontWeight: "800" },
+  hintArea: { height: 84, justifyContent: "center", alignItems: "center" },
+});

@@ -119,6 +119,18 @@ export default function Exam() {
         <Text style={styles.sub}>{lvObj?.label}</Text>
 
         <View style={{ marginTop: spacing["space.6"] }}>
+          {/* 학습(넘겨보기) — 퀴즈와 구분 */}
+          <Pressable onPress={() => router.push(`/exam-study?track=${track}&level=${level}`)}>
+            <GlassCard style={[styles.modeCard, styles.studyCard]}>
+              <Text style={styles.modeEmoji}>📖</Text>
+              <View style={{ flex: 1 }}>
+                <Text style={styles.modeTitle}>Study</Text>
+                <Text style={styles.modeSub}>Browse words · hear & memorize</Text>
+              </View>
+              <Text style={styles.chevron}>›</Text>
+            </GlassCard>
+          </Pressable>
+
           {[
             { mode: "meaning", emoji: "💬", title: "Meaning Quiz", sub: "Match Korean words and meanings" },
             { mode: "audio", emoji: "🔊", title: "Audio Quiz", sub: "Hear a word, pick the meaning" },
@@ -166,6 +178,7 @@ const styles = StyleSheet.create({
   levelLabel: { color: lightColors["text.primary"], fontSize: 17, fontWeight: "800" },
   levelCount: { color: lightColors["text.muted"], fontSize: typeScale["text.caption"].fontSize, marginTop: 2 },
   modeCard: { flexDirection: "row", alignItems: "center", padding: spacing["space.5"], marginBottom: spacing["space.4"] },
+  studyCard: { borderWidth: 1, borderColor: lightColors["neon.cyan"] },
   modeEmoji: { fontSize: 40, marginRight: spacing["space.4"] },
   modeTitle: { color: lightColors["text.primary"], fontSize: 20, fontWeight: "800" },
   modeSub: { color: lightColors["text.muted"], fontSize: typeScale["text.caption"].fontSize, marginTop: 2 },
