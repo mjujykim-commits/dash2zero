@@ -14,6 +14,7 @@ import { getTrack, getTrackPhotos, getTrackCloze, type TrackData, type TrackId }
 import { examWrongCount } from "@/src/lib/examReviewStore";
 import { getMasteredKoreans } from "@/src/lib/progress";
 import { GradientBackground, GlassCard, GlowOrb } from "@/src/components/d022";
+import { TabBar } from "@/src/components/TabBar";
 
 const TRACKS: { id: TrackId; emoji: string; name: string; sub: string }[] = [
   { id: "topik", emoji: "📕", name: "TOPIK", sub: "한국어능력시험 · Proficiency test" },
@@ -65,9 +66,6 @@ export default function Exam() {
       <GradientBackground variant="dark" direction="vertical" style={{ flex: 1 }}>
         <GlowOrb color="neon.purple" size={280} opacity={0.35} style={{ top: -80, right: -60 }} />
         <View style={styles.content}>
-          <Pressable onPress={() => router.back()} hitSlop={12} style={{ marginBottom: spacing["space.2"] }}>
-            <Text style={styles.link}>‹ Menu</Text>
-          </Pressable>
           <Text style={styles.heading}>Exam prep</Text>
           <Text style={styles.sub}>Which test are you preparing for?</Text>
           <View style={{ marginTop: spacing["space.6"] }}>
@@ -96,6 +94,7 @@ export default function Exam() {
             </Text>
           </Pressable>
         </View>
+        <TabBar active="exam" />
       </GradientBackground>
     );
   }
@@ -147,6 +146,7 @@ export default function Exam() {
             </ScrollView>
           )}
         </View>
+        <TabBar active="exam" />
       </GradientBackground>
     );
   }
@@ -213,6 +213,7 @@ export default function Exam() {
           ))}
         </View>
       </View>
+      <TabBar active="exam" />
     </GradientBackground>
   );
 }
