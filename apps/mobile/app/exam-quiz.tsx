@@ -21,7 +21,7 @@ import { playSfx } from "@/src/lib/sound";
 import { RoundsModal } from "@/src/components/RoundsModal";
 import { SwipeHint } from "@/src/components/SwipeHint";
 import { SessionReward } from "@/src/components/SessionReward";
-import { useVerticalSwipe } from "@/src/hooks/useVerticalSwipe";
+import { SwipeCard } from "@/src/components/SwipeCard";
 import type { SessionResult } from "@/src/lib/progress";
 import { GradientBackground, GlassCard, GlowOrb } from "@/src/components/d022";
 
@@ -143,7 +143,7 @@ export default function ExamQuiz() {
     else setRound((r) => r + 1);
   }
 
-  const swipe = useVerticalSwipe({ enabled: picked !== null, onSwipeUp: () => { setHasSwiped(true); next(); } });
+  const advance = () => { setHasSwiped(true); next(); };
 
   // ── 로딩 ──
   if (pool === null) {
@@ -222,7 +222,8 @@ export default function ExamQuiz() {
   return (
     <GradientBackground variant="dark" direction="vertical" style={{ flex: 1 }}>
       <GlowOrb color="neon.purple" size={240} opacity={0.3} style={{ top: -60, left: -60 }} />
-      <View style={styles.content} {...swipe}>
+      <SwipeCard enabled={picked !== null} onAdvance={advance}>
+      <View style={styles.content}>
         <View style={styles.topRow}>
           <Pressable onPress={() => router.back()} hitSlop={12}>
             <Text style={styles.link}>‹ Exit</Text>
@@ -301,6 +302,7 @@ export default function ExamQuiz() {
           </>
         )}
       </View>
+      </SwipeCard>
     </GradientBackground>
   );
 }

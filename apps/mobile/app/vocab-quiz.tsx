@@ -20,7 +20,7 @@ import { playSfx } from "@/src/lib/sound";
 import { RoundsModal } from "@/src/components/RoundsModal";
 import { SwipeHint } from "@/src/components/SwipeHint";
 import { SessionReward } from "@/src/components/SessionReward";
-import { useVerticalSwipe } from "@/src/hooks/useVerticalSwipe";
+import { SwipeCard } from "@/src/components/SwipeCard";
 import { markUnknown } from "@/src/lib/knownStore";
 import type { SessionResult } from "@/src/lib/progress";
 import { GradientBackground, GlassCard, GlowOrb } from "@/src/components/d022";
@@ -147,10 +147,7 @@ export default function VocabQuiz() {
   }
 
   // 답 확인 후 위로 스와이프 → 다음 문제
-  const swipe = useVerticalSwipe({
-    enabled: picked !== null,
-    onSwipeUp: () => { setHasSwiped(true); next(); },
-  });
+  const advance = () => { setHasSwiped(true); next(); };
 
   // 카테고리 선택 → 설정값을 해당 팩 보유 수로 클램프(초과 시 최대치) → 바로 시작
   function pickCategory(words: VocabWord[]) {
@@ -279,7 +276,8 @@ export default function VocabQuiz() {
   return (
     <GradientBackground variant="dark" direction="vertical" style={{ flex: 1 }}>
       <GlowOrb color="neon.purple" size={240} opacity={0.3} style={{ top: -60, left: -60 }} />
-      <View style={styles.content} {...swipe}>
+      <SwipeCard enabled={picked !== null} onAdvance={advance}>
+      <View style={styles.content}>
         <View style={styles.topRow}>
           <Pressable onPress={() => setStarted(false)} hitSlop={12}>
             <Text style={styles.link}>‹ Topics</Text>
@@ -356,6 +354,7 @@ export default function VocabQuiz() {
           </>
         )}
       </View>
+      </SwipeCard>
     </GradientBackground>
   );
 }
