@@ -10,7 +10,7 @@ import { ActivityIndicator, Pressable, ScrollView, StyleSheet, Text, View } from
 
 import { lightColors, spacing, typeScale } from "@dash2zero/design-tokens";
 
-import { getTrack, getTrackPhotos, type TrackData, type TrackId } from "@/src/lib/tracks";
+import { getTrack, getTrackPhotos, getTrackCloze, type TrackData, type TrackId } from "@/src/lib/tracks";
 import { examWrongCount } from "@/src/lib/examReviewStore";
 import { getMasteredKoreans } from "@/src/lib/progress";
 import { GradientBackground, GlassCard, GlowOrb } from "@/src/components/d022";
@@ -26,6 +26,7 @@ export default function Exam() {
   const [level, setLevel] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
   const [photoSet, setPhotoSet] = useState<Set<string>>(new Set());
+  const [clozeSet, setClozeSet] = useState<Set<string>>(new Set());
   const [mastered, setMastered] = useState<Set<string>>(new Set());
   const [wrongN, setWrongN] = useState(0);
 
@@ -34,6 +35,7 @@ export default function Exam() {
     getTrackPhotos()
       .then((m) => setPhotoSet(new Set(Object.entries(m).filter(([, v]) => v.quiz).map(([k]) => k))))
       .catch(() => undefined);
+    getTrackCloze().then((c) => setClozeSet(new Set(Object.keys(c)))).catch(() => undefined);
   }, []);
 
   // 진도/오답수는 화면 포커스 시 갱신(퀴즈 후 즉시 반영)
@@ -169,6 +171,20 @@ export default function Exam() {
             </GlassCard>
           </Pressable>
 
+          {/* 문맥 예문 (빈칸 채우기) */}
+          {(lvObj?.words.filter((w) => clozeSet.has(w.k)).length ?? 0) >= 4 ? (
+            <Pressable onPress={() => router.push(`/exam-cloze?track=${track}&level=${level}`)}>
+              <GlassCard style={[styles.modeCard, styles.clozeCard]}>
+                <Text style={styles.modeEmoji}>📝</Text>
+                <View style={{ flex: 1 }}>
+                  <Text style={styles.modeTitle}>Sentences</Text>
+                  <Text style={styles.modeSub}>Fill the blank in real sentences</Text>
+                </View>
+                <Text style={styles.chevron}>›</Text>
+              </GlassCard>
+            </Pressable>
+          ) : null}
+
           {[
             { mode: "meaning", emoji: "💬", title: "Meaning Quiz", sub: "Match Korean words and meanings" },
             { mode: "audio", emoji: "🔊", title: "Audio Quiz", sub: "Hear a word, pick the meaning" },
@@ -227,6 +243,7 @@ const styles = StyleSheet.create({
   levelCount: { color: lightColors["text.muted"], fontSize: typeScale["text.caption"].fontSize, marginTop: 2 },
   modeCard: { flexDirection: "row", alignItems: "center", padding: spacing["space.5"], marginBottom: spacing["space.4"] },
   studyCard: { borderWidth: 1, borderColor: lightColors["neon.cyan"] },
+  clozeCard: { borderWidth: 1, borderColor: lightColors["neon.purple"] },
   modeEmoji: { fontSize: 40, marginRight: spacing["space.4"] },
   modeTitle: { color: lightColors["text.primary"], fontSize: 20, fontWeight: "800" },
   modeSub: { color: lightColors["text.muted"], fontSize: typeScale["text.caption"].fontSize, marginTop: 2 },

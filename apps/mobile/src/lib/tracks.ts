@@ -57,8 +57,29 @@ export interface TrackExample {
   sentence: { ko: string; en: string } | null;
 }
 
+// 문맥 빈칸(cloze) 학습용: 한국어 문장에서 blank(표면형)를 가리고 채우기
+export interface TrackCloze {
+  blank: string; // 한국어 문장에서 가릴 정답 표면형
+  ko: string; // 한국어 문장(정답 포함)
+  en: string; // 영어 번역
+  situation?: string; // 상황(영어, 선택)
+}
+
 let photoCache: Record<string, TrackPhotoCredit> | null = null;
 let exampleCache: Record<string, TrackExample> | null = null;
+let clozeCache: Record<string, TrackCloze> | null = null;
+
+/** 문맥 빈칸 학습 데이터 (korean → cloze). 아직 없으면 {}. */
+export async function getTrackCloze(): Promise<Record<string, TrackCloze>> {
+  if (clozeCache) return clozeCache;
+  try {
+    const r = await fetch(`${SUPABASE_URL}/storage/v1/object/public/images/track-cloze.json?t=${Date.now()}`);
+    clozeCache = r.ok ? ((await r.json()) as Record<string, TrackCloze>) : {};
+  } catch {
+    clozeCache = {};
+  }
+  return clozeCache;
+}
 
 /** 단어별 예시어/예문 (Study 학습 보조). 아직 생성 전이면 {}. */
 export async function getTrackExamples(): Promise<Record<string, TrackExample>> {
