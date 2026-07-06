@@ -9,13 +9,14 @@
  */
 
 import { Stack } from "expo-router";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { AppState } from "react-native";
 import { StatusBar } from "expo-status-bar";
 
 import { lightColors } from "@dash2zero/design-tokens";
 
 import { ToastProvider } from "@/src/components/d022";
+import { BrandSplash } from "@/src/components/BrandSplash";
 import { initAudio, stopAudio } from "@/src/lib/audio";
 import { initGuestDb } from "@/src/lib/guestStore";
 import { flushRetryQueue } from "@/src/lib/attemptQueue";
@@ -25,6 +26,9 @@ import { initSound } from "@/src/lib/sound";
 import { supabase } from "@/src/lib/supabase";
 
 export default function RootLayout() {
+  // 첫 실행 애니메이션 표지(브랜드 스플래시) — 재생 완료 후 앱 진입
+  const [splashDone, setSplashDone] = useState(false);
+
   useEffect(() => {
     // CC3-04: Analytics/Crashlytics는 동의 전 disabled
     // M2-S4에서 privacy-choices 화면이 동의 처리 후 활성화
@@ -99,6 +103,7 @@ export default function RootLayout() {
         <Stack.Screen name="lesson/[wordId]" />
         <Stack.Screen name="progress" />
       </Stack>
+      {!splashDone && <BrandSplash onDone={() => setSplashDone(true)} />}
     </ToastProvider>
   );
 }
