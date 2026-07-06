@@ -16,7 +16,7 @@ import { EMOJI_WORDS, type EmojiWord } from "@/src/lib/emojiWords";
 import { getKnownSet, markKnown } from "@/src/lib/knownStore";
 import { hapticImpact } from "@/src/lib/haptics";
 import { SUPABASE_URL } from "@/src/lib/supabase";
-import { useVerticalSwipe } from "@/src/hooks/useVerticalSwipe";
+import { SwipeCard } from "@/src/components/SwipeCard";
 import { SwipeHint } from "@/src/components/SwipeHint";
 import { GradientBackground, GlassCard, GlowOrb } from "@/src/components/d022";
 
@@ -107,17 +107,33 @@ export default function Study() {
     setIndex((i) => Math.min(i, Math.max(0, words.length - 2)));
   }
 
-  const swipe = useVerticalSwipe({
-    enabled: words.length > 0,
-    onSwipeUp: () => { setHasSwiped(true); go(1); },
-    onSwipeDown: () => { setHasSwiped(true); go(-1); },
-  });
+  // 스와이프 미리보기: 다음/이전 단어의 간이 플래시카드(실제 카드 위치에 맞춰 정렬)
+  const previewFor = (w?: (typeof words)[number]) =>
+    w ? (
+      <View style={styles.content}>
+        <View style={styles.topRow} />
+        <View style={styles.cardArea}>
+          <GlassCard style={styles.flashCard}>
+            <Text style={styles.emoji}>{w.emoji}</Text>
+            <Text style={styles.korean}>{w.korean}</Text>
+            <Text style={styles.gloss}>{w.gloss}</Text>
+          </GlassCard>
+        </View>
+      </View>
+    ) : null;
 
   return (
     <GradientBackground variant="dark" direction="vertical" style={{ flex: 1 }}>
       <GlowOrb color="neon.cyan" size={260} opacity={0.3} style={{ top: -60, left: -60 }} />
 
-      <View style={styles.content} {...swipe}>
+      <SwipeCard
+        enabled={words.length > 0}
+        onAdvance={() => { setHasSwiped(true); go(1); }}
+        onBack={index > 0 ? () => { setHasSwiped(true); go(-1); } : undefined}
+        next={previewFor(words[index + 1])}
+        prev={index > 0 ? previewFor(words[index - 1]) : undefined}
+      >
+      <View style={styles.content}>
         <View style={styles.topRow}>
           <Pressable onPress={() => router.back()} hitSlop={12}>
             <Text style={styles.link}>‹ Menu</Text>
@@ -184,6 +200,7 @@ export default function Study() {
           </View>
         )}
       </View>
+      </SwipeCard>
     </GradientBackground>
   );
 }

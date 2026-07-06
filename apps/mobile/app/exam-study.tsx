@@ -15,7 +15,7 @@ import { lightColors, spacing, typeScale } from "@dash2zero/design-tokens";
 import { getTrack, getTrackPhotos, getTrackExamples, trackAudioUri, trackPhotoUri, type TrackExample, type TrackId, type TrackWord } from "@/src/lib/tracks";
 import { getKnownSet, markKnown } from "@/src/lib/knownStore";
 import { hapticImpact } from "@/src/lib/haptics";
-import { useVerticalSwipe } from "@/src/hooks/useVerticalSwipe";
+import { SwipeCard } from "@/src/components/SwipeCard";
 import { SwipeHint } from "@/src/components/SwipeHint";
 import { GradientBackground, GlassCard, GlowOrb } from "@/src/components/d022";
 
@@ -81,11 +81,25 @@ export default function ExamStudy() {
     void hapticImpact("light");
     setIndex((i) => Math.min(Math.max(0, i + delta), Math.max(0, total - 1)));
   };
-  const swipe = useVerticalSwipe({
-    enabled: total > 0,
-    onSwipeUp: () => { setHasSwiped(true); go(1); },
-    onSwipeDown: () => { setHasSwiped(true); go(-1); },
-  });
+  // 스와이프 미리보기: 다음/이전 단어의 간이 카드(실제 카드 위치에 맞춰 정렬)
+  const previewFor = (w?: (typeof displayed)[number]) =>
+    w ? (
+      <View style={styles.content}>
+        <View style={styles.topRow} />
+        <View style={styles.cardArea}>
+          <GlassCard style={styles.flashCard}>
+            {photoSet.has(w.k) ? (
+              <Image source={{ uri: trackPhotoUri(w.k) }} style={styles.photo} resizeMode="cover" />
+            ) : (
+              <Text style={styles.noPhotoGlyph}>{w.k.slice(0, 1)}</Text>
+            )}
+            <Text style={styles.korean}>{w.k}</Text>
+            <Text style={styles.rr}>{w.r}</Text>
+            <Text style={styles.gloss}>{w.g}</Text>
+          </GlassCard>
+        </View>
+      </View>
+    ) : null;
 
   // "안다" → known에 추가(제외됨). 제거 후 현재 index가 다음 카드를 가리키도록 클램프.
   function knowIt() {
@@ -129,7 +143,14 @@ export default function ExamStudy() {
   return (
     <GradientBackground variant="dark" direction="vertical" style={{ flex: 1 }}>
       <GlowOrb color="neon.cyan" size={260} opacity={0.3} style={{ top: -60, left: -60 }} />
-      <View style={styles.content} {...swipe}>
+      <SwipeCard
+        enabled={total > 0}
+        onAdvance={() => { setHasSwiped(true); go(1); }}
+        onBack={index > 0 ? () => { setHasSwiped(true); go(-1); } : undefined}
+        next={previewFor(displayed[index + 1])}
+        prev={index > 0 ? previewFor(displayed[index - 1]) : undefined}
+      >
+      <View style={styles.content}>
         <View style={styles.topRow}>
           <Pressable onPress={() => router.back()} hitSlop={12}>
             <Text style={styles.link}>‹ Back</Text>
@@ -187,6 +208,7 @@ export default function ExamStudy() {
           <SwipeHint visible={!hasSwiped && total > 1} label="Swipe" direction="both" />
         </View>
       </View>
+      </SwipeCard>
     </GradientBackground>
   );
 }
