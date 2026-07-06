@@ -20,11 +20,12 @@ export interface ProgressState {
   dailyDate: string; // 오늘 날짜(YYYY-MM-DD)
   dailyCount: number; // 오늘 정답 수
   unlocked: string[]; // 획득한 업적 id
+  history: Record<string, number>; // 날짜(YYYY-MM-DD) → 그날 정답 수(주간 그래프용)
 }
 
 const DEFAULT: ProgressState = {
   xp: 0, mastered: [], streakDays: 0, lastActiveISO: "", sessions: 0,
-  dailyGoal: 20, dailyDate: "", dailyCount: 0, unlocked: [],
+  dailyGoal: 20, dailyDate: "", dailyCount: 0, unlocked: [], history: {},
 };
 
 let cache: ProgressState | null = null;
@@ -178,6 +179,15 @@ export async function recordSession(results: SessionResult[]): Promise<RewardPay
 
   s.sessions += 1;
 
+  // 주간 학습 그래프용 일자별 정답 수 누적 (60일 초과분은 정리)
+  if (!s.history) s.history = {};
+  s.history[today] = (s.history[today] ?? 0) + correct;
+  const cutoff = new Date(today + "T00:00:00");
+  cutoff.setDate(cutoff.getDate() - 60);
+  for (const k of Object.keys(s.history)) {
+    if (new Date(k + "T00:00:00") < cutoff) delete s.history[k];
+  }
+
   const levelAfter = levelForXp(s.xp);
   const masteredAfter = s.mastered.length;
   const perfectSession = results.length >= 5 && correct === results.length;
@@ -230,6 +240,34 @@ export async function getProgress() {
     dailyRatio: Math.min(1, dailyCount / goal),
     unlockedCount: s.unlocked.length,
   };
+}
+
+// ── 주간 학습(월~일) ──
+export interface WeekDay { date: string; label: string; count: number; active: boolean; isToday: boolean }
+export interface WeeklyStudy { days: WeekDay[]; weekTotal: number; activeDays: number; bestDay: number }
+
+/** 이번 주(월~일) 일자별 학습량. 게이미피케이션 주간 그래프용. */
+export async function getWeeklyStudy(): Promise<WeeklyStudy> {
+  const s = await load();
+  const hist = s.history ?? {};
+  const now = new Date();
+  const todayStr = todayISO();
+  const dow = (now.getDay() + 6) % 7; // 월=0 … 일=6
+  const monday = new Date(now);
+  monday.setDate(now.getDate() - dow);
+  const LABELS = ["M", "T", "W", "T", "F", "S", "S"];
+  const days: WeekDay[] = [];
+  for (let i = 0; i < 7; i++) {
+    const d = new Date(monday);
+    d.setDate(monday.getDate() + i);
+    const iso = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`;
+    const count = hist[iso] ?? 0;
+    days.push({ date: iso, label: LABELS[i]!, count, active: count > 0, isToday: iso === todayStr });
+  }
+  const weekTotal = days.reduce((a, b) => a + b.count, 0);
+  const activeDays = days.filter((d) => d.active).length;
+  const bestDay = days.reduce((m, d) => Math.max(m, d.count), 0);
+  return { days, weekTotal, activeDays, bestDay };
 }
 
 /** 마스터한(한 번이라도 맞힌) 단어 집합 — 레벨별 진도 계산용. */

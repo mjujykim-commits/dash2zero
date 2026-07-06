@@ -3,11 +3,12 @@
  */
 
 import { router } from "expo-router";
-import { Pressable, StyleSheet, Text, View } from "react-native";
+import { Pressable, ScrollView, StyleSheet, Text, View } from "react-native";
 
 import { lightColors, spacing, typeScale } from "@dash2zero/design-tokens";
 
 import { GradientBackground, GlassCard, GlowOrb } from "@/src/components/d022";
+import { TabBar } from "@/src/components/TabBar";
 
 const ITEMS = [
   { emoji: "🖼️", title: "Picture Quiz", sub: "Match pictures and words", href: "/picture-quiz" },
@@ -20,10 +21,7 @@ export default function Quizzes() {
   return (
     <GradientBackground variant="dark" direction="vertical" style={{ flex: 1 }}>
       <GlowOrb color="neon.pink" size={260} opacity={0.3} style={{ top: -60, right: -60 }} />
-      <View style={styles.content}>
-        <Pressable onPress={() => router.back()} hitSlop={12} style={{ marginBottom: spacing["space.2"] }}>
-          <Text style={styles.link}>‹ Menu</Text>
-        </Pressable>
+      <ScrollView style={{ flex: 1 }} contentContainerStyle={styles.content} showsVerticalScrollIndicator={false}>
         <Text style={styles.heading}>Quizzes</Text>
         <Text style={styles.sub}>Pick a quiz type.</Text>
 
@@ -41,7 +39,8 @@ export default function Quizzes() {
             </Pressable>
           ))}
         </View>
-      </View>
+      </ScrollView>
+      <TabBar active="quiz" />
     </GradientBackground>
   );
 }

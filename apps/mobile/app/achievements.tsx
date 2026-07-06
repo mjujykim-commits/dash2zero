@@ -2,7 +2,7 @@
  * Achievements — 배지/업적 그리드. 획득(밝게) / 미획득(흐리게).
  */
 
-import { router, useFocusEffect } from "expo-router";
+import { useFocusEffect } from "expo-router";
 import { useCallback, useState } from "react";
 import { Pressable, ScrollView, StyleSheet, Text, View } from "react-native";
 
@@ -10,6 +10,7 @@ import { lightColors, spacing, typeScale } from "@dash2zero/design-tokens";
 
 import { getAchievements, getProgress, setDailyGoal } from "@/src/lib/progress";
 import { GradientBackground, GlassCard, GlowOrb } from "@/src/components/d022";
+import { TabBar } from "@/src/components/TabBar";
 
 type Ach = Awaited<ReturnType<typeof getAchievements>>[number];
 const GOAL_OPTIONS = [10, 20, 30, 50];
@@ -43,10 +44,7 @@ export default function Achievements() {
     <GradientBackground variant="dark" direction="vertical" style={{ flex: 1 }}>
       <GlowOrb color="neon.purple" size={280} opacity={0.35} style={{ top: -80, right: -60 }} />
       <View style={styles.content}>
-        <Pressable onPress={() => router.back()} hitSlop={12} style={{ marginBottom: spacing["space.2"] }}>
-          <Text style={styles.link}>‹ Menu</Text>
-        </Pressable>
-        <Text style={styles.heading}>Achievements</Text>
+        <Text style={styles.heading}>Growth</Text>
         <Text style={styles.sub}>
           {unlocked} / {list?.length ?? 0} unlocked
           {summary ? `  ·  Lv ${summary.level} ${summary.title.ko}  ·  ${summary.mastered} words` : ""}
@@ -80,6 +78,7 @@ export default function Achievements() {
           <View style={{ height: spacing["space.8"] }} />
         </ScrollView>
       </View>
+      <TabBar active="profile" />
     </GradientBackground>
   );
 }
