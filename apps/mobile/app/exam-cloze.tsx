@@ -20,8 +20,8 @@ import { hapticNotification } from "@/src/lib/haptics";
 import { playSfx } from "@/src/lib/sound";
 import { RoundsModal } from "@/src/components/RoundsModal";
 import { SwipeHint } from "@/src/components/SwipeHint";
+import { SwipeCard } from "@/src/components/SwipeCard";
 import { SessionReward } from "@/src/components/SessionReward";
-import { useVerticalSwipe } from "@/src/hooks/useVerticalSwipe";
 import type { SessionResult } from "@/src/lib/progress";
 import { GradientBackground, GlassCard, GlowOrb } from "@/src/components/d022";
 
@@ -128,8 +128,6 @@ export default function ExamCloze() {
     if (round + 1 >= total) { setDone(true); void playSfx("complete"); }
     else setRound((r) => r + 1);
   }
-  const swipe = useVerticalSwipe({ enabled: pickedIdx !== null, onSwipeUp: () => { setHasSwiped(true); next(); } });
-
   // "다른 예문" — 같은 단어의 다른 문장으로 (정답 확인 후)
   async function otherExample() {
     let all = clozeAll;
@@ -214,10 +212,34 @@ export default function ExamCloze() {
   const before = cz && idx >= 0 ? cz.ko.slice(0, idx) : cz?.ko ?? "";
   const after = cz && idx >= 0 ? cz.ko.slice(idx + cz.blank.length) : "";
 
+  // 다음 문항 미리보기(틱톡식 peek) — 위로 스와이프하면 뒤에서 올라옴
+  const nextQ = questions[round + 1];
+  const nextCz = nextQ?.cloze;
+  const nIdx = nextCz ? nextCz.ko.indexOf(nextCz.blank) : -1;
+  const nBefore = nextCz && nIdx >= 0 ? nextCz.ko.slice(0, nIdx) : nextCz?.ko ?? "";
+  const nAfter = nextCz && nIdx >= 0 ? nextCz.ko.slice(nIdx + nextCz.blank.length) : "";
+  const nextPreview = nextQ ? (
+    <View style={styles.content}>
+      <View style={styles.topRow}>
+        <Text style={styles.link}> </Text>
+        <Text style={styles.progress}>{round + 2} / {total}</Text>
+      </View>
+      <GlassCard style={styles.promptCard}>
+        {nextCz?.situation ? <Text style={styles.situation}>{nextCz.situation}</Text> : null}
+        <Text style={styles.enSentence}>{nextCz?.en}</Text>
+        <Text style={styles.gloss}>{nextQ.target.k} · {nextQ.target.g}</Text>
+      </GlassCard>
+      <View style={styles.koWrap}>
+        <Text style={styles.koSentence}>{nBefore}<Text style={styles.blankEmpty}>　____　</Text>{nAfter}</Text>
+      </View>
+    </View>
+  ) : null;
+
   return (
     <GradientBackground variant="dark" direction="vertical" style={{ flex: 1 }}>
       <GlowOrb color="neon.purple" size={240} opacity={0.3} style={{ top: -60, left: -60 }} />
-      <View style={styles.content} {...swipe}>
+      <SwipeCard enabled={revealed} onAdvance={() => { setHasSwiped(true); next(); }} next={nextPreview}>
+      <View style={styles.content}>
         <View style={styles.topRow}>
           <Pressable onPress={() => router.back()} hitSlop={12}><Text style={styles.link}>‹ Exit</Text></Pressable>
           <Text style={styles.progress}>{round + 1} / {total} · score {score}</Text>
@@ -280,6 +302,7 @@ export default function ExamCloze() {
           </>
         )}
       </View>
+      </SwipeCard>
     </GradientBackground>
   );
 }
