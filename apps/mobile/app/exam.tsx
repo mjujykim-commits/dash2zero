@@ -127,7 +127,12 @@ export default function Exam() {
                         <Text style={styles.levelBadgeText}>{lv.badge ?? lv.key}</Text>
                       </View>
                       <View style={{ flex: 1 }}>
-                        <Text style={styles.levelLabel}>{lv.label}</Text>
+                        <View style={styles.levelTop}>
+                          <Text style={styles.levelLabel}>{lv.label}</Text>
+                          {lv.range ? (
+                            <View style={styles.rangeChip}><Text style={styles.rangeText}>{lv.range}</Text></View>
+                          ) : null}
+                        </View>
                         <View style={styles.progTrack}>
                           <View style={[styles.progFill, { width: `${Math.round(ratio * 100)}%` }]} />
                         </View>
@@ -156,7 +161,7 @@ export default function Exam() {
           <Text style={styles.link}>‹ Levels</Text>
         </Pressable>
         <Text style={styles.heading}>{data?.name} · {lvObj?.badge ?? level}</Text>
-        <Text style={styles.sub}>{lvObj?.label}</Text>
+        <Text style={styles.sub}>{lvObj?.label}{lvObj?.range ? ` · ${lvObj.range}` : ""}</Text>
 
         <View style={{ marginTop: spacing["space.6"] }}>
           {/* 학습(넘겨보기) — 퀴즈와 구분 */}
@@ -229,7 +234,10 @@ const styles = StyleSheet.create({
     alignItems: "center", justifyContent: "center", marginRight: spacing["space.4"],
   },
   levelBadgeText: { color: lightColors["neon.cyan"], fontSize: 14, fontWeight: "900" },
-  levelLabel: { color: lightColors["text.primary"], fontSize: 17, fontWeight: "800" },
+  levelTop: { flexDirection: "row", alignItems: "center", justifyContent: "space-between" },
+  levelLabel: { color: lightColors["text.primary"], fontSize: 17, fontWeight: "800", flexShrink: 1 },
+  rangeChip: { backgroundColor: "rgba(6,182,212,0.15)", borderRadius: 6, paddingHorizontal: 8, paddingVertical: 2, marginLeft: spacing["space.2"] },
+  rangeText: { color: lightColors["neon.cyan"], fontSize: 11, fontWeight: "900" },
   progTrack: { height: 6, borderRadius: 4, backgroundColor: "rgba(255,255,255,0.08)", overflow: "hidden", marginTop: 6 },
   progFill: { height: "100%", borderRadius: 4, backgroundColor: lightColors["neon.lime"] },
   progText: { color: lightColors["text.muted"], fontSize: 11, fontWeight: "700", marginTop: 3 },

@@ -16,6 +16,7 @@ export interface TrackLevel {
   key: string;
   badge?: string; // 뱃지 표기(초급/중급/고급, 1단계…)
   label: string;
+  range?: string; // 급수 대응(예: "TOPIK 1–2급") — 학습자 이해용
   words: TrackWord[];
 }
 export interface TrackData {
