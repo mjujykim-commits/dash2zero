@@ -13,7 +13,7 @@ import { Pressable, StyleSheet, Text, View } from "react-native";
 
 import { lightColors, spacing, typeScale } from "@dash2zero/design-tokens";
 
-import { getTrack, getTrackCloze, trackAudioUri, type TrackCloze, type TrackId, type TrackWord } from "@/src/lib/tracks";
+import { getTrack, getTrackCloze, getTrackClozeAll, trackAudioUri, type TrackCloze, type TrackId, type TrackWord } from "@/src/lib/tracks";
 import { recordExamAnswer } from "@/src/lib/examReviewStore";
 import { markUnknown } from "@/src/lib/knownStore";
 import { hapticNotification } from "@/src/lib/haptics";
@@ -71,6 +71,8 @@ export default function ExamCloze() {
   const [pickedIdx, setPickedIdx] = useState<number | null>(null);
   const [done, setDone] = useState(false);
   const [hasSwiped, setHasSwiped] = useState(false);
+  const [clozeAll, setClozeAll] = useState<Record<string, TrackCloze[]> | null>(null);
+  const [altIdx, setAltIdx] = useState(0); // 다른 예문 인덱스
   const lockRef = useRef(false);
   const soundRef = useRef<Audio.Sound | null>(null);
   const resultsRef = useRef<SessionResult[]>([]);
@@ -122,11 +124,18 @@ export default function ExamCloze() {
     else { void hapticNotification("warning"); void playSfx("incorrect"); }
   }
   function next() {
-    setPickedIdx(null); lockRef.current = false;
+    setPickedIdx(null); setAltIdx(0); lockRef.current = false;
     if (round + 1 >= total) { setDone(true); void playSfx("complete"); }
     else setRound((r) => r + 1);
   }
   const swipe = useVerticalSwipe({ enabled: pickedIdx !== null, onSwipeUp: () => { setHasSwiped(true); next(); } });
+
+  // "다른 예문" — 같은 단어의 다른 문장으로 (정답 확인 후)
+  async function otherExample() {
+    let all = clozeAll;
+    if (!all) { all = await getTrackClozeAll(); setClozeAll(all); }
+    setAltIdx((i) => i + 1);
+  }
 
   // ── 로딩 ──
   if (pool === null) {
@@ -197,7 +206,10 @@ export default function ExamCloze() {
   // ── 문제 ──
   const revealed = pickedIdx !== null;
   const answeredCorrect = pickedIdx !== null && !!q?.options[pickedIdx]?.correct;
-  const cz = q?.cloze;
+  // 다른 예문 선택 시 대체 문장, 아니면 원 문항
+  const variants = q && clozeAll ? clozeAll[q.target.k] : undefined;
+  const cz = variants && variants.length ? variants[altIdx % variants.length]! : q?.cloze;
+  const hasAlt = !!(variants && variants.length > 1) || (revealed && !clozeAll);
   const idx = cz ? cz.ko.indexOf(cz.blank) : -1;
   const before = cz && idx >= 0 ? cz.ko.slice(0, idx) : cz?.ko ?? "";
   const after = cz && idx >= 0 ? cz.ko.slice(idx + cz.blank.length) : "";
@@ -254,9 +266,16 @@ export default function ExamCloze() {
             <Text style={[styles.verdict, { color: answeredCorrect ? lightColors["semantic.success"] : lightColors["semantic.danger"] }]}>
               {answeredCorrect ? "✅ Correct!" : "❌ Not quite"}
             </Text>
-            <Pressable onPress={() => q && playAudio(q.target.k)} style={styles.replayBtn}>
-              <Text style={styles.replayText}>🔊 {q.target.k} · {q.target.r}</Text>
-            </Pressable>
+            <View style={styles.revealRow}>
+              <Pressable onPress={() => q && playAudio(q.target.k)} style={styles.replayBtn}>
+                <Text style={styles.replayText}>🔊 {q.target.k} · {q.target.r}</Text>
+              </Pressable>
+              {hasAlt ? (
+                <Pressable onPress={otherExample} style={styles.altBtn}>
+                  <Text style={styles.altText}>🔄 Another example</Text>
+                </Pressable>
+              ) : null}
+            </View>
             <SwipeHint visible={!hasSwiped} label={round + 1 >= total ? "Swipe up to finish" : "Swipe up"} />
           </>
         )}
@@ -285,9 +304,15 @@ const styles = StyleSheet.create({
   optionCard: { minHeight: 72, alignItems: "center", justifyContent: "center", padding: spacing["space.3"] },
   optionText: { color: lightColors["korean.glyph"], fontSize: 22, fontWeight: "800", textAlign: "center" },
   verdict: { fontSize: 20, fontWeight: "900", textAlign: "center", marginBottom: spacing["space.3"] },
+  revealRow: { flexDirection: "row", justifyContent: "center", flexWrap: "wrap", marginBottom: spacing["space.4"] },
   replayBtn: {
-    alignSelf: "center", marginBottom: spacing["space.4"], paddingHorizontal: spacing["space.4"], paddingVertical: spacing["space.2"],
+    marginHorizontal: spacing["space.1"], marginBottom: spacing["space.2"], paddingHorizontal: spacing["space.4"], paddingVertical: spacing["space.2"],
     borderRadius: 999, backgroundColor: "rgba(147,51,234,0.18)", borderWidth: 1, borderColor: lightColors["neon.purple"],
   },
   replayText: { color: lightColors["text.primary"], fontSize: 15, fontWeight: "800" },
+  altBtn: {
+    marginHorizontal: spacing["space.1"], marginBottom: spacing["space.2"], paddingHorizontal: spacing["space.4"], paddingVertical: spacing["space.2"],
+    borderRadius: 999, backgroundColor: "rgba(6,182,212,0.15)", borderWidth: 1, borderColor: lightColors["neon.cyan"],
+  },
+  altText: { color: lightColors["neon.cyan"], fontSize: 15, fontWeight: "800" },
 });

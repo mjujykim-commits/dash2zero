@@ -82,6 +82,20 @@ export async function getTrackCloze(): Promise<Record<string, TrackCloze>> {
   return clozeCache;
 }
 
+let clozeAllCache: Record<string, TrackCloze[]> | null = null;
+
+/** 단어별 여러 예문(다른 예문용, 3MB+). 필요 시 지연 로드. */
+export async function getTrackClozeAll(): Promise<Record<string, TrackCloze[]>> {
+  if (clozeAllCache) return clozeAllCache;
+  try {
+    const r = await fetch(`${SUPABASE_URL}/storage/v1/object/public/images/track-cloze-all.json?t=${Date.now()}`);
+    clozeAllCache = r.ok ? ((await r.json()) as Record<string, TrackCloze[]>) : {};
+  } catch {
+    clozeAllCache = {};
+  }
+  return clozeAllCache;
+}
+
 /** 단어별 예시어/예문 (Study 학습 보조). 아직 생성 전이면 {}. */
 export async function getTrackExamples(): Promise<Record<string, TrackExample>> {
   if (exampleCache) return exampleCache;
