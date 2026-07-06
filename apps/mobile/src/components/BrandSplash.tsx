@@ -11,6 +11,7 @@
 
 import { BlurView } from "expo-blur";
 import { LinearGradient } from "expo-linear-gradient";
+import * as SplashScreen from "expo-splash-screen";
 import { useEffect, useRef, useState } from "react";
 import { AccessibilityInfo, Animated, Dimensions, Easing, StyleSheet, Text, View } from "react-native";
 
@@ -28,6 +29,15 @@ export function BrandSplash({ onDone }: { onDone: () => void }) {
 
   useEffect(() => {
     let cancelled = false;
+
+    // 우리 오버레이가 그려진 다음 프레임에 네이티브 스플래시를 걷어낸다.
+    // 둘 다 동일 다크 배경이라 이 교체는 눈에 띄지 않는다(빈 프레임 0).
+    requestAnimationFrame(() => {
+      SplashScreen.hideAsync().catch(() => {
+        /* 미지원/이미 숨김 — 무시 */
+      });
+    });
+
     const done = () => {
       if (cancelled) return;
       setGone(true);

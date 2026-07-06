@@ -12,11 +12,18 @@ import { Stack } from "expo-router";
 import { useEffect, useState } from "react";
 import { AppState } from "react-native";
 import { StatusBar } from "expo-status-bar";
+import * as SplashScreen from "expo-splash-screen";
 
 import { lightColors } from "@dash2zero/design-tokens";
 
 import { ToastProvider } from "@/src/components/d022";
 import { BrandSplash } from "@/src/components/BrandSplash";
+
+// 네이티브 스플래시를 자동으로 걷어내지 말고 붙잡아 둔다.
+// → 우리 애니메이션 표지(BrandSplash)가 화면에 뜬 직후 hideAsync()로 넘긴다(무결점 핸드오프).
+SplashScreen.preventAutoHideAsync().catch(() => {
+  /* 이미 숨겨졌거나 미지원 환경 — 무시 */
+});
 import { initAudio, stopAudio } from "@/src/lib/audio";
 import { initGuestDb } from "@/src/lib/guestStore";
 import { flushRetryQueue } from "@/src/lib/attemptQueue";
