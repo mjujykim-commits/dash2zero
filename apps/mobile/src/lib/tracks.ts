@@ -63,6 +63,7 @@ export interface TrackCloze {
   ko: string; // 한국어 문장(정답 포함)
   en: string; // 영어 번역
   situation?: string; // 상황(영어, 선택)
+  distractors?: string[]; // 큐레이션 오답(한국어 표면형, 선택) — 없으면 풀에서 생성
 }
 
 let photoCache: Record<string, TrackPhotoCredit> | null = null;

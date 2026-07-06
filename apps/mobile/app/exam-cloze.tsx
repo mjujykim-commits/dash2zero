@@ -27,7 +27,8 @@ import { GradientBackground, GlassCard, GlowOrb } from "@/src/components/d022";
 
 const DEFAULT_ROUNDS = 10;
 
-interface Question { target: TrackWord; options: TrackWord[]; cloze: TrackCloze }
+interface Option { label: string; correct: boolean }
+interface Question { target: TrackWord; cloze: TrackCloze; options: Option[] }
 
 function shuffle<T>(arr: T[]): T[] {
   const a = [...arr];
@@ -38,8 +39,18 @@ function shuffle<T>(arr: T[]): T[] {
 function buildQuestions(pool: TrackWord[], cloze: Record<string, TrackCloze>, rounds: number): Question[] {
   const targets = shuffle(pool).slice(0, Math.min(rounds, pool.length));
   return targets.map((target) => {
-    const distractors = shuffle(pool.filter((w) => w.k !== target.k)).slice(0, 3);
-    return { target, options: shuffle([target, ...distractors]), cloze: cloze[target.k]! };
+    const cz = cloze[target.k]!;
+    // 오답: 큐레이션 있으면 사용, 없으면 풀의 다른 단어 blank에서 생성(정답과 중복 제거)
+    const curated = (cz.distractors ?? []).filter((d) => d && d !== cz.blank);
+    let labels = curated.slice(0, 3);
+    if (labels.length < 3) {
+      const fill = shuffle(pool.filter((w) => w.k !== target.k))
+        .map((w) => cloze[w.k]?.blank)
+        .filter((b): b is string => !!b && b !== cz.blank && !labels.includes(b));
+      labels = [...labels, ...fill].slice(0, 3);
+    }
+    const options: Option[] = shuffle([{ label: cz.blank, correct: true }, ...labels.map((l) => ({ label: l, correct: false }))]);
+    return { target, cloze: cz, options };
   });
 }
 
@@ -57,7 +68,7 @@ export default function ExamCloze() {
   const [seed, setSeed] = useState(0);
   const [round, setRound] = useState(0);
   const [score, setScore] = useState(0);
-  const [picked, setPicked] = useState<string | null>(null);
+  const [pickedIdx, setPickedIdx] = useState<number | null>(null);
   const [done, setDone] = useState(false);
   const [hasSwiped, setHasSwiped] = useState(false);
   const lockRef = useRef(false);
@@ -94,16 +105,16 @@ export default function ExamCloze() {
   }
 
   function resetRun() {
-    setRound(0); setScore(0); setPicked(null); setDone(false); setHasSwiped(false);
+    setRound(0); setScore(0); setPickedIdx(null); setDone(false); setHasSwiped(false);
     lockRef.current = false; resultsRef.current = []; setSeed((s) => s + 1);
   }
   function startWith(n: number) { setModalVisible(false); setRounds(n); setStarted(true); resetRun(); }
 
-  function choose(opt: TrackWord) {
+  function choose(opt: Option, i: number) {
     if (lockRef.current || !q) return;
     lockRef.current = true;
-    setPicked(opt.k);
-    const correct = opt.k === q.target.k;
+    setPickedIdx(i);
+    const correct = opt.correct;
     resultsRef.current.push({ korean: q.target.k, correct });
     void recordExamAnswer({ k: q.target.k, g: q.target.g, r: q.target.r }, correct);
     if (!correct) void markUnknown(q.target.k);
@@ -111,11 +122,11 @@ export default function ExamCloze() {
     else { void hapticNotification("warning"); void playSfx("incorrect"); }
   }
   function next() {
-    setPicked(null); lockRef.current = false;
+    setPickedIdx(null); lockRef.current = false;
     if (round + 1 >= total) { setDone(true); void playSfx("complete"); }
     else setRound((r) => r + 1);
   }
-  const swipe = useVerticalSwipe({ enabled: picked !== null, onSwipeUp: () => { setHasSwiped(true); next(); } });
+  const swipe = useVerticalSwipe({ enabled: pickedIdx !== null, onSwipeUp: () => { setHasSwiped(true); next(); } });
 
   // ── 로딩 ──
   if (pool === null) {
@@ -184,7 +195,8 @@ export default function ExamCloze() {
   }
 
   // ── 문제 ──
-  const revealed = picked !== null;
+  const revealed = pickedIdx !== null;
+  const answeredCorrect = pickedIdx !== null && !!q?.options[pickedIdx]?.correct;
   const cz = q?.cloze;
   const idx = cz ? cz.ko.indexOf(cz.blank) : -1;
   const before = cz && idx >= 0 ? cz.ko.slice(0, idx) : cz?.ko ?? "";
@@ -219,17 +231,17 @@ export default function ExamCloze() {
 
         {/* 4지선다 (한국어 단어) */}
         <View style={styles.grid}>
-          {q?.options.map((opt) => {
-            const isPicked = picked === opt.k;
-            const isCorrect = opt.k === q.target.k;
+          {q?.options.map((opt, i) => {
+            const isPicked = pickedIdx === i;
+            const isCorrect = opt.correct;
             const showState = revealed && (isPicked || isCorrect);
             const borderColor = showState
               ? isCorrect ? lightColors["semantic.success"] : isPicked ? lightColors["semantic.danger"] : "transparent"
               : "transparent";
             return (
-              <Pressable key={opt.k} onPress={() => choose(opt)} style={{ width: "48%", marginBottom: spacing["space.3"] }}>
+              <Pressable key={i} onPress={() => choose(opt, i)} style={{ width: "48%", marginBottom: spacing["space.3"] }}>
                 <GlassCard style={[styles.optionCard, { borderColor, borderWidth: showState ? 2 : 0 }]}>
-                  <Text style={styles.optionText} numberOfLines={1}>{cloze[opt.k]?.blank ?? opt.k}</Text>
+                  <Text style={styles.optionText} numberOfLines={1}>{opt.label}</Text>
                 </GlassCard>
               </Pressable>
             );
@@ -239,8 +251,8 @@ export default function ExamCloze() {
         {revealed && q && (
           <>
             <View style={{ flex: 1 }} />
-            <Text style={[styles.verdict, { color: picked === q.target.k ? lightColors["semantic.success"] : lightColors["semantic.danger"] }]}>
-              {picked === q.target.k ? "✅ Correct!" : "❌ Not quite"}
+            <Text style={[styles.verdict, { color: answeredCorrect ? lightColors["semantic.success"] : lightColors["semantic.danger"] }]}>
+              {answeredCorrect ? "✅ Correct!" : "❌ Not quite"}
             </Text>
             <Pressable onPress={() => q && playAudio(q.target.k)} style={styles.replayBtn}>
               <Text style={styles.replayText}>🔊 {q.target.k} · {q.target.r}</Text>
