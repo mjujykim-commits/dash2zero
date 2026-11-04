@@ -13,16 +13,16 @@
 </head>
 <body>
 <h1>Privacy Policy — KIIP Level 1</h1>
-<p class="meta">Effective: 2026-11-02 · Applies to the iOS app “KIIP Level 1” (bundle id <code>com.dash2zero.kiip1</code>)</p>
+<p class="meta">Effective: 2026-11-04 · Applies to the iOS app “KIIP Level 1” (bundle id <code>com.dash2zero.kiip1</code>)</p>
 
 <h2>Summary</h2>
-<p>The app works entirely on your phone. It has no account, no server of its own, and it does not send your study data anywhere. We do not use advertising or tracking SDKs.</p>
+<p>The app works on your phone. It has no account and does not send your study data anywhere. We do not use advertising or tracking SDKs. The only time anything leaves your phone is the optional <strong>AI feedback</strong> feature in Speaking practice, which is off until you turn it on (see below).</p>
 
 <h2>What the app stores on your device</h2>
 <ul>
-  <li>Your settings: test date, class progress, language, sound/vibration preferences, and whether you turned on the Korean overlay.</li>
-  <li>Your study records: quiz answers, mock-test scores, review schedule and speaking-practice checklists.</li>
-  <li>Voice recordings you make in Speaking practice. They are saved only on your phone, are never uploaded, and are deleted automatically after 30 days or when you delete the app or use “Delete all my data” in Settings.</li>
+  <li>Your settings: test date, class progress, language, sound/vibration preferences, whether you turned on the Korean overlay, and whether you turned on AI feedback.</li>
+  <li>Your study records: quiz answers, mock-test scores, review schedule and speaking-practice self-checks.</li>
+  <li>Voice recordings you make in Speaking practice. They are saved only on your phone and are deleted when you delete the app or use “Delete all my data” in Settings.</li>
 </ul>
 <p>This data is included in your normal iOS backups (iCloud or computer backups) according to your own iOS settings. We cannot access those backups.</p>
 
@@ -31,11 +31,16 @@
   <li><strong>Microphone</strong> — only when you tap Record in Speaking practice. You can refuse; the app then offers listen-and-repeat instead.</li>
 </ul>
 
-<h2>Crash reports</h2>
-<p>If you agree to it in Settings, the app may send anonymous crash reports (device model, iOS version, app version, stack trace) to our crash-reporting provider so we can fix bugs. These reports never include your recordings, answers or settings. This is off by default.</p>
+<h2>Optional AI feedback (off by default)</h2>
+<p>In Speaking practice you can turn on AI feedback. When it is on, after you stop a recording the app sends:</p>
+<ul>
+  <li>the <strong>audio of that recording</strong> to our server (a Cloudflare Worker) which turns it into text using Cloudflare Workers AI (speech recognition); and</li>
+  <li>the resulting <strong>text transcript</strong>, together with the practice question, to Anthropic PBC (United States) to generate written feedback.</li>
+</ul>
+<p>Nothing else is sent — no name, no email, no study history. The app attaches a random installation identifier only to limit how many requests one phone can make per day. We do not store the audio or the transcript on our server; Cloudflare and Anthropic process them under their own policies (Anthropic’s API does not use customer data for model training). You can turn AI feedback off at any time in Settings; the app then uses the on-device self-check list instead. If the feature is not configured in your version of the app, the switch does not appear.</p>
 
-<h2>Optional AI practice partner (future update)</h2>
-<p>A future version may offer an optional AI speaking partner. If released, it will be off by default and ask for your separate consent. It would send only the text transcript of your answer (never audio) to our processing partner, Anthropic PBC (United States), to generate feedback. We will update this policy before that feature is enabled.</p>
+<h2>Crash reports</h2>
+<p>If you agree to it in Settings, the app may send anonymous crash reports (device model, iOS version, app version, stack trace) to our crash-reporting provider so we can fix bugs. These reports never include your recordings, answers or settings. This is off by default and not present in the current version.</p>
 
 <h2>Children</h2>
 <p>The app is intended for adult learners enrolled in the Korea Immigration and Integration Program. It is not directed to children under 13.</p>
@@ -43,7 +48,7 @@
 <h2>Your choices</h2>
 <ul>
   <li>Delete everything with Settings → “Delete all my data”, or by deleting the app.</li>
-  <li>Turn crash reports on or off at any time in Settings.</li>
+  <li>Turn AI feedback on or off at any time in Settings.</li>
 </ul>
 
 <h2>Contact</h2>
@@ -51,6 +56,7 @@
 
 <h2>Changes</h2>
 <p>We will post updates to this page and change the effective date above.</p>
+<p class="meta">2026-11-04: described the optional AI feedback feature (audio → transcription → feedback) and updated the recording-retention note.</p>
 
 <p class="meta">This app is an independent study aid. It is not affiliated with or endorsed by the Ministry of Justice of Korea or the Korea Immigration and Integration Program.</p>
 </body>
